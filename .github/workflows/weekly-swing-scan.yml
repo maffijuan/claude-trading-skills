@@ -1,0 +1,75 @@
+name: Weekly Swing Scan
+
+# Runs the swing-trading scan workflow every Monday at 10:30 ET and emails the
+# report to the address in the EMAIL_TO secret. Uses yfinance (no FMP key).
+#
+# GitHub cron is UTC and has no DST awareness, so we trigger at both 14:30 UTC
+# (= 10:30 EDT, summer) and 15:30 UTC (= 10:30 EST, winter); a guard step then
+# proceeds only when it is actually 10:xx in America/New_York. Manual runs via
+# workflow_dispatch always proceed.
+on:
+  schedule:
+    - cron: "30 14 * * 1"   # 10:30 ET during EDT (Mar–Nov)
+    - cron: "30 15 * * 1"   # 10:30 ET during EST (Nov–Mar)
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  swing-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Guard — only proceed at 10:xx ET (or on manual dispatch)
+        id: guard
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            echo "Manual dispatch — proceeding."
+            exit 0
+          fi
+          ET_HOUR=$(TZ=America/New_York date +%H)
+          echo "Current ET hour: $ET_HOUR"
+          if [ "$ET_HOUR" = "10" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+            echo "Not 10:xx ET (DST duplicate trigger) — skipping."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.proceed == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        if: steps.guard.outputs.proceed == 'true'
+        run: pip install -r scripts/requirements-swing-scan.txt
+
+      - name: Run weekly swing scan + email report
+        if: steps.guard.outputs.proceed == 'true'
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          python3 scripts/weekly_swing_scan.py \
+            --account-size 300000 \
+            --risk-pct 1.0 \
+            --max-position-pct 10 \
+            --email-to "${EMAIL_TO}" \
+            --output-dir reports/
+
+      - name: Upload report artifact
+        if: steps.guard.outputs.proceed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-swing-scan-report
+          path: reports/weekly_swing_scan_*.*
+          if-no-files-found: warn

@@ -1,0 +1,3 @@
+# Runtime dependencies for scripts/weekly_swing_scan.py
+yfinance>=0.2
+pandas>=2.0

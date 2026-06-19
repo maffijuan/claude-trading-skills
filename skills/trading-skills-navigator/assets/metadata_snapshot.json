@@ -8,6 +8,11 @@
       "id": "after-hours-market-screener",
       "integrations": [
         {
+          "id": "yfinance_or_csv",
+          "requirement": "optional",
+          "type": "market_data"
+        },
+        {
           "id": "fmp",
           "requirement": "optional",
           "type": "market_data"

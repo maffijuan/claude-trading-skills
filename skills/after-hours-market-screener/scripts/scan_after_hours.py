@@ -7,22 +7,24 @@ downstream skill in this repo.
 
 Modes
 -----
-- ``--dry-run``    : use the bundled fixture (no API key, fully offline).
-- ``--fixture P``  : use a custom JSON fixture at path P.
-- live (default)   : pull today's AMC earnings + per-symbol after-hours quotes
-                     from FMP (requires FMP_API_KEY). The candidate universe is
-                     today's earnings reporters plus any ``--watchlist`` symbols.
+- ``--dry-run``           : bundled fixture (no key, fully offline).
+- ``--fixture P``         : custom JSON fixture at path P.
+- ``--source yfinance``   : FREE live source via yfinance (no API key). Scans a
+                            watchlist (``--watchlist`` / ``--watchlist-file``, or
+                            the bundled default) for post-market moves.
+- ``--source fmp`` (def.) : pull today's AMC earnings + per-symbol after-hours
+                            quotes from FMP (requires FMP_API_KEY).
 
 Examples
 --------
     # Offline demo
     python3 scan_after_hours.py --dry-run --output-dir reports/
 
-    # Live: today's AMC reporters, moves >= 5%, large/mid cap only
-    python3 scan_after_hours.py --min-move 5 --min-cap 2e9 --output-dir reports/
+    # FREE live scan (no key) over the default watchlist
+    python3 scan_after_hours.py --source yfinance --output-dir reports/
 
-    # Live with an extra watchlist
-    python3 scan_after_hours.py --watchlist AAPL,NVDA,TSLA --output-dir reports/
+    # FMP: today's AMC reporters, moves >= 5%, large/mid cap only
+    python3 scan_after_hours.py --min-move 5 --min-cap 2e9 --output-dir reports/
 """
 
 from __future__ import annotations
@@ -175,11 +177,30 @@ def apply_filters(records: list[dict], args) -> list[dict]:
     return out
 
 
+DEFAULT_WATCHLIST = Path(__file__).resolve().parents[1] / "assets" / "default_watchlist.txt"
+
+
+def fetch_yf_live_records(args) -> list[dict]:
+    """Build raw mover records from the free yfinance source (no API key)."""
+    import ah_yf_source
+
+    if args.watchlist_file:
+        symbols = ah_yf_source.load_watchlist(args.watchlist_file)
+    elif args.watchlist:
+        symbols = [s.strip().upper() for s in args.watchlist.split(",") if s.strip()]
+    else:
+        symbols = ah_yf_source.load_watchlist(str(DEFAULT_WATCHLIST))
+    as_of = args.date or date.today().isoformat()
+    return ah_yf_source.fetch_yf_records(symbols, as_of=as_of)
+
+
 def run(args) -> dict:
     if args.dry_run:
         raw = load_fixture(FIXTURE_PATH)
     elif args.fixture:
         raw = load_fixture(Path(args.fixture))
+    elif args.source == "yfinance":
+        raw = fetch_yf_live_records(args)
     else:
         raw = fetch_live_records(args)
 
@@ -198,7 +219,10 @@ def run(args) -> dict:
         "min_price": args.min_price,
         "earnings_only": args.earnings_only,
         "top": args.top,
-        "mode": "dry-run" if args.dry_run else ("fixture" if args.fixture else "live"),
+        "source": args.source,
+        "mode": "dry-run"
+        if args.dry_run
+        else ("fixture" if args.fixture else f"live:{args.source}"),
     }
     return report_generator.build_report(classified, summary, as_of, params)
 
@@ -208,7 +232,14 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--api-key", help="FMP API key (else uses FMP_API_KEY env var)")
     p.add_argument("--dry-run", action="store_true", help="Use bundled fixture, no network")
     p.add_argument("--fixture", help="Path to a custom JSON fixture")
-    p.add_argument("--watchlist", help="Comma-separated extra symbols to scan (live mode)")
+    p.add_argument(
+        "--source",
+        choices=["fmp", "yfinance"],
+        default="fmp",
+        help="Live data source: 'fmp' (needs key) or 'yfinance' (free, no key)",
+    )
+    p.add_argument("--watchlist", help="Comma-separated symbols to scan")
+    p.add_argument("--watchlist-file", help="Path to a watchlist file (one symbol per line)")
     p.add_argument("--date", help="As-of date YYYY-MM-DD (default: today)")
     p.add_argument(
         "--min-move",

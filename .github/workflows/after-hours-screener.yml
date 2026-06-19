@@ -1,0 +1,79 @@
+name: After-Hours Market Screener (daily)
+
+# Runs the after-hours screener automatically on US trading days, uploads the
+# report as a build artifact, and (if Drive secrets are configured) pushes it to
+# a Google Drive folder. Uses the FREE yfinance source — no FMP API key needed.
+#
+# One-time setup for the Google Drive upload (optional):
+#   1. In Google Cloud, create a service account and a JSON key.
+#   2. Enable the Google Drive API for that project.
+#   3. In Google Drive, create/choose a folder and SHARE it with the service
+#      account's email (…@….iam.gserviceaccount.com) as Editor.
+#   4. In this repo: Settings → Secrets and variables → Actions → add:
+#         GDRIVE_SERVICE_ACCOUNT_JSON  = the full JSON key contents
+#         GDRIVE_FOLDER_ID             = the folder id (URL part after /folders/)
+#   Without these secrets the run still produces the report as an artifact.
+
+on:
+  schedule:
+    # 21:45 UTC, Mon–Fri. ≈17:45 ET (EDT) / 16:45 ET (EST) — into the
+    # after-hours session under both daylight-saving regimes.
+    - cron: "45 21 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      min_move:
+        description: "Minimum abs after-hours move %% to flag a direction"
+        default: "3"
+      watchlist:
+        description: "Optional comma-separated tickers (overrides default list)"
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: after-hours-screener
+  cancel-in-progress: false
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Run after-hours screener (free yfinance source)
+        run: |
+          EXTRA=""
+          if [ -n "${{ github.event.inputs.watchlist }}" ]; then
+            EXTRA="--watchlist ${{ github.event.inputs.watchlist }}"
+          fi
+          uv run python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
+            --source yfinance \
+            --min-move "${{ github.event.inputs.min_move || '3' }}" \
+            --top 40 \
+            --output-dir reports/ $EXTRA
+
+      - name: Upload report as build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: after-hours-report
+          path: reports/after_hours_screener_*
+          if-no-files-found: warn
+
+      - name: Upload report to Google Drive
+        env:
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+          GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+        if: ${{ env.GDRIVE_SERVICE_ACCOUNT_JSON != '' && env.GDRIVE_FOLDER_ID != '' }}
+        run: |
+          uv run --with google-api-python-client --with google-auth \
+            python3 scripts/upload_to_drive.py "reports/after_hours_screener_*"

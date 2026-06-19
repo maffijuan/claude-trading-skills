@@ -17,6 +17,7 @@ Screen and monitor the US after-hours (extended) session for news, behavior, and
 
 <span class="badge badge-free">API不要</span> <span class="badge badge-optional">FMP任意</span>
 
+[スキルパッケージをダウンロード (.skill)](https://github.com/tradermonty/claude-trading-skills/raw/main/skill-packages/after-hours-market-screener.skill){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [GitHubでソースを見る](https://github.com/tradermonty/claude-trading-skills/tree/main/skills/after-hours-market-screener){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 > **Note:** This page has not yet been translated into Japanese.

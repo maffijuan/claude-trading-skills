@@ -21,8 +21,13 @@ open.
 ## Prerequisites
 
 - **Offline / demo:** none — run with `--dry-run` to use the bundled fixture.
-- **Live mode:** FMP API key (`FMP_API_KEY` env var or `--api-key`). Free tier
-  (250 calls/day) covers a focused scan of today's reporters plus a watchlist.
+- **Free live mode (`--source yfinance`):** no API key. Scans a watchlist for
+  post-market moves via yfinance (already a project dependency). Coverage is the
+  watchlist, and earnings are inferred from the earnings timestamp (no EPS
+  surprise). Best for an unattended daily run.
+- **FMP live mode (`--source fmp`, default):** FMP API key (`FMP_API_KEY` or
+  `--api-key`). Adds today's earnings calendar with EPS estimates. Free tier
+  (250 calls/day) is enough for a focused scan.
 
 ## Workflow
 
@@ -33,22 +38,30 @@ open.
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
   --dry-run --output-dir reports/
 
-# Live: today's AMC reporters, moves >= 5%, mid/large cap only
+# FREE live scan (no key) over the bundled default watchlist
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
-  --min-move 5 --min-cap 2e9 --output-dir reports/
+  --source yfinance --min-move 3 --top 40 --output-dir reports/
 
-# Live with an extra watchlist of names to check
+# FREE live scan with a custom watchlist
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
-  --watchlist AAPL,NVDA,TSLA,AMD --output-dir reports/
+  --source yfinance --watchlist AAPL,NVDA,TSLA,AMD --output-dir reports/
 
-# Earnings reactions only
+# FMP: today's AMC reporters, moves >= 5%, mid/large cap only
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
-  --earnings-only --top 15 --output-dir reports/
+  --source fmp --min-move 5 --min-cap 2e9 --output-dir reports/
 ```
 
-Key flags: `--min-move` (direction threshold %, default 5), `--min-cap`,
-`--min-price`, `--earnings-only`, `--include-quiet`, `--top N`, `--date`,
-`--no-write` (print JSON to stdout instead of writing files).
+Key flags: `--source {yfinance,fmp}`, `--watchlist` / `--watchlist-file`,
+`--min-move` (direction threshold %, default 5), `--min-cap`, `--min-price`,
+`--earnings-only`, `--include-quiet`, `--top N`, `--date`, `--no-write`.
+
+### Automated daily run (GitHub Actions → Google Drive)
+
+`.github/workflows/after-hours-screener.yml` runs the screener on US trading
+days (`--source yfinance`, no key), uploads the report as a build artifact, and
+— if `GDRIVE_SERVICE_ACCOUNT_JSON` + `GDRIVE_FOLDER_ID` repo secrets are set —
+pushes it to a Google Drive folder via `scripts/upload_to_drive.py`. See the
+workflow header for the one-time Drive service-account setup.
 
 ### Step 2: Read the report and load references
 
@@ -103,6 +116,10 @@ After-hours prints overshoot and fade. Never size off the AH print:
   caution, volume/catalyst rules.
 - `references/classification_rules.md` — categories, thresholds, scoring,
   routing map.
-- `scripts/scan_after_hours.py` — orchestrator (fixture + live FMP modes).
+- `scripts/scan_after_hours.py` — orchestrator (fixture, yfinance, and FMP modes).
 - `scripts/classifier.py` — classification, scoring, routing, session summary.
+- `scripts/ah_yf_source.py` — free yfinance post-market source (no key).
 - `scripts/ah_fmp_client.py` — minimal FMP client (earnings calendar + AH quotes).
+- `assets/default_watchlist.txt` — default symbols for the yfinance source.
+- `.github/workflows/after-hours-screener.yml` + `scripts/upload_to_drive.py` —
+  daily automated run with optional Google Drive upload.

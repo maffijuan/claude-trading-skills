@@ -1,0 +1,59 @@
+# Default after-hours watchlist for the yfinance (free, no-key) source.
+# One symbol per line. '#' starts a comment. Override with --watchlist-file
+# or --watchlist. These are liquid, high-attention names that frequently move
+# in the extended session on earnings/news. Edit freely.
+
+# Mega-cap tech / movers
+AAPL
+MSFT
+NVDA
+AMZN
+GOOGL
+META
+TSLA
+AMD
+AVGO
+NFLX
+CRM
+ORCL
+ADBE
+INTC
+QCOM
+MU
+
+# High-beta / momentum
+PLTR
+SMCI
+COIN
+MSTR
+SHOP
+UBER
+ABNB
+SNAP
+RBLX
+DKNG
+
+# Financials / industrials / consumer
+JPM
+BAC
+GS
+DIS
+NKE
+SBUX
+COST
+WMT
+PEP
+KO
+
+# Healthcare / energy
+LLY
+UNH
+PFE
+MRNA
+XOM
+CVX
+
+# Index ETFs (session tone)
+SPY
+QQQ
+IWM

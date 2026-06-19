@@ -196,7 +196,7 @@ The detailed catalog below is **auto-generated** from `skills-index.yaml` by `sc
 
 | Skill | Summary | Integrations | Status |
 |---|---|---|---|
-| **After Hours Market Screener** (`after-hours-market-screener`) | Screen and monitor the US after-hours (extended) session for news, behavior, and opportunities — earnings reactions, news/flow gaps, and parabolic spikes — classifying, scoring, and routing each mover to the right downstream skill. | `fmp` optional | production |
+| **After Hours Market Screener** (`after-hours-market-screener`) | Screen and monitor the US after-hours (extended) session for news, behavior, and opportunities — earnings reactions, news/flow gaps, and parabolic spikes — classifying, scoring, and routing each mover to the right downstream skill. | `yfinance_or_csv` optional, `fmp` optional | production |
 | **Earnings Trade Analyzer** (`earnings-trade-analyzer`) | Analyze recent post-earnings stocks using a 5-factor scoring system (Gap Size, Pre-Earnings Trend, Volume Trend, MA200 Position, MA50 Position). | `fmp` **required** | production |
 | **Institutional Flow Tracker** (`institutional-flow-tracker`) | Use this skill to track institutional investor ownership changes and portfolio flows using 13F filings data. | `fmp` **required** | production |
 | **Options Strategy Advisor** (`options-strategy-advisor`) | Options trading strategy analysis and simulation tool. | `fmp` optional | production |
@@ -449,7 +449,7 @@ Several skills require API keys for data access:
 |-------|---------|--------------|--------|-------|
 | **Economic Calendar Fetcher** | ✅ Required | ❌ Not used | ❌ Not used | Fetches economic events |
 | **Earnings Calendar** | ✅ Required | ❌ Not used | ❌ Not used | Fetches earnings dates |
-| **After Hours Market Screener** | 🟡 Optional | ❌ Not used | ❌ Not used | FMP for live after-hours quotes / earnings calendar; `--dry-run` works fully offline |
+| **After Hours Market Screener** | 🟡 Optional | ❌ Not used | ❌ Not used | Free yfinance source needs no key (default daily run); FMP optional for earnings calendar / EPS estimates; `--dry-run` works fully offline |
 | **Institutional Flow Tracker** | ✅ Required | ❌ Not used | ❌ Not used | 13F filings analysis, free tier sufficient |
 | **Value Dividend Screener** | ✅ Required | 🟡 Optional | ❌ Not used | FINVIZ reduces execution time 70-80% |
 | **Dividend Growth Pullback Screener** | ✅ Required | 🟡 Optional | ❌ Not used | FINVIZ for RSI pre-screening |

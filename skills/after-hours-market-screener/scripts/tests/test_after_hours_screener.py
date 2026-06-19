@@ -194,3 +194,76 @@ def test_min_cap_filter_drops_microcaps():
     report = scan.run(_args(min_cap=1e9))
     assert all((m.get("market_cap") or 0) >= 1e9 for m in report["movers"])
     assert "ACME" not in [m["symbol"] for m in report["movers"]]
+
+
+# ---------------------------------------------------------------------------
+# yfinance free source (mocked — no network)
+# ---------------------------------------------------------------------------
+
+import ah_yf_source  # noqa: E402
+
+
+class _FakeTicker:
+    def __init__(self, info):
+        self._info = info
+
+    def get_info(self):
+        return self._info
+
+
+def test_yf_source_computes_postmarket_move():
+    fake = {
+        "AAPL": {
+            "shortName": "Apple Inc",
+            "regularMarketPrice": 200.0,
+            "postMarketPrice": 210.0,
+            "marketCap": 3e12,
+            "sector": "Technology",
+        },
+        "NOPM": {"regularMarketPrice": 50.0},  # no post-market -> skipped
+    }
+    recs = ah_yf_source.fetch_yf_records(
+        ["AAPL", "NOPM"], as_of="2026-06-19", ticker_factory=lambda s: _FakeTicker(fake[s])
+    )
+    assert len(recs) == 1
+    assert recs[0]["symbol"] == "AAPL"
+    assert recs[0]["ah_change_pct"] == 5.0
+    assert recs[0]["market_cap"] == 3e12
+
+
+def test_yf_source_skips_failing_symbol():
+    def boom(_sym):
+        raise RuntimeError("Yahoo blocked")
+
+    recs = ah_yf_source.fetch_yf_records(["X"], as_of="2026-06-19", ticker_factory=boom)
+    assert recs == []
+
+
+def test_yf_source_infers_earnings_today_from_timestamp():
+    import datetime as _dt
+    from zoneinfo import ZoneInfo
+
+    et = ZoneInfo("America/New_York")
+    ts = int(_dt.datetime(2026, 6, 19, 16, 30, tzinfo=et).timestamp())
+    fake = {
+        "regularMarketPrice": 100.0,
+        "postMarketPrice": 92.0,
+        "earningsTimestamp": ts,
+    }
+    recs = ah_yf_source.fetch_yf_records(
+        ["ZZ"], as_of="2026-06-19", ticker_factory=lambda s: _FakeTicker(fake)
+    )
+    assert recs[0]["has_earnings"] is True
+    assert recs[0]["earnings_time"] == "amc"
+
+
+def test_load_watchlist_strips_comments(tmp_path):
+    f = tmp_path / "wl.txt"
+    f.write_text("# header\nAAPL\n  msft  # inline\n\nNVDA\n", encoding="utf-8")
+    assert ah_yf_source.load_watchlist(str(f)) == ["AAPL", "MSFT", "NVDA"]
+
+
+def test_default_watchlist_file_exists_and_parses():
+    symbols = ah_yf_source.load_watchlist(str(scan.DEFAULT_WATCHLIST))
+    assert "NVDA" in symbols and "SPY" in symbols
+    assert len(symbols) >= 30

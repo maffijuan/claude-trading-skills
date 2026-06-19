@@ -19,10 +19,14 @@ skills:
   timeframe: daily
   difficulty: intermediate
   integrations:
+  - id: yfinance_or_csv
+    type: market_data
+    requirement: optional
+    note: Free yfinance post-market source (no key) for the daily run; --dry-run works offline
   - id: fmp
     type: market_data
     requirement: optional
-    note: Optional FMP for live after-hours quotes / earnings calendar; --dry-run works offline
+    note: Optional FMP for live after-hours quotes / earnings calendar with EPS estimates
   inputs:
   - earnings_calendar
   - aftermarket_quotes

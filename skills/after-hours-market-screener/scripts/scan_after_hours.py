@@ -77,6 +77,7 @@ def normalize_records(raw: list[dict]) -> list[dict]:
                 "ah_change_pct": round(float(move), 2),
                 "ah_volume": _to_int(r.get("ah_volume")),
                 "market_cap": _to_float(r.get("market_cap")),
+                "dollar_volume": _to_float(r.get("dollar_volume")),
                 "sector": r.get("sector"),
                 "has_earnings": bool(r.get("has_earnings")),
                 "earnings_time": r.get("earnings_time"),
@@ -171,6 +172,8 @@ def apply_filters(records: list[dict], args) -> list[dict]:
             continue
         if args.min_price and (r.get("regular_close") or r.get("ah_price") or 0) < args.min_price:
             continue
+        if args.min_dollar_volume and (r.get("dollar_volume") or 0) < args.min_dollar_volume:
+            continue
         if args.earnings_only and not r.get("has_earnings"):
             continue
         out.append(r)
@@ -194,11 +197,30 @@ def fetch_yf_live_records(args) -> list[dict]:
     return ah_yf_source.fetch_yf_records(symbols, as_of=as_of)
 
 
+def fetch_yahoo_market_records(args) -> list[dict]:
+    """Broad market scan: full US universe via batched Yahoo quotes (no key)."""
+    import ah_universe
+    import ah_yahoo_quote
+
+    if args.watchlist_file:
+        symbols = ah_universe.load_fallback_universe(Path(args.watchlist_file))
+    elif args.watchlist:
+        symbols = [s.strip().upper() for s in args.watchlist.split(",") if s.strip()]
+    else:
+        symbols = ah_universe.fetch_us_equity_universe(
+            include_etfs=args.include_etfs, max_symbols=args.max_universe
+        )
+    print(f"Scanning {len(symbols)} symbols for after-hours moves...", file=sys.stderr)
+    return ah_yahoo_quote.fetch_market_records(symbols)
+
+
 def run(args) -> dict:
     if args.dry_run:
         raw = load_fixture(FIXTURE_PATH)
     elif args.fixture:
         raw = load_fixture(Path(args.fixture))
+    elif args.source == "yahoo-market":
+        raw = fetch_yahoo_market_records(args)
     elif args.source == "yfinance":
         raw = fetch_yf_live_records(args)
     else:
@@ -217,6 +239,7 @@ def run(args) -> dict:
         "min_move": args.min_move,
         "min_cap": args.min_cap,
         "min_price": args.min_price,
+        "min_dollar_volume": args.min_dollar_volume,
         "earnings_only": args.earnings_only,
         "top": args.top,
         "source": args.source,
@@ -234,12 +257,28 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--fixture", help="Path to a custom JSON fixture")
     p.add_argument(
         "--source",
-        choices=["fmp", "yfinance"],
+        choices=["fmp", "yfinance", "yahoo-market"],
         default="fmp",
-        help="Live data source: 'fmp' (needs key) or 'yfinance' (free, no key)",
+        help="Live source: 'yahoo-market' (free, whole-market scan), "
+        "'yfinance' (free, per-symbol watchlist), or 'fmp' (needs key)",
     )
     p.add_argument("--watchlist", help="Comma-separated symbols to scan")
-    p.add_argument("--watchlist-file", help="Path to a watchlist file (one symbol per line)")
+    p.add_argument("--watchlist-file", help="Path to a watchlist/universe file (one symbol/line)")
+    p.add_argument(
+        "--include-etfs", action="store_true", help="Include ETFs in the market universe"
+    )
+    p.add_argument(
+        "--max-universe",
+        type=int,
+        default=0,
+        help="Cap the market-scan universe size (0 = no cap / whole market)",
+    )
+    p.add_argument(
+        "--min-dollar-volume",
+        type=float,
+        default=0.0,
+        help="Minimum regular-session dollar volume filter (liquidity floor)",
+    )
     p.add_argument("--date", help="As-of date YYYY-MM-DD (default: today)")
     p.add_argument(
         "--min-move",

@@ -23,9 +23,12 @@ on:
     inputs:
       min_move:
         description: "Minimum abs after-hours move %% to flag a direction"
-        default: "3"
+        default: "5"
+      min_dollar_volume:
+        description: "Minimum regular-session dollar volume (liquidity floor)"
+        default: "5000000"
       watchlist:
-        description: "Optional comma-separated tickers (overrides default list)"
+        description: "Optional comma-separated tickers (scan these instead of whole market)"
         default: ""
 
 permissions:
@@ -50,16 +53,20 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
 
-      - name: Run after-hours screener (free yfinance source)
+      - name: Run after-hours screener (free whole-market scan)
         run: |
+          # Whole-market scan via the free Yahoo batch-quote source (no API key).
+          # If a watchlist is provided via manual dispatch, scan just those names.
           EXTRA=""
           if [ -n "${{ github.event.inputs.watchlist }}" ]; then
             EXTRA="--watchlist ${{ github.event.inputs.watchlist }}"
           fi
           uv run python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
-            --source yfinance \
-            --min-move "${{ github.event.inputs.min_move || '3' }}" \
-            --top 40 \
+            --source yahoo-market \
+            --min-move "${{ github.event.inputs.min_move || '5' }}" \
+            --min-price 5 \
+            --min-dollar-volume "${{ github.event.inputs.min_dollar_volume || '5000000' }}" \
+            --top 50 \
             --output-dir reports/ $EXTRA
 
       - name: Upload report as build artifact

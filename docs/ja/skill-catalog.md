@@ -51,7 +51,7 @@ Claude Trading Skillsの全スキルをカテゴリ別に紹介します。各�
 | **PEAD Screener** | 決算ギャップアップ銘柄のPost-Earnings Announcement Drift パターンを週足分析。MONITORING→SIGNAL_READY→BREAKOUTのステージ管理 | <span class="badge badge-api">FMP必須</span> |
 | **FTD Detector** | William O'Neilの手法でFollow-Through Day シグナルを検出。市場底打ち確認のためのデュアルインデックス追跡 | <span class="badge badge-api">FMP必須</span> |
 | **Institutional Flow Tracker** | 13F SEC提出書類で機関投資家の蓄積・分配パターンを追跡。スーパーインベスター重み付き品質フレームワーク | <span class="badge badge-api">FMP必須</span> |
-| **[After Hours Market Screener]({{ '/ja/skills/after-hours-market-screener/' | relative_url }})** | 米国アフターアワー（時間外）セッションをトリアージ。値動き銘柄を分類（決算ギャップ上昇/下落、ニュース/フローギャップ、パラボリック急騰）し、0-100でスコアリング・緊急度付与のうえ適切な後続スキルへルーティング。無料のyfinanceソース（キー不要）+ 毎日GitHub Action→Drive、オフライン `--dry-run` 対応 | <span class="badge badge-free">API不要</span> <span class="badge badge-optional">FMP任意</span> |
+| **[After Hours Market Screener]({{ '/ja/skills/after-hours-market-screener/' | relative_url }})** | 米国アフターアワー（時間外）セッションをトリアージ。値動き銘柄を分類（決算ギャップ上昇/下落、ニュース/フローギャップ、パラボリック急騰）し、0-100でスコアリング・緊急度付与のうえ適切な後続スキルへルーティング。無料の全市場スキャン（Nasdaq Trader ユニバース + Yahoo クォート、キー不要）+ 毎日GitHub Action→Drive、オフライン `--dry-run` 対応 | <span class="badge badge-free">API不要</span> <span class="badge badge-optional">FMP任意</span> |
 
 ---
 

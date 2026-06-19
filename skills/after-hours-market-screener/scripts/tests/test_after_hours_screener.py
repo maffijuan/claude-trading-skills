@@ -267,3 +267,115 @@ def test_default_watchlist_file_exists_and_parses():
     symbols = ah_yf_source.load_watchlist(str(scan.DEFAULT_WATCHLIST))
     assert "NVDA" in symbols and "SPY" in symbols
     assert len(symbols) >= 30
+
+
+# ---------------------------------------------------------------------------
+# Broad market scan: universe + Yahoo batch quotes (mocked — no network)
+# ---------------------------------------------------------------------------
+
+import ah_universe  # noqa: E402
+import ah_yahoo_quote  # noqa: E402
+
+_NASDAQ_LISTED = (
+    "Symbol|Security Name|Market Category|Test Issue|Financial Status|Round Lot Size|ETF|NextShares\n"
+    "AAPL|Apple Inc. - Common Stock|Q|N|N|100|N|N\n"
+    "TEST|Test Issue|Q|Y|N|100|N|N\n"
+    "QQQ|Invesco QQQ Trust|Q|N|N|100|Y|N\n"
+    "ZVZZT|Nasdaq Test|Q|Y|N|100|N|N\n"
+    "File Creation Time: 0102030405|||||||\n"
+)
+_OTHER_LISTED = (
+    "ACT Symbol|Security Name|Exchange|CQS Symbol|ETF|Round Lot Size|Test Issue|NASDAQ Symbol\n"
+    "BRK.B|Berkshire Hathaway Class B|N|BRK.B|N|100|N|BRK.B\n"
+    "SPY|SPDR S&P 500|P|SPY|Y|100|N|SPY\n"
+    "File Creation Time: 0102030405|||||||\n"
+)
+
+
+def test_universe_parsing_filters_test_and_etf():
+    def fake_fetch(url):
+        return _NASDAQ_LISTED if "nasdaqlisted" in url else _OTHER_LISTED
+
+    syms = ah_universe.fetch_us_equity_universe(include_etfs=False, fetch_text=fake_fetch)
+    assert "AAPL" in syms
+    assert "BRK-B" in syms  # '.' normalized to '-' for Yahoo
+    assert "QQQ" not in syms and "SPY" not in syms  # ETFs excluded
+    assert "TEST" not in syms and "ZVZZT" not in syms  # test issues excluded
+
+
+def test_universe_include_etfs_and_fallback():
+    def boom(url):
+        raise RuntimeError("network down")
+
+    fb = ah_universe.fetch_us_equity_universe(fetch_text=boom)
+    assert "AAPL" in fb and len(fb) >= 30  # bundled fallback used
+
+
+def test_quote_to_record_and_dollar_volume():
+    q = {
+        "symbol": "ABCD",
+        "shortName": "Abcd Inc",
+        "quoteType": "EQUITY",
+        "regularMarketPrice": 100.0,
+        "postMarketPrice": 88.0,
+        "postMarketChangePercent": -12.0,
+        "regularMarketVolume": 2_000_000,
+        "marketCap": 5e9,
+    }
+    rec = ah_yahoo_quote.quote_to_record(q)
+    assert rec["symbol"] == "ABCD"
+    assert rec["ah_change_pct"] == -12.0
+    assert rec["dollar_volume"] == 2_000_000 * 100.0
+    # No post-market price -> not an after-hours mover.
+    assert ah_yahoo_quote.quote_to_record({"regularMarketPrice": 10}) is None
+
+
+class _FakeQuoteClient:
+    def __init__(self, quotes):
+        self._quotes = quotes
+
+    def fetch_quotes(self, symbols):
+        return [q for q in self._quotes if q["symbol"] in set(symbols)]
+
+
+def test_market_scan_end_to_end_with_filters():
+    quotes = [
+        {
+            "symbol": "BIG",
+            "quoteType": "EQUITY",
+            "regularMarketPrice": 100,
+            "postMarketPrice": 120,
+            "postMarketChangePercent": 20.0,
+            "regularMarketVolume": 5_000_000,
+            "marketCap": 2e10,
+        },
+        {
+            "symbol": "THIN",
+            "quoteType": "EQUITY",
+            "regularMarketPrice": 3,
+            "postMarketPrice": 3.3,
+            "postMarketChangePercent": 10.0,
+            "regularMarketVolume": 1000,
+            "marketCap": 5e7,
+        },
+        {
+            "symbol": "FLAT",
+            "quoteType": "EQUITY",
+            "regularMarketPrice": 50,
+            "postMarketPrice": 50.1,
+            "postMarketChangePercent": 0.2,
+            "regularMarketVolume": 1_000_000,
+            "marketCap": 1e10,
+        },
+    ]
+    recs = ah_yahoo_quote.fetch_market_records(
+        ["BIG", "THIN", "FLAT"], client=_FakeQuoteClient(quotes)
+    )
+    norm = scan.normalize_records(recs)
+    args = _args(dry_run=False, source="yahoo-market", min_dollar_volume=1e7, min_price=5)
+    filtered = scan.apply_filters(norm, args)
+    classified = classifier.classify_all(filtered, move_threshold=args.min_move)
+    syms = [r["symbol"] for r in classified]
+    assert "BIG" in syms  # passes liquidity + move
+    assert "THIN" not in syms  # too illiquid / cheap
+    assert "FLAT" not in syms  # sub-threshold move -> QUIET, dropped

@@ -424,7 +424,7 @@ launchctl start com.trade-analysis.skill-generation-daily
 - **マーケットブレッドアナライザー**、**アップトレンドアナライザー**、**セクターアナリスト**: APIキー不要（GitHubの無料CSVデータを使用。セクターアナリストはオプションでチャート画像も利用可）
 - **テーマ検出器**: コア機能にAPIキー不要（FINVIZパブリック + yfinance）。FMP APIは銘柄選定強化用（オプション）、FINVIZ Eliteは銘柄リスト取得用（オプション）
 - **FinVizスクリーナー**: APIキー不要（パブリックFinVizスクリーナー）。FINVIZ Eliteは`$FINVIZ_API_KEY`環境変数から自動検出（オプション）
-- **アフターアワー・マーケットスクリーナー** (`after-hours-market-screener`): 無料のyfinanceソースはAPIキー不要（毎日の自動実行に使用）。FMPは決算カレンダー/EPS予想用（オプション）。`--dry-run`で完全オフライン動作。GitHub Actionで毎営業日に自動実行しGoogle Driveへアップロード可能
+- **アフターアワー・マーケットスクリーナー** (`after-hours-market-screener`): 無料の全市場スキャン（Nasdaq Trader ユニバース + Yahoo クォート、APIキー不要）。FMPは決算カレンダー/EPS予想用（オプション）。`--dry-run`で完全オフライン動作。GitHub Actionで毎営業日に自動実行しGoogle Driveへアップロード可能
 - **かんち式配当3スキル**（`kanchi-dividend-sop` / `kanchi-dividend-review-monitor` / `kanchi-dividend-us-tax-accounting`）: APIキー不要（上流データは他スキル出力または手動入力を利用）
 - **エッジ候補エージェント** (`edge-candidate-agent`): APIキー不要（ローカルYAML生成、ローカルパイプラインリポジトリに対して検証）
 - **トレード仮説アイデエータ** (`trade-hypothesis-ideator`): APIキー不要（ローカルJSON仮説パイプライン、任意で戦略エクスポート）

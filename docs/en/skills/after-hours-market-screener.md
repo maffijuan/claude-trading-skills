@@ -47,13 +47,16 @@ Screen and monitor the US after-hours (extended) session for news, behavior, and
 ## 3. Prerequisites
 
 - **Offline / demo:** none — run with `--dry-run` to use the bundled fixture.
-- **Free live mode (`--source yfinance`):** no API key. Scans a watchlist for
-  post-market moves via yfinance (already a project dependency). Coverage is the
-  watchlist, and earnings are inferred from the earnings timestamp (no EPS
-  surprise). Best for an unattended daily run.
-- **FMP live mode (`--source fmp`, default):** FMP API key (`FMP_API_KEY` or
-  `--api-key`). Adds today's earnings calendar with EPS estimates. Free tier
-  (250 calls/day) is enough for a focused scan.
+- **Free whole-market mode (`--source yahoo-market`):** no API key. Scans the
+  **entire US-listed universe** (≈7,000 symbols from the public Nasdaq Trader
+  directory) via batched Yahoo quotes, then filters by move / price / dollar
+  volume. Best for "what's moving after hours across the whole market?". Note:
+  Yahoo can rate-limit datacenter / CI IPs — the scan tolerates partial results
+  and falls back to a bundled universe if the directory fetch fails.
+- **Free watchlist mode (`--source yfinance`):** no API key. Per-symbol scan of
+  a focused watchlist; earnings inferred from the earnings timestamp.
+- **FMP mode (`--source fmp`, default):** FMP API key (`FMP_API_KEY` or
+  `--api-key`). Adds today's earnings calendar with EPS estimates.
 
 ---
 
@@ -64,11 +67,12 @@ Screen and monitor the US after-hours (extended) session for news, behavior, and
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
   --dry-run --output-dir reports/
 
-# FREE live scan (no key) over the bundled default watchlist
+# FREE WHOLE-MARKET scan (no key): every US-listed name, liquid movers only
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
-  --source yfinance --min-move 3 --top 40 --output-dir reports/
+  --source yahoo-market --min-move 5 --min-price 5 \
+  --min-dollar-volume 5e6 --top 50 --output-dir reports/
 
-# FREE live scan with a custom watchlist
+# FREE watchlist scan (no key)
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
   --source yfinance --watchlist AAPL,NVDA,TSLA,AMD --output-dir reports/
 
@@ -88,11 +92,12 @@ python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
   --dry-run --output-dir reports/
 
-# FREE live scan (no key) over the bundled default watchlist
+# FREE WHOLE-MARKET scan (no key): every US-listed name, liquid movers only
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
-  --source yfinance --min-move 3 --top 40 --output-dir reports/
+  --source yahoo-market --min-move 5 --min-price 5 \
+  --min-dollar-volume 5e6 --top 50 --output-dir reports/
 
-# FREE live scan with a custom watchlist
+# FREE watchlist scan (no key)
 python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
   --source yfinance --watchlist AAPL,NVDA,TSLA,AMD --output-dir reports/
 
@@ -101,17 +106,21 @@ python3 skills/after-hours-market-screener/scripts/scan_after_hours.py \
   --source fmp --min-move 5 --min-cap 2e9 --output-dir reports/
 ```
 
-Key flags: `--source {yfinance,fmp}`, `--watchlist` / `--watchlist-file`,
+Key flags: `--source {yahoo-market,yfinance,fmp}`, `--watchlist` /
+`--watchlist-file`, `--max-universe N` (cap the market scan), `--include-etfs`,
 `--min-move` (direction threshold %, default 5), `--min-cap`, `--min-price`,
-`--earnings-only`, `--include-quiet`, `--top N`, `--date`, `--no-write`.
+`--min-dollar-volume` (liquidity floor), `--earnings-only`, `--include-quiet`,
+`--top N`, `--date`, `--no-write`.
 
 ### Automated daily run (GitHub Actions → Google Drive)
 
 `.github/workflows/after-hours-screener.yml` runs the screener on US trading
-days (`--source yfinance`, no key), uploads the report as a build artifact, and
-— if `GDRIVE_SERVICE_ACCOUNT_JSON` + `GDRIVE_FOLDER_ID` repo secrets are set —
-pushes it to a Google Drive folder via `scripts/upload_to_drive.py`. See the
-workflow header for the one-time Drive service-account setup.
+days (`--source yahoo-market`, no key — a whole-market scan), uploads the report
+as a build artifact, and — if `GDRIVE_SERVICE_ACCOUNT_JSON` + `GDRIVE_FOLDER_ID`
+repo secrets are set — pushes it to a Google Drive folder via
+`scripts/upload_to_drive.py`. See the workflow header for the one-time Drive
+service-account setup. Yahoo may throttle CI IPs; the whole-market scan is most
+reliable run on demand (locally or via Claude).
 
 ### Step 2: Read the report and load references
 
@@ -165,6 +174,8 @@ After-hours prints overshoot and fade. Never size off the AH print:
 **Scripts:**
 
 - `skills/after-hours-market-screener/scripts/ah_fmp_client.py`
+- `skills/after-hours-market-screener/scripts/ah_universe.py`
+- `skills/after-hours-market-screener/scripts/ah_yahoo_quote.py`
 - `skills/after-hours-market-screener/scripts/ah_yf_source.py`
 - `skills/after-hours-market-screener/scripts/classifier.py`
 - `skills/after-hours-market-screener/scripts/report_generator.py`

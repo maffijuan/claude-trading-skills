@@ -449,7 +449,7 @@ Several skills require API keys for data access:
 |-------|---------|--------------|--------|-------|
 | **Economic Calendar Fetcher** | ✅ Required | ❌ Not used | ❌ Not used | Fetches economic events |
 | **Earnings Calendar** | ✅ Required | ❌ Not used | ❌ Not used | Fetches earnings dates |
-| **After Hours Market Screener** | 🟡 Optional | ❌ Not used | ❌ Not used | Free yfinance source needs no key (default daily run); FMP optional for earnings calendar / EPS estimates; `--dry-run` works fully offline |
+| **After Hours Market Screener** | 🟡 Optional | ❌ Not used | ❌ Not used | Free whole-market scan via Nasdaq Trader universe + Yahoo quotes (no key); FMP optional for earnings calendar / EPS estimates; `--dry-run` works fully offline |
 | **Institutional Flow Tracker** | ✅ Required | ❌ Not used | ❌ Not used | 13F filings analysis, free tier sufficient |
 | **Value Dividend Screener** | ✅ Required | 🟡 Optional | ❌ Not used | FINVIZ reduces execution time 70-80% |
 | **Dividend Growth Pullback Screener** | ✅ Required | 🟡 Optional | ❌ Not used | FINVIZ for RSI pre-screening |

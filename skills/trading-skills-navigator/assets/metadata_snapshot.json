@@ -2,6 +2,22 @@
   "schema_version": 1,
   "skills": [
     {
+      "category": "advanced-satellite",
+      "difficulty": "intermediate",
+      "display_name": "After Hours Market Screener",
+      "id": "after-hours-market-screener",
+      "integrations": [
+        {
+          "id": "fmp",
+          "requirement": "optional",
+          "type": "market_data"
+        }
+      ],
+      "status": "production",
+      "summary": "Screen and monitor the US after-hours (extended) session for news, behavior, and opportunities — earnings reactions, news/flow gaps, and parabolic spikes — classifying, scoring, and routing each mover to the right downstream skill.",
+      "timeframe": "daily"
+    },
+    {
       "category": "strategy-research",
       "difficulty": "advanced",
       "display_name": "Backtest Expert",

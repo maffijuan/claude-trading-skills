@@ -9,6 +9,28 @@ categories:
 - advanced-satellite
 - meta
 skills:
+- id: after-hours-market-screener
+  display_name: After Hours Market Screener
+  category: advanced-satellite
+  status: production
+  summary: Screen and monitor the US after-hours (extended) session for news, behavior, and opportunities
+    — earnings reactions, news/flow gaps, and parabolic spikes — classifying, scoring, and routing each
+    mover to the right downstream skill.
+  timeframe: daily
+  difficulty: intermediate
+  integrations:
+  - id: fmp
+    type: market_data
+    requirement: optional
+    note: Optional FMP for live after-hours quotes / earnings calendar; --dry-run works offline
+  inputs:
+  - earnings_calendar
+  - aftermarket_quotes
+  - watchlist_symbols
+  outputs:
+  - after_hours_watchlist
+  - routed_movers
+  workflows: []
 - id: backtest-expert
   display_name: Backtest Expert
   category: strategy-research

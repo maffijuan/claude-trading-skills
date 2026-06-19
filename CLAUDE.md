@@ -219,6 +219,7 @@ The table below is **auto-generated** from `skills-index.yaml` by `scripts/gener
 
 | Skill | FMP API | FINVIZ Elite | Alpaca | Notes |
 |-------|---------|--------------|--------|-------|
+| **After Hours Market Screener** | 🟡 Optional | ❌ Not used | ❌ Not used | Optional FMP for live after-hours quotes / earnings calendar; --dry-run works offline |
 | **Backtest Expert** | ❌ Not used | ❌ Not used | ❌ Not used | User provides strategy parameters |
 | **Breadth Chart Analyst** | ❌ Not used | ❌ Not used | ❌ Not used | Chart screenshot input |
 | **Breakout Trade Planner** | ❌ Not used | ❌ Not used | ❌ Not used | Consumes VCP screener output; pure calculation + Alpaca order templates |

@@ -51,6 +51,7 @@ A comprehensive catalog of all 55 Claude Trading Skills organized by category. B
 | **PEAD Screener** | Screens for Post-Earnings Announcement Drift patterns using weekly candle analysis. Stage-based monitoring: MONITORING, SIGNAL_READY, BREAKOUT, EXPIRED | <span class="badge badge-api">FMP Required</span> |
 | **FTD Detector** | Detects Follow-Through Day signals for market bottom confirmation using William O'Neil's methodology. Dual-index tracking with quality scoring (0-100) | <span class="badge badge-api">FMP Required</span> |
 | **Institutional Flow Tracker** | Tracks institutional ownership changes using 13F SEC filings. Tier-based quality framework weights superinvestors (Berkshire, Baupost) higher than index funds | <span class="badge badge-api">FMP Required</span> |
+| **[After Hours Market Screener]({{ '/en/skills/after-hours-market-screener/' | relative_url }})** | Triages the US after-hours session: classifies movers (earnings gap up/down, news/flow gap, parabolic spike), scores them 0-100 with urgency, and routes each to the right downstream skill. Offline `--dry-run` fixture mode | <span class="badge badge-optional">FMP Optional</span> |
 
 ---
 
@@ -256,5 +257,6 @@ A comprehensive catalog of all 55 Claude Trading Skills organized by category. B
 | Parabolic Short Trade Planner | -- | -- | -- |
 | Trading Skills Navigator | -- | -- | -- |
 | Trade Performance Coach | -- | -- | -- |
+| After Hours Market Screener | -- | -- | -- |
 
 "--" means not required. "Optional" means functionality is enhanced but the skill works without it.

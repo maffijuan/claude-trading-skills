@@ -1,0 +1,85 @@
+{
+  "_comment": "Synthetic after-hours snapshot for offline demos and tests. Not real market data.",
+  "movers": [
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp",
+      "regular_close": 120.00,
+      "ah_price": 132.60,
+      "ah_volume": 4200000,
+      "market_cap": 2950000000000,
+      "sector": "Technology",
+      "has_earnings": true,
+      "earnings_time": "amc",
+      "eps": 0.78,
+      "eps_estimate": 0.64,
+      "revenue": 35100000000,
+      "revenue_estimate": 33200000000,
+      "headline": "Data-center revenue tops estimates; raises guidance"
+    },
+    {
+      "symbol": "SNAP",
+      "name": "Snap Inc",
+      "regular_close": 11.20,
+      "ah_price": 9.30,
+      "ah_volume": 1800000,
+      "market_cap": 18500000000,
+      "sector": "Communication Services",
+      "has_earnings": true,
+      "earnings_time": "amc",
+      "eps": -0.02,
+      "eps_estimate": 0.05,
+      "revenue": 1190000000,
+      "revenue_estimate": 1240000000,
+      "headline": "Weak ad guidance; DAU growth decelerates"
+    },
+    {
+      "symbol": "KO",
+      "name": "Coca-Cola Co",
+      "regular_close": 62.00,
+      "ah_price": 62.40,
+      "ah_volume": 220000,
+      "market_cap": 268000000000,
+      "sector": "Consumer Defensive",
+      "has_earnings": true,
+      "earnings_time": "amc",
+      "eps": 0.72,
+      "eps_estimate": 0.71
+    },
+    {
+      "symbol": "ACME",
+      "name": "Acme Biotherapeutics",
+      "regular_close": 8.10,
+      "ah_price": 12.95,
+      "ah_volume": 3100000,
+      "market_cap": 540000000,
+      "sector": "Healthcare",
+      "has_earnings": false,
+      "headline": "Phase 3 trial meets primary endpoint"
+    },
+    {
+      "symbol": "RIVN",
+      "name": "Rivian Automotive",
+      "regular_close": 14.50,
+      "ah_price": 13.10,
+      "ah_volume": 950000,
+      "market_cap": 14200000000,
+      "sector": "Consumer Cyclical",
+      "has_earnings": false,
+      "headline": "Reports voluntary recall of delivery vans"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corp",
+      "regular_close": 430.00,
+      "ah_price": 431.20,
+      "ah_volume": 600000,
+      "market_cap": 3200000000000,
+      "sector": "Technology",
+      "has_earnings": true,
+      "earnings_time": "amc",
+      "eps": 3.30,
+      "eps_estimate": 3.10
+    }
+  ]
+}

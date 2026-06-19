@@ -21,6 +21,7 @@ Hand-written guides (marked with ★) follow a detailed 10-section structure. Au
 
 | Skill | Description | API |
 |-------|-------------|-----|
+| [After Hours Market Screener]({{ '/en/skills/after-hours-market-screener/' | relative_url }}) | Screen and monitor the US after-hours (extended) session for news, behavior, and opportunities — earnings reactions, ... | <span class="badge badge-free">No API</span> <span class="badge badge-optional">FMP Optional</span> |
 | [Backtest Expert]({{ '/en/skills/backtest-expert/' | relative_url }}) ★ | Expert guidance for systematic backtesting of trading strategies | <span class="badge badge-free">No API</span> |
 | [Breadth Chart Analyst]({{ '/en/skills/breadth-chart-analyst/' | relative_url }}) | This skill should be used when analyzing market breadth charts, specifically the S&P 500 Breadth Index (200-Day MA ba... | <span class="badge badge-free">No API</span> |
 | [Breakout Trade Planner]({{ '/en/skills/breakout-trade-planner/' | relative_url }}) | Generate Minervini-style breakout trade plans from VCP screener output with worst-case risk calculation, portfolio he... | <span class="badge badge-free">No API</span> |
@@ -76,7 +77,7 @@ Hand-written guides (marked with ★) follow a detailed 10-section structure. Au
 | [US Market Bubble Detector]({{ '/en/skills/us-market-bubble-detector/' | relative_url }}) ★ | Evaluates market bubble risk through quantitative data-driven analysis using the revised Minsky/Kindleberger framewor... | <span class="badge badge-free">No API</span> |
 | [US Stock Analysis]({{ '/en/skills/us-stock-analysis/' | relative_url }}) ★ | Comprehensive US stock analysis including fundamental analysis (financial metrics, business quality, valuation), tech... | <span class="badge badge-free">No API</span> |
 | [Value Dividend Screener]({{ '/en/skills/value-dividend-screener/' | relative_url }}) | Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B rat... | <span class="badge badge-api">FMP Required</span> <span class="badge badge-optional">FINVIZ Optional</span> |
-| [VCP Screener]({{ '/en/skills/vcp-screener/' | relative_url }}) ★ | Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP) | <span class="badge badge-api">FMP Required</span> |
+| [VCP Screener]({{ '/en/skills/vcp-screener/' | relative_url }}) ★ | Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP) and detect historical VCPs in a singl... | <span class="badge badge-api">FMP Required</span> |
 
 ★ = Hand-written detailed guide with examples, troubleshooting, and CLI reference.
 

@@ -9,7 +9,7 @@ quarter**.
 | **Universe** | All US equities with point-in-time fundamental data |
 | **Selection** | Top 10 by `market_cap` (price > $5 filter) |
 | **Weighting** | Equal weight (10% each) |
-| **Rebalance** | Quarterly (first selection of each calendar quarter) |
+| **Rebalance** | Configurable: quarterly (default), semi-annual, or annual |
 | **In-sample** | 2010-01-01 → 2020-12-31 |
 | **Out-of-sample** | 2021-01-01 → 2025-12-31 |
 | **Benchmark** | SPY |
@@ -34,7 +34,7 @@ quarter**.
 ### LEAN CLI (local)
 
 ```bash
-# in-sample (default)
+# in-sample (default), quarterly rebalance
 lean backtest "top10-mcap-equalweight"
 
 # out-of-sample
@@ -42,7 +42,29 @@ lean backtest "top10-mcap-equalweight" --parameter mode oos
 
 # full 2010-2025
 lean backtest "top10-mcap-equalweight" --parameter mode full
+
+# semi-annual rebalance, in-sample
+lean backtest "top10-mcap-equalweight" --parameter rebalance_months 6
+
+# annual rebalance, out-of-sample
+lean backtest "top10-mcap-equalweight" --parameter mode oos --parameter rebalance_months 12
 ```
+
+### Rebalance cadence
+
+Set the `rebalance_months` parameter (default `3`). Must divide 12:
+
+| Value | Cadence |
+|------:|---------|
+| `3` | Quarterly (default) |
+| `6` | Semi-annual |
+| `12` | Annual |
+| `1`/`2`/`4` | Monthly / bi-monthly / 3×year |
+
+In the QuantConnect web IDE, add `rebalance_months` under *Project → Parameters*.
+Comparing cadences is a good robustness check: if results swing wildly between
+quarterly and semi-annual, the edge is fragile (cadence-sensitive); a stable
+*plateau* across cadences is the healthy sign.
 
 > Local runs need the US Equity **fundamental + price** data subscription
 > (the QuantConnect data library provides this; it is survivorship-bias-free).

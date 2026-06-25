@@ -1,0 +1,10 @@
+{
+    "algorithm-language": "Python",
+    "parameters": {
+        "mode": "is"
+    },
+    "description": "Top 10 US companies by market cap, equal weight, rebalanced quarterly. mode = is | oos | full",
+    "local-id": 0,
+    "cloud-id": null,
+    "libraries": []
+}

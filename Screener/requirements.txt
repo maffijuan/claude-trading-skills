@@ -1,0 +1,6 @@
+# Market Screener - runtime dependencies
+# Only data dependency is yfinance (Yahoo Finance). No LLM / paid APIs.
+yfinance>=0.2.40
+pandas>=2.0
+numpy>=1.24
+Flask>=3.0        # optional: only needed to serve the dashboard via app.py

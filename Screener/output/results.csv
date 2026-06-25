@@ -1,0 +1,2 @@
+symbol,company,sector,label,combined_score,technical_score,weekly_trend,setup,is_buy_candidate,last_close,market_cap,status
+GS,"Goldman Sachs Group, Inc. (The)",Financial Services,STRONG BUY,89.6,88.0,up,trend_continuation,True,1082.93,319472402432,ok

@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "generated_at": "2026-06-24T16:50:18.825641+00:00",
+    "universe_size": 1,
+    "analyzed": 1,
+    "buy_signals": 1,
+    "strong_buys": 1,
+    "watch": 0,
+    "partial": false,
+    "config": {
+      "tech_buy_threshold": 62,
+      "fund_pass_threshold": 45,
+      "weights": {
+        "structure": 30,
+        "momentum": 25,
+        "volume": 20,
+        "relative_strength": 15,
+        "trend_quality": 10
+      }
+    },
+    "elapsed_seconds": 3.9
+  },
+  "results": [
+    {
+      "symbol": "GS",
+      "status": "ok",
+      "last_close": 1082.93,
+      "weekly_trend": "up",
+      "weekly_reversal": false,
+      "passed_weekly_gate": true,
+      "setup": "trend_continuation",
+      "technical_score": 88.0,
+      "is_buy_candidate": true,
+      "technical_detail": {
+        "score": 88.0,
+        "pillars": {
+          "structure": {
+            "score": 93.7,
+            "detail": {
+              "checks_passed": "6/7",
+              "from_52w_high_pct": -2.1,
+              "price>sma150&200": true,
+              "sma150>sma200": true,
+              "sma200_rising": false,
+              "price>sma50": true,
+              ">25%_above_low": true,
+              "within25%_of_high": true,
+              "ema21_stacked": true
+            }
+          },
+          "momentum": {
+            "score": 90.6,
+            "detail": {
+              "rsi": 60.6,
+              "macd>signal": true,
+              "macd>0": true,
+              "hist_expanding": false,
+              "roc20_pct": 9.4
+            }
+          },
+          "volume": {
+            "score": 68.3,
+            "detail": {
+              "up_down_vol": 1.66,
+              "obv_slope_pct": 36.9,
+              "vol_vs_avg": 0.36
+            }
+          },
+          "relative_strength": {
+            "score": 90.1,
+            "detail": {
+              "rs_3m_pct": 17.6,
+              "rs_6m_pct": 14.0,
+              "rs_12m_pct": null
+            }
+          },
+          "trend_quality": {
+            "score": 100.0,
+            "detail": {
+              "adx": 30.5,
+              "+di>-di": true,
+              "ext_over_sma50_pct": 10.2,
+              "ext_over_sma200_pct": 23.8
+            }
+          }
+        }
+      },
+      "weekly_detail": {
+        "price": 1082.93,
+        "sma_fast": 1000.9,
+        "sma_mid": 920.21,
+        "sma_slow": 883.76,
+        "mid_rising": true,
+        "slow_rising": true,
+        "rsi": 74.7,
+        "div": false,
+        "reclaim": false,
+        "macd_turn": false
+      },
+      "fundamental": {
+        "sector": "Financial Services",
+        "industry": "Capital Markets",
+        "score": 92.7,
+        "passed": true,
+        "grade": "strong",
+        "coverage": 1.0,
+        "market_cap": 319472402432,
+        "name": "Goldman Sachs Group, Inc. (The)",
+        "breakdown": {
+          "roe": {
+            "value": 0.1455,
+            "score": 80.8,
+            "weight": 30,
+            "used": true
+          },
+          "price_to_book": {
+            "value": 3.0396,
+            "score": 99.2,
+            "weight": 25,
+            "used": true
+          },
+          "pe": {
+            "value": 19.7904,
+            "score": 93.4,
+            "weight": 20,
+            "used": true
+          },
+          "earnings_growth": {
+            "value": 0.242,
+            "score": 100.0,
+            "weight": 15,
+            "used": true
+          },
+          "dividend_yield": {
+            "value": 1.64,
+            "score": 100.0,
+            "weight": 10,
+            "used": true
+          }
+        }
+      },
+      "sector": "Financial Services",
+      "company": "Goldman Sachs Group, Inc. (The)",
+      "market_cap": 319472402432,
+      "combined_score": 89.6,
+      "label": "STRONG BUY",
+      "strength": "strong"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Cached yfinance data (regenerated on demand)
+data/cache/
+
+# Universe is regenerated from public source; keep a committed snapshot if desired
+# data/universe.csv
+
+# Screener output (results + dashboard are regenerated each run)
+# Keep the sample run committed so the dashboard works out-of-the-box:
+# output/

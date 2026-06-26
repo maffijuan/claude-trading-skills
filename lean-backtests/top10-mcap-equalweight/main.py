@@ -6,7 +6,8 @@ from AlgorithmImports import *
 class Top10MarketCapEqualWeight(QCAlgorithm):
     """
     Strategy: Hold the 10 largest US-listed companies by market capitalization,
-    equal-weighted, rebalanced quarterly.
+    equal-weighted, rebalanced on a configurable cadence (quarterly by default,
+    semi-annual with rebalance_months=6).
 
     Hypothesis (one sentence): The mega-cap leaders of the US market, refreshed
     each quarter and equal-weighted, capture the long-run equity risk premium with
@@ -27,11 +28,17 @@ class Top10MarketCapEqualWeight(QCAlgorithm):
       - in-sample (is):  2010-01-01 .. 2020-12-31
       - out-of-sample (oos): 2021-01-01 .. 2025-12-31
       - full:            2010-01-01 .. 2025-12-31
+
+    Rebalance cadence (switch with the "rebalance_months" parameter):
+      - 3  -> quarterly (default)
+      - 6  -> semi-annual
+      - 12 -> annual
     """
 
     # ----- strategy constants (kept round, no curve-fitting) -----
     NUM_HOLDINGS = 10          # size of the basket
     MIN_PRICE = 5.0            # ignore sub-$5 names (data-quality / penny filter)
+    DEFAULT_REBALANCE_MONTHS = 3   # quarterly unless overridden by parameter
 
     def initialize(self):
         mode = (self.get_parameter("mode") or "is").lower()
@@ -39,6 +46,11 @@ class Top10MarketCapEqualWeight(QCAlgorithm):
         self.set_start_date(start.year, start.month, start.day)
         self.set_end_date(end.year, end.month, end.day)
         self.set_cash(100_000)
+
+        # Rebalance cadence in months (must divide 12: 1,2,3,4,6,12).
+        self.rebalance_months = int(
+            self.get_parameter("rebalance_months") or self.DEFAULT_REBALANCE_MONTHS
+        )
 
         # Survivorship-bias-free, point-in-time fundamentals at daily resolution.
         self.universe_settings.resolution = Resolution.DAILY
@@ -49,27 +61,30 @@ class Top10MarketCapEqualWeight(QCAlgorithm):
         self.set_benchmark(self.spy)
 
         # State.
-        self._last_quarter = -1      # quarter index of the last selection
+        self._last_period = None      # (year, period) index of the last selection
         self._rebalance_pending = False
         self._targets: list[Symbol] = []
 
-        # Rebalance the morning AFTER a new quarterly selection (no look-ahead).
+        # Rebalance the morning AFTER a new selection (no look-ahead).
         self.schedule.on(
             self.date_rules.every_day(),
             self.time_rules.at(9, 31),
             self._rebalance,
         )
 
-        self.log(f"Initialized mode={mode} {start:%Y-%m-%d}..{end:%Y-%m-%d}")
+        self.log(
+            f"Initialized mode={mode} {start:%Y-%m-%d}..{end:%Y-%m-%d} "
+            f"rebalance_months={self.rebalance_months}"
+        )
 
     # ------------------------------------------------------------------
-    # Universe selection: top N by market cap, refreshed once per quarter.
+    # Universe selection: top N by market cap, refreshed once per period.
     # ------------------------------------------------------------------
     def _select_fundamental(self, fundamental: list[Fundamental]) -> list[Symbol]:
-        quarter = (self.time.year, (self.time.month - 1) // 3)
-        if quarter == self._last_quarter:
+        period = (self.time.year, (self.time.month - 1) // self.rebalance_months)
+        if period == self._last_period:
             return Universe.UNCHANGED
-        self._last_quarter = quarter
+        self._last_period = period
 
         candidates = [
             f for f in fundamental
@@ -82,7 +97,7 @@ class Top10MarketCapEqualWeight(QCAlgorithm):
         self._rebalance_pending = True
 
         names = ", ".join(s.value for s in self._targets)
-        self.log(f"{self.time:%Y-%m-%d} new quarterly basket: {names}")
+        self.log(f"{self.time:%Y-%m-%d} new basket: {names}")
         return self._targets
 
     # ------------------------------------------------------------------

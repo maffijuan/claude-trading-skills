@@ -1,9 +1,10 @@
 {
     "algorithm-language": "Python",
     "parameters": {
-        "mode": "is"
+        "mode": "is",
+        "rebalance_months": "3"
     },
-    "description": "Top 10 US companies by market cap, equal weight, rebalanced quarterly. mode = is | oos | full",
+    "description": "Top 10 US companies by market cap, equal weight. mode = is | oos | full; rebalance_months = 3 (quarterly) | 6 (semi-annual) | 12 (annual)",
     "local-id": 0,
     "cloud-id": null,
     "libraries": []

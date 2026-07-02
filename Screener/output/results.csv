@@ -1,2 +1,1001 @@
 symbol,company,sector,label,combined_score,technical_score,weekly_trend,setup,is_buy_candidate,last_close,market_cap,status
-GS,"Goldman Sachs Group, Inc. (The)",Financial Services,STRONG BUY,89.6,88.0,up,trend_continuation,True,1082.93,319472402432,ok
+A,,,NEUTRAL,56.8,56.8,sideways,base_building,False,132.83,,ok
+AA,,,NEUTRAL,22.1,22.1,sideways,base_building,False,53.47,,ok
+AACB,,,NEUTRAL,47.0,47.0,up,trend_continuation,False,10.49,,ok
+AACI,,,NEUTRAL,49.9,49.9,sideways,base_building,False,9.94,,ok
+AACO,,,NEUTRAL,28.8,28.8,sideways,base_building,False,9.9,,ok
+AACP,,,NEUTRAL,34.5,34.5,sideways,base_building,False,9.98,,ok
+AADX,,,NEUTRAL,20.3,20.3,sideways,base_building,False,20.73,,ok
+AAL,"American Airlines Group, Inc.",Industrials,WATCH,68.7,85.9,up,trend_continuation,True,17.92,11852021760,ok
+AAME,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.72,,ok
+AAMI,,,NEUTRAL,53.2,53.2,up,trend_continuation,False,71.17,,ok
+AAOI,,,NEUTRAL,39.8,39.8,up,trend_continuation,False,150.1,,ok
+AAON,,,NEUTRAL,55.3,55.3,up,trend_continuation,False,125.71,,ok
+AAP,Advance Auto Parts Inc.,Consumer Cyclical,WATCH,59.8,74.5,up,trend_continuation,True,61.63,3718089216,ok
+AAPG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,17.7,,ok
+AAPL,,,NEUTRAL,42.3,42.3,up,trend_continuation,False,281.74,,ok
+AARD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.18,,ok
+AAT,"American Assets Trust, Inc.",Real Estate,STRONG BUY,86.1,87.5,up,trend_continuation,True,24.84,1926900224,ok
+AAUC,,,NEUTRAL,24.9,24.9,sideways,base_building,False,23.4,,ok
+ABAT,,,NEUTRAL,19.3,19.3,sideways,base_building,False,2.68,,ok
+ABBV,AbbVie Inc.,Healthcare,BUY,66.7,76.4,sideways,base_building,True,254.31,449313079296,ok
+ABCB,Ameris Bancorp,Financial Services,STRONG BUY,82.0,78.6,up,trend_continuation,True,90.35,6079877632,ok
+ABCL,AbCellera Biologics Inc.,Healthcare,WATCH,69.6,84.1,sideways,base_building,True,8.12,2479648256,ok
+ABEO,,,NEUTRAL,55.3,55.3,up,trend_continuation,False,5.66,,ok
+ABG,,,NEUTRAL,47.6,47.6,down,reversal,False,201.46,,ok
+ABLV,Able View Global Inc.,Consumer Cyclical,WATCH,57.7,75.7,sideways,reversal,True,1.11,54822812,ok
+ABM,ABM Industries Incorporated,Industrials,BUY,68.8,69.0,sideways,base_building,True,44.77,2622668032,ok
+ABNB,"Airbnb, Inc.",Consumer Cyclical,STRONG BUY,81.0,80.5,up,trend_continuation,True,147.17,87346110464,ok
+ABOS,"Acumen Pharmaceuticals, Inc.",Healthcare,WATCH,56.7,74.2,sideways,reversal,True,2.77,200070400,ok
+ABR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.34,,ok
+ABSI,Absci Corporation,Healthcare,WATCH,63.0,87.0,up,trend_continuation,True,11.35,1922693888,ok
+ABT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,92.71,,ok
+ABTC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.71,,ok
+ABTS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.16,,ok
+ABUS,Arbutus Biopharma Corporation,Healthcare,BUY,70.4,64.3,sideways,base_building,True,4.68,924476480,ok
+ABVC,"ABVC Biopharma, Inc.",Healthcare,BUY,63.0,70.9,sideways,base_building,True,1.57,40820696,ok
+ABX,"Abacus Global Management, Inc.",Financial Services,STRONG BUY,82.2,83.8,up,trend_continuation,True,10.75,1031165440,ok
+ABXL,,,NEUTRAL,58.3,58.3,up,trend_continuation,False,25.47,,ok
+ACA,"Arcosa, Inc.",Industrials,STRONG BUY,81.6,89.1,up,trend_continuation,True,144.62,7101826560,ok
+ACAA,,,NEUTRAL,49.2,49.2,sideways,base_building,False,10.0,,ok
+ACAD,ACADIA Pharmaceuticals Inc.,Healthcare,STRONG BUY,78.5,76.8,sideways,base_building,True,25.2,4315144192,ok
+ACB,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.88,,ok
+ACCL,,,NEUTRAL,51.6,51.6,sideways,base_building,False,1.67,,ok
+ACCO,Acco Brands Corporation,Industrials,STRONG BUY,76.8,81.6,up,trend_continuation,True,4.27,,ok
+ACCS,,,NEUTRAL,21.1,21.1,down,reversal,False,6.68,,ok
+ACDC,,,NEUTRAL,32.0,32.0,up,trend_continuation,False,5.8,,ok
+ACEL,"Accel Entertainment, Inc.",Consumer Cyclical,STRONG BUY,76.8,78.0,up,trend_continuation,True,12.95,1054038016,ok
+ACET,,,NEUTRAL,59.2,59.2,sideways,base_building,False,8.56,,ok
+ACFN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,17.2,,ok
+ACGC,,,NEUTRAL,22.1,22.1,sideways,base_building,False,9.94,,ok
+ACGL,Arch Capital Group Ltd.,Financial Services,STRONG BUY,77.0,64.6,sideways,base_building,True,98.06,34261143552,ok
+ACH,"Accendra Health, Inc.",Healthcare,WATCH,62.4,76.3,sideways,base_building,True,3.45,264213776,ok
+ACHC,"Acadia Healthcare Company, Inc.",Healthcare,WATCH,59.8,74.9,up,trend_continuation,True,27.69,2546566912,ok
+ACHR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.68,,ok
+ACHV,"Achieve Life Sciences, Inc.",Healthcare,WATCH,65.9,88.4,up,trend_continuation,True,6.23,639565952,ok
+ACI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,13.47,,ok
+ACIC,,,NEUTRAL,58.9,58.9,sideways,base_building,False,11.1,,ok
+ACIU,,,NEUTRAL,29.1,29.1,sideways,reversal,False,2.66,,ok
+ACIW,"ACI Worldwide, Inc.",Technology,BUY,72.2,75.6,sideways,base_building,True,49.51,5033264128,ok
+ACLS,"Axcelis Technologies, Inc.",Technology,BUY,67.7,78.4,up,trend_continuation,True,176.13,5413161472,ok
+ACM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,69.77,,ok
+ACMR,"ACM Research, Inc.",Technology,WATCH,72.3,87.6,up,trend_continuation,True,118.88,8215735808,ok
+ACN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,124.74,,ok
+ACNB,ACNB Corporation,Financial Services,STRONG BUY,86.9,85.6,up,trend_continuation,True,59.93,612007808,ok
+ACNT,,,NEUTRAL,47.3,47.3,sideways,reversal,False,14.49,,ok
+ACOG,Alpha Cognition Inc.,Healthcare,WATCH,56.4,63.8,sideways,base_building,True,6.81,148281648,ok
+ACON,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.89,,ok
+ACR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,18.02,,ok
+ACRE,,,NEUTRAL,30.2,30.2,sideways,base_building,False,4.54,,ok
+ACRS,"Aclaris Therapeutics, Inc.",Healthcare,WATCH,73.1,89.5,up,trend_continuation,True,5.02,701111680,ok
+ACRV,,,NEUTRAL,49.8,49.8,sideways,reversal,False,1.78,,ok
+ACT,"Enact Holdings, Inc.",Financial Services,STRONG BUY,77.5,71.0,up,trend_continuation,True,45.55,6358814208,ok
+ACTG,,,NEUTRAL,44.7,44.7,up,trend_continuation,False,4.66,,ok
+ACTU,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.58,,ok
+ACVA,ACV Auctions Inc.,Consumer Cyclical,BUY,66.0,69.4,sideways,base_building,True,7.2,1257011200,ok
+ACXP,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.68,,ok
+AD,,,NEUTRAL,20.9,20.9,sideways,base_building,False,36.37,,ok
+ADAC,,,NEUTRAL,58.7,58.7,sideways,base_building,False,10.01,,ok
+ADAG,Adagene Inc.,Healthcare,WATCH,58.8,67.4,up,trend_continuation,True,4.23,279487072,ok
+ADAM,"Adamas Trust, Inc.",Real Estate,STRONG BUY,86.4,87.1,up,trend_continuation,True,9.44,848288768,ok
+ADAMG,"Adamas Trust, Inc. - 9.125% Sen",Default,STRONG BUY,78.8,71.1,up,trend_continuation,True,25.27,,ok
+ADAMH,,,NEUTRAL,61.9,61.9,up,trend_continuation,False,25.3,,ok
+ADAMI,,,NEUTRAL,61.9,61.9,up,trend_continuation,False,25.14,,ok
+ADAMO,,,NEUTRAL,60.3,60.3,sideways,base_building,False,25.13,,ok
+ADBE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,206.43,,ok
+ADC,,,NEUTRAL,53.0,53.0,up,trend_continuation,False,76.93,,ok
+ADCT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.03,,ok
+ADEA,Adeia Inc.,Technology,STRONG BUY,89.0,85.1,up,trend_continuation,True,33.0,3639693824,ok
+ADGM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.65,,ok
+ADI,,,NEUTRAL,52.1,52.1,up,trend_continuation,False,391.78,,ok
+ADIL,"Adial Pharmaceuticals, Inc",Healthcare,WATCH,49.0,62.3,down,reversal,True,2.59,5668134,ok
+ADM,,,NEUTRAL,46.0,46.0,up,trend_continuation,False,76.87,,ok
+ADMA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,8.37,,ok
+ADNT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,18.18,,ok
+ADP,,,NEUTRAL,40.3,40.3,sideways,base_building,False,224.97,,ok
+ADPT,Adaptive Biotechnologies Corpor,Healthcare,BUY,71.1,76.5,sideways,base_building,True,21.4,3424949760,ok
+ADSE,ADS-TEC ENERGY PLC,Industrials,WATCH,52.0,62.8,sideways,reversal,True,12.0,900024576,ok
+ADSK,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,195.24,,ok
+ADT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,6.5,,ok
+ADTN,,,NEUTRAL,38.2,38.2,up,trend_continuation,False,13.75,,ok
+ADTX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.0,,ok
+ADUR,Aduro Clean Technologies Inc.,Industrials,BUY,63.7,71.1,sideways,base_building,True,15.26,540866688,ok
+ADUS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,98.05,,ok
+ADV,Advantage Solutions Inc.,Communication Services,BUY,71.4,81.8,sideways,base_building,True,46.82,622484992,ok
+ADVB,,,NEUTRAL,37.3,37.3,down,reversal,False,4.67,,ok
+AEAQ,,,NEUTRAL,60.6,60.6,sideways,base_building,False,10.0,,ok
+AEBI,Aebi Schmidt Holding AG,Industrials,WATCH,54.4,66.5,sideways,base_building,True,12.69,983552704,ok
+AEC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.08,,ok
+AEE,Ameren Corporation,Utilities,BUY,72.4,67.6,up,trend_continuation,True,114.59,31712966656,ok
+AEG,Aegon Ltd. New York Registry Sh,Financial Services,BUY,67.0,64.1,up,trend_continuation,True,8.37,12659837952,ok
+AEHL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.02,,ok
+AEHR,,,NEUTRAL,55.5,55.5,up,trend_continuation,False,94.77,,ok
+AEI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.4,,ok
+AEIS,"Advanced Energy Industries, Inc",Industrials,BUY,67.5,63.1,up,trend_continuation,True,348.15,13929709568,ok
+AEM,,,NEUTRAL,10.5,10.5,sideways,base_building,False,153.76,,ok
+AEMD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.85,,ok
+AENT,,,NEUTRAL,32.5,32.5,sideways,base_building,False,5.97,,ok
+AEO,,,NEUTRAL,33.3,33.3,sideways,base_building,False,17.07,,ok
+AEON,,,NEUTRAL,30.8,30.8,down,reversal,False,0.74,,ok
+AEP,American Electric Power Company,Utilities,STRONG BUY,77.2,75.9,up,trend_continuation,True,137.97,75070169088,ok
+AER,AerCap Holdings N.V.,Industrials,BUY,71.1,64.8,up,trend_continuation,True,147.54,23264860160,ok
+AERT,"Aeries Technology, Inc.",Industrials,BUY,69.5,73.5,sideways,base_building,True,7.24,41552884,ok
+AES,,,NEUTRAL,57.2,57.2,up,trend_continuation,False,14.63,,ok
+AESI,,,NEUTRAL,51.3,51.3,up,trend_continuation,False,16.73,,ok
+AEVA,"Aeva Technologies, Inc.",Technology,WATCH,63.3,73.8,up,trend_continuation,True,25.67,1733628544,ok
+AEXA,,,NEUTRAL,53.6,53.6,sideways,base_building,False,11.84,,ok
+AEYE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.64,,ok
+AFBI,"Affinity Bancshares, Inc.",Financial Services,BUY,67.3,68.8,up,trend_continuation,True,22.6,137744400,ok
+AFCG,,,NEUTRAL,47.8,47.8,sideways,base_building,False,3.24,,ok
+AFG,"American Financial Group, Inc.",Financial Services,STRONG BUY,76.8,64.3,sideways,base_building,True,139.89,11622912000,ok
+AFGB,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,20.21,,ok
+AFGC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,17.82,,ok
+AFGD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,19.5,,ok
+AFGE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,15.88,,ok
+AFJK,,,NEUTRAL,36.7,36.7,sideways,base_building,False,27.54,,ok
+AFL,AFLAC Incorporated,Financial Services,STRONG BUY,77.7,67.1,up,trend_continuation,True,120.08,61118906368,ok
+AFRI,Forafric Global PLC,Consumer Defensive,WATCH,46.9,72.1,sideways,base_building,True,10.05,270986368,ok
+AFRM,"Affirm Holdings, Inc.",Financial Services,WATCH,63.6,75.1,sideways,base_building,True,81.79,27391352832,ok
+AFYA,,,NEUTRAL,61.8,61.8,up,trend_continuation,False,14.87,,ok
+AG,,,NEUTRAL,17.6,17.6,sideways,base_building,False,16.81,,ok
+AGBK,,,NEUTRAL,25.7,25.7,sideways,base_building,False,7.17,,ok
+AGCC,,,NEUTRAL,26.7,26.7,sideways,base_building,False,15.01,,ok
+AGCO,,,NEUTRAL,50.3,50.3,sideways,base_building,False,119.28,,ok
+AGEN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.15,,ok
+AGI,,,NEUTRAL,14.6,14.6,sideways,base_building,False,30.74,,ok
+AGIG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.97,,ok
+AGIO,"Agios Pharmaceuticals, Inc.",Healthcare,WATCH,62.1,72.6,sideways,base_building,True,38.04,2262299904,ok
+AGL,"agilon health, inc.",Healthcare,WATCH,66.3,84.3,up,trend_continuation,True,115.15,1921137920,ok
+AGM,Federal Agricultural Mortgage C,Financial Services,STRONG BUY,91.8,91.5,up,trend_continuation,True,194.44,2109479168,ok
+AGM.A,Federal Agricultural Mortgage C,Financial Services,STRONG BUY,91.8,91.5,up,trend_continuation,True,194.44,2109479168,ok
+AGMB,AgomAb Therapeutics NV,Healthcare,WATCH,58.4,76.8,sideways,base_building,True,17.82,877598912,ok
+AGMH,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.1,,ok
+AGNC,AGNC Investment Corp.,Real Estate,STRONG BUY,77.9,76.4,up,trend_continuation,True,11.0,12627221504,ok
+AGNT,,,NEUTRAL,48.0,48.0,down,reversal,False,5.56,,ok
+AGO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,80.19,,ok
+AGPU,Axe Compute Inc.,Technology,WATCH,43.0,66.2,sideways,base_building,True,7.54,81575968,ok
+AGRO,,,NEUTRAL,23.7,23.7,sideways,base_building,False,9.66,,ok
+AGRZ,,,NEUTRAL,21.6,21.6,sideways,base_building,False,0.34,,ok
+AGX,"Argan, Inc.",Industrials,STRONG BUY,87.1,88.7,up,trend_continuation,True,791.56,11097074688,ok
+AGYS,"Agilysys, Inc.",Technology,STRONG BUY,75.0,71.2,sideways,base_building,True,103.4,2912429312,ok
+AHCO,,,NEUTRAL,50.3,50.3,sideways,base_building,False,10.21,,ok
+AHMA,,,NEUTRAL,60.4,60.4,sideways,base_building,False,1.72,,ok
+AHR,"American Healthcare REIT, Inc.",Real Estate,STRONG BUY,84.1,75.6,up,trend_continuation,True,52.0,10749559808,ok
+AHRT,"AH Realty Trust, Inc.",Real Estate,BUY,70.2,70.6,up,trend_continuation,True,7.18,698410112,ok
+AHT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.23,,ok
+AI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,8.87,,ok
+AIAI,,,NEUTRAL,41.7,41.7,sideways,base_building,False,14.94,,ok
+AIB,AIB Data Centers Inc.,Technology,WATCH,58.2,63.7,sideways,base_building,True,2.1,159556864,ok
+AIBZ,,,NEUTRAL,28.3,28.3,sideways,base_building,False,7.6,,ok
+AIDX,,,NEUTRAL,26.1,26.1,sideways,base_building,False,0.6,,ok
+AIFA,,,NEUTRAL,39.3,39.3,sideways,base_building,False,2.31,,ok
+AIFC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.59,,ok
+AIFF,,,NEUTRAL,21.8,21.8,sideways,base_building,False,1.23,,ok
+AIFU,,,NEUTRAL,58.5,58.5,sideways,base_building,False,43.0,,ok
+AIG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,75.12,,ok
+AIHS,,,NEUTRAL,47.6,47.6,sideways,base_building,False,1.37,,ok
+AII,,,NEUTRAL,55.6,55.6,sideways,reversal,False,19.11,,ok
+AIIA,,,NEUTRAL,44.8,44.8,sideways,base_building,False,10.15,,ok
+AIIO,Robo.ai Inc.,Consumer Cyclical,WATCH,42.2,64.9,sideways,base_building,True,5.49,765406272,ok
+AIIR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,6.56,,ok
+AIM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.3,,ok
+AIMD,,,NEUTRAL,50.8,50.8,sideways,base_building,False,1.79,,ok
+AIN,Albany International Corporatio,Consumer Cyclical,STRONG BUY,76.4,90.4,up,trend_continuation,True,75.49,2140516224,ok
+AIOS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,12.3,,ok
+AIOT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.76,,ok
+AIP,"Arteris, Inc.",Technology,BUY,74.3,85.3,up,trend_continuation,True,47.36,2186705152,ok
+AIR,AAR Corp.,Industrials,STRONG BUY,77.8,81.8,up,trend_continuation,True,141.85,5640561664,ok
+AIRE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.93,,ok
+AIRG,,,NEUTRAL,40.8,40.8,up,trend_continuation,False,6.23,,ok
+AIRI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.02,,ok
+AIRJ,,,NEUTRAL,61.6,61.6,sideways,base_building,False,4.6,,ok
+AIRO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,6.86,,ok
+AIRS,,,NEUTRAL,48.5,48.5,sideways,base_building,False,4.52,,ok
+AIRT,,,NEUTRAL,58.4,58.4,up,trend_continuation,False,23.61,,ok
+AISP,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.32,,ok
+AIT,Applied Industrial Technologies,Industrials,STRONG BUY,84.2,89.5,up,trend_continuation,True,334.16,12350400512,ok
+AIV,,,NEUTRAL,51.9,51.9,sideways,base_building,False,3.0,,ok
+AIXC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.07,,ok
+AIZ,"Assurant, Inc.",Financial Services,STRONG BUY,83.9,75.3,up,trend_continuation,True,267.98,13277775872,ok
+AIZN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,19.0,,ok
+AJG,,,NEUTRAL,51.8,51.8,sideways,reversal,False,227.12,,ok
+AKA,,,NEUTRAL,42.2,42.2,sideways,base_building,False,10.56,,ok
+AKAM,,,NEUTRAL,29.9,29.9,up,trend_continuation,False,113.8,,ok
+AKAN,,,NEUTRAL,43.0,43.0,sideways,base_building,False,13.66,,ok
+AKBA,,,NEUTRAL,43.7,43.7,down,reversal,False,1.11,,ok
+AKO.A,,,,,,,,,,,data_error
+AKO.B,,,,,,,,,,,data_error
+AKR,,,NEUTRAL,43.5,43.5,up,trend_continuation,False,21.44,,ok
+AKTS,"Aktis Oncology, Inc.",Healthcare,STRONG BUY,75.5,80.6,sideways,base_building,True,30.11,1664403968,ok
+ALAB,"Astera Labs, Inc.",Technology,STRONG BUY,89.7,89.6,up,trend_continuation,True,455.96,78155161600,ok
+ALB,,,NEUTRAL,15.7,15.7,sideways,base_building,False,129.72,,ok
+ALBT,,,NEUTRAL,3.6,3.6,down,reversal,False,0.28,,ok
+ALC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,67.61,,ok
+ALCO,,,NEUTRAL,57.8,57.8,up,trend_continuation,False,41.15,,ok
+ALDF,,,NEUTRAL,44.2,44.2,up,trend_continuation,False,10.66,,ok
+ALDX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.05,,ok
+ALEC,,,NEUTRAL,59.6,59.6,sideways,reversal,False,2.08,,ok
+ALF,,,NEUTRAL,59.5,59.5,up,trend_continuation,False,10.88,,ok
+ALG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,167.49,,ok
+ALGM,"Allegro MicroSystems, Inc.",Technology,WATCH,72.4,87.7,up,trend_continuation,True,66.37,12365332480,ok
+ALGN,,,NEUTRAL,59.9,59.9,sideways,base_building,False,173.43,,ok
+ALGS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.43,,ok
+ALGT,Allegiant Travel Company,Industrials,BUY,71.4,81.7,up,trend_continuation,True,114.2,3069410304,ok
+ALH,Alliance Laundry Holdings Inc.,Consumer Cyclical,BUY,74.9,73.9,sideways,base_building,True,26.29,5221421568,ok
+ALHC,"Alignment Healthcare, Inc.",Healthcare,BUY,70.3,78.4,sideways,base_building,True,23.26,4808628736,ok
+ALIS,Calisa Acquisition Corp,Financial Services,WATCH,56.6,65.5,sideways,base_building,True,10.15,85539120,ok
+ALIT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.55,,ok
+ALK,"Alaska Air Group, Inc.",Industrials,WATCH,56.2,73.2,sideways,base_building,True,51.93,5786506752,ok
+ALKS,Alkermes plc,Healthcare,STRONG BUY,79.7,87.2,up,trend_continuation,True,52.53,8755479552,ok
+ALKT,,,NEUTRAL,33.4,33.4,down,reversal,False,17.0,,ok
+ALL,Allstate Corporation (The),Financial Services,STRONG BUY,87.7,81.1,up,trend_continuation,True,241.38,62136266752,ok
+ALLE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,139.65,,ok
+ALLO,"Allogene Therapeutics, Inc.",Healthcare,WATCH,49.9,63.7,up,trend_continuation,True,2.22,766243136,ok
+ALLR,,,NEUTRAL,36.4,36.4,sideways,base_building,False,1.3,,ok
+ALLT,Allot Ltd.,Technology,BUY,66.3,69.2,sideways,reversal,True,8.67,424163296,ok
+ALLY,Ally Financial Inc.,Financial Services,STRONG BUY,81.7,81.0,up,trend_continuation,True,47.25,14483215360,ok
+ALM,,,NEUTRAL,27.4,27.4,up,trend_continuation,False,16.14,,ok
+ALMR,"Alamar Biosciences, Inc.",Healthcare,BUY,64.4,63.6,sideways,base_building,True,27.77,1924771584,ok
+ALMS,Alumis Inc.,Healthcare,WATCH,58.9,80.8,up,trend_continuation,True,27.14,3460132352,ok
+ALMU,,,NEUTRAL,44.5,44.5,up,trend_continuation,False,22.23,,ok
+ALNT,Allient Inc.,Technology,STRONG BUY,76.2,85.8,up,trend_continuation,True,99.79,1696081920,ok
+ALNY,,,NEUTRAL,22.6,22.6,down,reversal,False,293.52,,ok
+ALOT,"AstroNova, Inc.",Technology,WATCH,63.0,79.6,up,trend_continuation,True,28.46,221171936,ok
+ALOY,REalloys Inc.,Basic Materials,BUY,70.4,73.5,up,trend_continuation,True,14.23,871068032,ok
+ALP,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.25,,ok
+ALPS,,,NEUTRAL,13.3,13.3,sideways,base_building,False,0.59,,ok
+ALRM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,46.3,,ok
+ALRS,Alerus Financial Corporation,Financial Services,STRONG BUY,84.0,91.7,up,trend_continuation,True,31.03,779741888,ok
+ALSN,,,NEUTRAL,49.2,49.2,up,trend_continuation,False,115.36,,ok
+ALT,,,NEUTRAL,26.2,26.2,down,reversal,False,2.94,,ok
+ALTG,,,NEUTRAL,54.5,54.5,up,trend_continuation,False,6.76,,ok
+ALTI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.61,,ok
+ALTO,"Alto Ingredients, Inc.",Basic Materials,BUY,68.3,65.5,up,trend_continuation,True,5.35,414550336,ok
+ALUB,,,NEUTRAL,43.4,43.4,sideways,base_building,False,10.04,,ok
+ALV,,,NEUTRAL,23.1,23.1,sideways,base_building,False,116.51,,ok
+ALVO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.72,,ok
+ALX,"Alexander's, Inc.",Real Estate,WATCH,61.1,77.4,up,trend_continuation,True,281.55,1437957376,ok
+ALXO,ALX Oncology Holdings Inc.,Healthcare,WATCH,56.4,73.8,up,trend_continuation,True,2.2,296038400,ok
+ALZN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.16,,ok
+AM,Antero Midstream Corporation,Energy,STRONG BUY,75.8,72.2,up,trend_continuation,True,22.8,10829543424,ok
+AMAL,Amalgamated Financial Corp.,Financial Services,STRONG BUY,87.9,88.5,up,trend_continuation,True,46.65,1393311872,ok
+AMAN,,,NEUTRAL,47.0,47.0,sideways,base_building,False,10.16,,ok
+AMAT,"Applied Materials, Inc.",Technology,STRONG BUY,88.2,87.2,up,trend_continuation,True,694.64,551515979776,ok
+AMBA,,,NEUTRAL,30.6,30.6,sideways,base_building,False,67.01,,ok
+AMBO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.29,,ok
+AMBP,Ardagh Metal Packaging S.A.,Consumer Cyclical,BUY,73.8,82.3,sideways,base_building,True,4.59,2743472128,ok
+AMBQ,"Ambiq Micro, Inc.",Technology,WATCH,68.4,81.7,up,trend_continuation,True,85.05,2028054528,ok
+AMC,"AMC Entertainment Holdings, Inc",Communication Services,BUY,69.7,67.8,sideways,base_building,True,2.03,1811987328,ok
+AMCI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.6,,ok
+AMCR,Amcor plc,Consumer Cyclical,BUY,60.1,65.5,sideways,reversal,True,42.94,19853123584,ok
+AMCX,AMC Global Media Inc.,Communication Services,BUY,64.1,73.1,up,trend_continuation,True,10.05,441253856,ok
+AMD,"Advanced Micro Devices, Inc.",Technology,STRONG BUY,76.4,74.7,up,trend_continuation,True,539.49,879692677120,ok
+AME,"AMETEK, Inc.",Industrials,STRONG BUY,76.1,70.6,up,trend_continuation,True,237.72,54486138880,ok
+AMG,"Affiliated Managers Group, Inc.",Financial Services,STRONG BUY,82.1,76.1,up,trend_continuation,True,342.46,9045082112,ok
+AMGN,Amgen Inc.,Healthcare,BUY,73.0,66.9,sideways,base_building,True,360.55,194591817728,ok
+AMH,American Homes 4 Rent,Real Estate,STRONG BUY,79.1,73.1,sideways,base_building,True,33.99,13934269440,ok
+AMIX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.84,,ok
+AMKR,"Amkor Technology, Inc.",Technology,BUY,69.7,74.1,up,trend_continuation,True,82.34,20409821184,ok
+AMLX,"Amylyx Pharmaceuticals, Inc.",Healthcare,WATCH,67.6,91.0,up,trend_continuation,True,18.7,2079184256,ok
+AMN,AMN Healthcare Services Inc,Healthcare,BUY,74.6,86.2,up,trend_continuation,True,32.38,1255892352,ok
+AMOD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.05,,ok
+AMP,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,446.79,,ok
+AMPG,"Amplitech Group, Inc.",Technology,WATCH,59.0,67.2,up,trend_continuation,True,7.03,178131776,ok
+AMPH,,,NEUTRAL,45.7,45.7,down,reversal,False,20.71,,ok
+AMPL,,,NEUTRAL,49.8,49.8,down,reversal,False,7.56,,ok
+AMPX,,,NEUTRAL,26.6,26.6,sideways,base_building,False,13.52,,ok
+AMPY,,,NEUTRAL,17.4,17.4,sideways,base_building,False,4.03,,ok
+AMR,,,NEUTRAL,11.3,11.3,sideways,base_building,False,164.26,,ok
+AMRC,,,NEUTRAL,6.6,6.6,sideways,base_building,False,26.57,,ok
+AMRX,"Amneal Pharmaceuticals, Inc.",Healthcare,BUY,71.4,78.7,up,trend_continuation,True,17.29,5515904000,ok
+AMRZ,,,NEUTRAL,39.7,39.7,sideways,base_building,False,53.15,,ok
+AMS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.63,,ok
+AMSC,,,NEUTRAL,26.2,26.2,sideways,base_building,False,39.83,,ok
+AMSF,"AMERISAFE, Inc.",Financial Services,BUY,71.6,63.9,sideways,reversal,True,33.77,631626368,ok
+AMSS,,,NEUTRAL,25.5,25.5,sideways,base_building,False,2.26,,ok
+AMST,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.14,,ok
+AMT,,,NEUTRAL,25.3,25.3,sideways,base_building,False,168.67,,ok
+AMTB,Amerant Bancorp Inc.,Financial Services,STRONG BUY,84.3,86.2,up,trend_continuation,True,25.19,987013568,ok
+AMTM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,20.23,,ok
+AMTX,,,NEUTRAL,20.7,20.7,sideways,base_building,False,1.69,,ok
+AMWL,American Well Corporation,Healthcare,WATCH,56.8,77.5,up,trend_continuation,True,9.3,155388896,ok
+AMZE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.13,,ok
+AMZN,,,NEUTRAL,47.7,47.7,up,trend_continuation,False,240.14,,ok
+AN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,188.89,,ok
+ANAB,"AnaptysBio, Inc.",Healthcare,WATCH,59.7,72.1,up,trend_continuation,True,65.97,1919786496,ok
+ANDE,,,NEUTRAL,36.9,36.9,up,trend_continuation,False,68.78,,ok
+ANDG,Andersen Group Inc.,Consumer Cyclical,BUY,61.4,66.5,sideways,base_building,True,37.93,4266584320,ok
+ANET,"Arista Networks, Inc.",Technology,BUY,72.5,63.0,up,trend_continuation,True,164.1,206629699584,ok
+ANF,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,89.39,,ok
+ANGH,,,NEUTRAL,40.1,40.1,sideways,base_building,False,3.34,,ok
+ANGI,,,NEUTRAL,26.9,26.9,down,reversal,False,5.9,,ok
+ANGO,"AngioDynamics, Inc.",Healthcare,BUY,67.0,71.2,sideways,reversal,True,13.2,545409664,ok
+ANGX,,,NEUTRAL,60.1,60.1,sideways,base_building,False,3.56,,ok
+ANIK,,,NEUTRAL,60.9,60.9,up,trend_continuation,False,15.01,,ok
+ANIP,,,NEUTRAL,60.4,60.4,sideways,base_building,False,84.11,,ok
+ANIX,,,NEUTRAL,50.4,50.4,down,reversal,False,2.85,,ok
+ANNA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.86,,ok
+ANNX,"Annexon, Inc.",Healthcare,WATCH,50.6,64.8,sideways,base_building,True,5.57,912603008,ok
+ANPA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.2,,ok
+ANRO,"Alto Neuroscience, Inc.",Healthcare,WATCH,62.0,82.4,up,trend_continuation,True,28.07,985086912,ok
+ANSC,,,NEUTRAL,57.6,57.6,up,trend_continuation,False,11.42,,ok
+ANTA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.37,,ok
+ANTX,"AN2 Therapeutics, Inc.",Healthcare,WATCH,57.7,75.7,up,trend_continuation,True,5.03,181161296,ok
+ANVS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.86,,ok
+ANY,,,NEUTRAL,60.2,60.2,sideways,base_building,False,2.71,,ok
+AOMD,,,NEUTRAL,58.8,58.8,up,trend_continuation,False,24.94,,ok
+AOMN,,,NEUTRAL,51.0,51.0,sideways,base_building,False,25.33,,ok
+AOMR,"Angel Oak Mortgage REIT, Inc.",Real Estate,BUY,73.0,68.9,up,trend_continuation,True,8.97,223484400,ok
+AON,,,NEUTRAL,38.5,38.5,down,reversal,False,327.57,,ok
+AORT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,22.39,,ok
+AOS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,61.68,,ok
+AOSL,Alpha and Omega Semiconductor L,Technology,WATCH,54.5,72.0,up,trend_continuation,True,45.21,1353116160,ok
+AOUT,"American Outdoor Brands, Inc.",Consumer Cyclical,WATCH,69.9,86.5,up,trend_continuation,True,13.48,168595968,ok
+AP,,,NEUTRAL,30.8,30.8,up,trend_continuation,False,8.79,,ok
+APA,,,NEUTRAL,27.0,27.0,up,trend_continuation,False,32.96,,ok
+APAC,StoneBridge Acquisition II Corp,Financial Services,WATCH,50.3,63.9,sideways,base_building,True,10.16,81792232,ok
+APAM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,34.99,,ok
+APC,,,NEUTRAL,37.5,37.5,sideways,base_building,False,18.91,,ok
+APD,,,NEUTRAL,20.0,20.0,sideways,base_building,False,271.35,,ok
+APEI,,,NEUTRAL,49.3,49.3,up,trend_continuation,False,53.03,,ok
+APG,,,NEUTRAL,21.4,21.4,sideways,base_building,False,41.01,,ok
+APGE,"Apogee Therapeutics, Inc.",Healthcare,WATCH,61.2,81.2,up,trend_continuation,True,132.61,9970112512,ok
+APH,Amphenol Corporation,Technology,STRONG BUY,87.6,86.3,up,trend_continuation,True,166.42,204735627264,ok
+API,,,NEUTRAL,58.7,58.7,up,trend_continuation,False,4.19,,ok
+APLD,,,NEUTRAL,43.5,43.5,up,trend_continuation,False,37.77,,ok
+APLE,"Apple Hospitality REIT, Inc.",Real Estate,STRONG BUY,89.2,88.0,up,trend_continuation,True,16.89,3987180800,ok
+APLM,Apollomics Inc.,Healthcare,WATCH,52.5,67.7,sideways,base_building,True,21.24,46644144,ok
+APM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.77,,ok
+APO,,,NEUTRAL,13.4,13.4,sideways,base_building,False,114.83,,ok
+APOG,"Apogee Enterprises, Inc.",Industrials,STRONG BUY,77.8,85.1,up,trend_continuation,True,46.1,984281280,ok
+APOS,,,NEUTRAL,54.5,54.5,up,trend_continuation,False,25.57,,ok
+APP,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,498.76,,ok
+APPF,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,156.57,,ok
+APPN,,,NEUTRAL,32.7,32.7,down,reversal,False,22.48,,ok
+APPS,"Digital Turbine, Inc.",Technology,BUY,71.4,79.6,sideways,base_building,True,12.91,1557746048,ok
+APRE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.82,,ok
+APT,,,NEUTRAL,59.2,59.2,up,trend_continuation,False,5.55,,ok
+APTV,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,59.23,,ok
+APUR,,,NEUTRAL,17.0,17.0,sideways,base_building,False,9.9,,ok
+APUS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.93,,ok
+APVO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.55,,ok
+APWC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.55,,ok
+APXT,,,NEUTRAL,45.6,45.6,sideways,base_building,False,10.05,,ok
+APYX,Apyx Medical Corporation,Healthcare,WATCH,68.3,82.1,up,trend_continuation,True,4.69,196388832,ok
+AQB,"AquaBounty Technologies, Inc.",Consumer Defensive,WATCH,52.6,64.2,sideways,base_building,True,1.09,5610452,ok
+AQMS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.97,,ok
+AQN,,,NEUTRAL,37.8,37.8,sideways,base_building,False,5.97,,ok
+AQNB,,,NEUTRAL,42.4,42.4,up,trend_continuation,False,25.51,,ok
+AQST,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.16,,ok
+AR,,,NEUTRAL,22.5,22.5,sideways,base_building,False,34.44,,ok
+ARAI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.39,,ok
+ARAY,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.26,,ok
+ARBB,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.95,,ok
+ARBE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.75,,ok
+ARCB,ArcBest Corporation,Industrials,WATCH,60.7,72.8,up,trend_continuation,True,145.81,3246281728,ok
+ARCI,,,NEUTRAL,61.3,61.3,sideways,base_building,False,10.0,,ok
+ARCL,,,NEUTRAL,21.2,21.2,sideways,base_building,False,9.9,,ok
+ARCO,,,NEUTRAL,38.7,38.7,sideways,base_building,False,8.12,,ok
+ARCT,,,NEUTRAL,12.5,12.5,sideways,base_building,False,6.82,,ok
+ARDT,,,NEUTRAL,56.1,56.1,sideways,base_building,False,9.93,,ok
+ARDX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.23,,ok
+ARE,Alexandria Real Estate Equities,Real Estate,STRONG BUY,75.9,73.1,sideways,reversal,True,55.59,9687640064,ok
+AREC,,,NEUTRAL,25.0,25.0,sideways,reversal,False,2.22,,ok
+AREN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.88,,ok
+ARES,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,107.6,,ok
+ARHS,,,NEUTRAL,61.0,61.0,sideways,reversal,False,8.42,,ok
+ARI,,,NEUTRAL,28.0,28.0,up,trend_continuation,False,10.52,,ok
+ARIS,,,NEUTRAL,15.1,15.1,sideways,base_building,False,14.97,,ok
+ARKO,ARKO Corp.,Consumer Cyclical,WATCH,66.7,84.3,up,trend_continuation,True,7.97,894120192,ok
+ARKR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.66,,ok
+ARL,"American Realty Investors, Inc.",Real Estate,STRONG BUY,76.5,84.0,up,trend_continuation,True,23.44,378603904,ok
+ARLO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,13.05,,ok
+ARMK,Aramark,Industrials,BUY,72.5,82.2,up,trend_continuation,True,56.23,14785879040,ok
+ARMP,,,NEUTRAL,35.5,35.5,sideways,base_building,False,6.46,,ok
+AROC,"Archrock, Inc.",Energy,STRONG BUY,84.5,82.7,up,trend_continuation,True,40.45,7089331712,ok
+AROW,Arrow Financial Corporation,Financial Services,STRONG BUY,89.6,89.3,up,trend_continuation,True,41.13,679838592,ok
+ARQ,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.5,,ok
+ARQQ,Arqit Quantum Inc.,Technology,WATCH,64.5,75.7,sideways,base_building,True,27.31,475259872,ok
+ARQT,"Arcutis Biotherapeutics, Inc.",Healthcare,BUY,70.4,77.3,sideways,base_building,True,26.76,3347231232,ok
+ARR,"ARMOUR Residential REIT, Inc.",Real Estate,STRONG BUY,76.6,74.4,up,trend_continuation,True,17.34,2150959616,ok
+ARRY,,,NEUTRAL,19.7,19.7,sideways,base_building,False,7.24,,ok
+ARTC,,,NEUTRAL,54.5,54.5,sideways,base_building,False,9.92,,ok
+ARTL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.1,,ok
+ARTNA,Artesian Resources Corporation,Utilities,STRONG BUY,76.8,71.3,up,trend_continuation,True,34.02,351237376,ok
+ARTV,,,NEUTRAL,61.3,61.3,up,trend_continuation,False,9.58,,ok
+ARTW,,,NEUTRAL,51.4,51.4,sideways,base_building,False,2.61,,ok
+ARVN,,,NEUTRAL,30.2,30.2,sideways,base_building,False,8.29,,ok
+ARW,,,NEUTRAL,61.0,61.0,up,trend_continuation,False,214.93,,ok
+ARWR,"Arrowhead Pharmaceuticals, Inc.",Healthcare,WATCH,49.0,65.5,up,trend_continuation,True,80.5,11338990592,ok
+ARX,,,NEUTRAL,20.2,20.2,sideways,base_building,False,12.63,,ok
+ARXS,"Arxis, Inc.",Industrials,BUY,69.2,75.7,sideways,base_building,True,46.0,18875396096,ok
+AS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,33.3,,ok
+ASA,,,NEUTRAL,12.9,12.9,sideways,base_building,False,52.66,,ok
+ASAN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,7.0,,ok
+ASB,Associated Banc-Corp,Financial Services,STRONG BUY,85.0,84.0,up,trend_continuation,True,31.0,5856427008,ok
+ASBA,,,NEUTRAL,22.5,22.5,sideways,base_building,False,24.26,,ok
+ASBP,,,NEUTRAL,56.5,56.5,sideways,reversal,False,6.14,,ok
+ASC,,,NEUTRAL,27.5,27.5,sideways,base_building,False,14.39,,ok
+ASH,Ashland Inc.,Basic Materials,BUY,65.4,70.6,up,trend_continuation,True,64.23,2940948992,ok
+ASIC,Ategrity Specialty Insurance Co,Financial Services,STRONG BUY,88.1,81.8,up,trend_continuation,True,24.56,1179681920,ok
+ASIX,,,NEUTRAL,33.8,33.8,sideways,base_building,False,19.73,,ok
+ASLE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,6.33,,ok
+ASM,,,NEUTRAL,21.8,21.8,sideways,base_building,False,6.27,,ok
+ASMB,,,NEUTRAL,51.7,51.7,sideways,base_building,False,26.96,,ok
+ASML,ASML Holding N.V. - New York Re,Technology,STRONG BUY,85.0,82.3,up,trend_continuation,True,1883.11,725783871488,ok
+ASND,Ascendis Pharma A/S,Healthcare,STRONG BUY,75.1,66.2,up,trend_continuation,True,263.7,17292425216,ok
+ASO,,,NEUTRAL,15.5,15.5,sideways,base_building,False,46.98,,ok
+ASPC,,,NEUTRAL,35.3,35.3,sideways,base_building,False,10.77,,ok
+ASPI,,,NEUTRAL,46.4,46.4,sideways,base_building,False,6.22,,ok
+ASPN,"Aspen Aerogels, Inc.",Industrials,WATCH,57.2,67.6,sideways,base_building,True,5.98,495607200,ok
+ASPS,Altisource Portfolio Solutions ,Real Estate,STRONG BUY,77.1,65.3,sideways,base_building,True,7.35,82900272,ok
+ASR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,308.42,,ok
+ASRV,AmeriServ Financial Inc.,Financial Services,BUY,69.2,72.0,up,trend_continuation,True,3.86,65482072,ok
+ASST,,,NEUTRAL,16.1,16.1,sideways,base_building,False,11.62,,ok
+ASTC,,,NEUTRAL,61.7,61.7,up,trend_continuation,False,12.18,,ok
+ASTE,"Astec Industries, Inc.",Industrials,WATCH,65.1,79.3,up,trend_continuation,True,60.85,1399101440,ok
+ASTH,Astrana Health Inc.,Healthcare,STRONG BUY,76.9,86.8,up,trend_continuation,True,45.03,2232741120,ok
+ASTI,,,NEUTRAL,50.6,50.6,sideways,base_building,False,4.9,,ok
+ASTL,,,NEUTRAL,22.5,22.5,sideways,base_building,False,4.01,,ok
+ASTS,,,NEUTRAL,46.8,46.8,sideways,base_building,False,86.77,,ok
+ASUR,,,NEUTRAL,28.8,28.8,sideways,base_building,False,7.78,,ok
+ASYS,,,NEUTRAL,59.2,59.2,up,trend_continuation,False,20.59,,ok
+ATAI,AtaiBeckley Inc.,Healthcare,WATCH,58.0,79.3,sideways,reversal,True,5.36,1973373440,ok
+ATCH,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.2,,ok
+ATCX,,,NEUTRAL,9.7,9.7,sideways,base_building,False,3.65,,ok
+ATEC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,9.5,,ok
+ATEN,"A10 Networks, Inc.",Technology,STRONG BUY,88.2,87.3,up,trend_continuation,True,36.33,2615693824,ok
+ATER,"Aterian, Inc.",Consumer Cyclical,WATCH,66.8,81.8,sideways,reversal,True,1.34,14497340,ok
+ATEX,Anterix Inc.,Communication Services,STRONG BUY,87.1,88.4,up,trend_continuation,True,98.24,1915529856,ok
+ATGL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,11.36,,ok
+ATHR,"Aether Holdings, Inc.",Technology,WATCH,46.8,67.7,sideways,base_building,True,4.73,57444572,ok
+ATHS,,,NEUTRAL,34.1,34.1,up,trend_continuation,False,24.46,,ok
+ATI,ATI Inc.,Industrials,STRONG BUY,75.5,82.3,up,trend_continuation,True,197.71,26981570560,ok
+ATII,,,NEUTRAL,46.8,46.8,up,trend_continuation,False,10.81,,ok
+ATKR,,,NEUTRAL,54.7,54.7,up,trend_continuation,False,75.13,,ok
+ATLC,Atlanticus Holdings Corporation,Financial Services,STRONG BUY,92.1,87.9,up,trend_continuation,True,104.27,1576353536,ok
+ATLCL,Atlanticus Holdings Corporation,Default,WATCH,57.1,63.4,up,trend_continuation,True,25.24,,ok
+ATLCZ,Atlanticus Holdings Corporation,Default,WATCH,59.1,65.7,up,trend_continuation,True,25.66,,ok
+ATLN,,,NEUTRAL,51.0,51.0,down,reversal,False,1.15,,ok
+ATLO,Ames National Corporation,Financial Services,STRONG BUY,78.8,73.6,up,trend_continuation,True,29.86,264476592,ok
+ATLX,,,NEUTRAL,16.1,16.1,down,reversal,False,3.74,,ok
+ATMU,,,NEUTRAL,41.0,41.0,sideways,base_building,False,51.0,,ok
+ATNI,"ATN International, Inc.",Communication Services,WATCH,58.4,67.1,up,trend_continuation,True,27.69,425895840,ok
+ATNM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.99,,ok
+ATO,,,NEUTRAL,39.2,39.2,sideways,reversal,False,174.84,,ok
+ATOM,,,NEUTRAL,40.2,40.2,up,trend_continuation,False,7.61,,ok
+ATOS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.98,,ok
+ATPC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.97,,ok
+ATR,,,NEUTRAL,59.3,59.3,sideways,reversal,False,125.29,,ok
+ATRA,"Atara Biotherapeutics, Inc.",Healthcare,WATCH,48.8,63.1,sideways,base_building,True,11.17,100643624,ok
+ATRC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,28.7,,ok
+ATRO,Astronics Corporation,Industrials,BUY,74.2,82.6,up,trend_continuation,True,85.66,4227184896,ok
+ATS,,,NEUTRAL,23.3,23.3,sideways,base_building,False,27.57,,ok
+ATXG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.85,,ok
+ATYR,,,NEUTRAL,32.9,32.9,down,reversal,False,0.57,,ok
+AU,,,NEUTRAL,20.5,20.5,sideways,base_building,False,81.79,,ok
+AUB,Atlantic Union Bankshares Corpo,Financial Services,STRONG BUY,84.9,85.4,up,trend_continuation,True,42.27,6049499648,ok
+AUBN,"Auburn National Bancorporation,",Financial Services,STRONG BUY,79.1,76.0,sideways,base_building,True,27.25,95191224,ok
+AUC,,,NEUTRAL,54.4,54.4,sideways,base_building,False,7.69,,ok
+AUDC,,,NEUTRAL,55.7,55.7,sideways,base_building,False,9.46,,ok
+AUGO,,,NEUTRAL,37.1,37.1,sideways,base_building,False,63.65,,ok
+AUID,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.06,,ok
+AUNA,,,NEUTRAL,42.5,42.5,down,reversal,False,5.01,,ok
+AUPH,Aurinia Pharmaceuticals Inc,Healthcare,STRONG BUY,85.5,77.7,up,trend_continuation,True,16.79,2159222272,ok
+AUR,,,NEUTRAL,53.2,53.2,up,trend_continuation,False,6.62,,ok
+AURA,,,NEUTRAL,53.0,53.0,up,trend_continuation,False,6.88,,ok
+AURE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.2,,ok
+AUST,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.08,,ok
+AUUD,,,NEUTRAL,22.5,22.5,down,reversal,False,1.26,,ok
+AVA,,,NEUTRAL,55.7,55.7,up,trend_continuation,False,41.26,,ok
+AVAH,Aveanna Healthcare Holdings Inc,Healthcare,STRONG BUY,81.5,74.5,sideways,base_building,True,8.66,1885760000,ok
+AVAT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.72,,ok
+AVAV,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,139.0,,ok
+AVBC,"Avidia Bancorp, Inc.",Financial Services,STRONG BUY,77.9,84.1,up,trend_continuation,True,21.15,392766752,ok
+AVBH,"Avidbank Holdings, Inc.",Financial Services,BUY,72.7,76.0,up,trend_continuation,True,32.69,358124384,ok
+AVBP,"ArriVent BioPharma, Inc.",Healthcare,WATCH,68.0,91.6,up,trend_continuation,True,34.37,1600780288,ok
+AVD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.71,,ok
+AVEX,,,NEUTRAL,22.5,22.5,sideways,base_building,False,17.94,,ok
+AVGO,,,NEUTRAL,38.3,38.3,up,trend_continuation,False,372.45,,ok
+AVIR,,,NEUTRAL,50.8,50.8,up,trend_continuation,False,4.61,,ok
+AVLN,,,NEUTRAL,53.7,53.7,sideways,base_building,False,31.0,,ok
+AVNS,"Avanos Medical, Inc.",Healthcare,BUY,69.5,81.5,up,trend_continuation,True,24.93,1167916032,ok
+AVNT,Avient Corporation,Basic Materials,BUY,67.3,67.3,up,trend_continuation,True,36.84,3378602496,ok
+AVNW,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,20.73,,ok
+AVO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,12.06,,ok
+AVPT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,11.07,,ok
+AVR,Anteris Technologies Global Cor,Healthcare,WATCH,58.7,80.5,up,trend_continuation,True,9.78,952006720,ok
+AVT,"Avnet, Inc.",Technology,BUY,65.7,66.6,up,trend_continuation,True,87.63,7187769856,ok
+AVTR,"Avantor, Inc.",Healthcare,WATCH,56.8,67.6,sideways,base_building,True,10.03,6848036352,ok
+AVTX,"Avalo Therapeutics, Inc.",Healthcare,WATCH,55.4,72.2,sideways,reversal,True,19.29,1013989952,ok
+AVX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.7,,ok
+AVXL,,,NEUTRAL,24.7,24.7,down,reversal,False,2.6,,ok
+AVY,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,163.32,,ok
+AWI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,159.47,,ok
+AWK,,,NEUTRAL,57.4,57.4,sideways,base_building,False,132.5,,ok
+AWR,American States Water Company,Utilities,STRONG BUY,79.9,76.3,up,trend_continuation,True,82.79,3244759808,ok
+AWRE,,,NEUTRAL,35.4,35.4,down,reversal,False,1.36,,ok
+AWX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.46,,ok
+AX,"Axos Financial, Inc.",Financial Services,STRONG BUY,82.0,73.5,sideways,base_building,True,96.35,5480834560,ok
+AXG,,,NEUTRAL,18.2,18.2,sideways,base_building,False,3.27,,ok
+AXGN,"AxoGen, Inc.",Healthcare,WATCH,70.1,84.8,up,trend_continuation,True,44.72,2378112256,ok
+AXIL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,6.42,,ok
+AXIN,Axiom Intelligence Acquisition ,Financial Services,STRONG BUY,79.7,68.8,up,trend_continuation,True,10.35,351040384,ok
+AXON,,,NEUTRAL,57.7,57.7,sideways,reversal,False,510.6,,ok
+AXP,,,NEUTRAL,60.7,60.7,sideways,base_building,False,340.88,,ok
+AXR,,,NEUTRAL,51.1,51.1,up,trend_continuation,False,25.53,,ok
+AXS,Axis Capital Holdings Limited,Financial Services,STRONG BUY,80.5,70.6,sideways,base_building,True,108.84,8024036352,ok
+AXSM,"Axsome Therapeutics, Inc.",Healthcare,WATCH,62.6,81.6,up,trend_continuation,True,241.12,12407979008,ok
+AXTA,Axalta Coating Systems Ltd.,Basic Materials,STRONG BUY,77.6,80.0,up,trend_continuation,True,34.01,7278783488,ok
+AXTI,,,NEUTRAL,32.8,32.8,up,trend_continuation,False,71.46,,ok
+AYA,,,NEUTRAL,56.9,56.9,up,trend_continuation,False,18.77,,ok
+AYI,Acuity Inc.,Industrials,STRONG BUY,76.7,74.5,sideways,base_building,True,367.62,11004906496,ok
+AYTU,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.19,,ok
+AZ,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,5.52,,ok
+AZI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.91,,ok
+AZN,,,NEUTRAL,59.8,59.8,sideways,base_building,False,190.95,,ok
+AZO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3153.62,,ok
+AZTA,"Azenta, Inc.",Healthcare,WATCH,52.8,64.8,down,reversal,True,25.51,1175827456,ok
+AZTR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.18,,ok
+AZZ,AZZ Inc.,Industrials,STRONG BUY,81.4,81.5,up,trend_continuation,True,152.49,4577234432,ok
+B,,,NEUTRAL,15.1,15.1,sideways,base_building,False,36.93,,ok
+BA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,214.69,,ok
+BAC,Bank of America Corporation,Financial Services,STRONG BUY,78.4,73.4,up,trend_continuation,True,57.88,410750681088,ok
+BACC,,,NEUTRAL,46.7,46.7,up,trend_continuation,False,10.37,,ok
+BAER,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.8,,ok
+BAFN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.87,,ok
+BAH,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,62.03,,ok
+BAK,,,NEUTRAL,16.1,16.1,sideways,base_building,False,2.51,,ok
+BALL,Ball Corporation,Consumer Cyclical,STRONG BUY,75.3,73.1,sideways,base_building,True,62.02,16512609280,ok
+BALY,,,NEUTRAL,46.0,46.0,sideways,base_building,False,13.39,,ok
+BAM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,44.01,,ok
+BANC,"Banc of California, Inc.",Financial Services,STRONG BUY,79.8,78.8,up,trend_continuation,True,20.44,3151891200,ok
+BAND,Bandwidth Inc.,Technology,BUY,63.1,69.1,up,trend_continuation,True,60.89,1949533824,ok
+BANF,,,NEUTRAL,52.0,52.0,sideways,base_building,False,112.27,,ok
+BANL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.37,,ok
+BANR,,,NEUTRAL,61.5,61.5,up,trend_continuation,False,66.3,,ok
+BAOS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.66,,ok
+BAP,Credicorp Ltd.,Financial Services,STRONG BUY,85.4,77.6,up,trend_continuation,True,384.74,30566946816,ok
+BAR,,,NEUTRAL,16.1,16.1,sideways,base_building,False,39.54,,ok
+BARK,,,NEUTRAL,29.5,29.5,down,reversal,False,9.58,,ok
+BATL,,,NEUTRAL,43.7,43.7,sideways,base_building,False,1.42,,ok
+BATRA,"Atlanta Braves Holdings, Inc. -",Communication Services,WATCH,65.4,78.3,up,trend_continuation,True,56.47,3622201600,ok
+BATRK,"Atlanta Braves Holdings, Inc. -",Communication Services,WATCH,60.3,78.4,up,trend_continuation,True,51.38,3295709440,ok
+BAX,Baxter International Inc.,Healthcare,BUY,68.9,79.4,sideways,base_building,True,22.02,11372647424,ok
+BAYA,,,NEUTRAL,46.3,46.3,up,trend_continuation,False,12.1,,ok
+BB,BlackBerry Limited,Technology,STRONG BUY,83.0,87.1,up,trend_continuation,True,12.48,7314532864,ok
+BBAI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.6,,ok
+BBAR,Banco BBVA Argentina S.A.,Financial Services,BUY,74.8,79.4,up,trend_continuation,True,19.62,4007123968,ok
+BBBY,,,NEUTRAL,46.5,46.5,sideways,base_building,False,6.01,,ok
+BBCP,"Concrete Pumping Holdings, Inc.",Industrials,WATCH,66.4,81.9,up,trend_continuation,True,11.86,597665920,ok
+BBCQ,,,NEUTRAL,40.8,40.8,sideways,base_building,False,10.3,,ok
+BBDC,,,NEUTRAL,48.5,48.5,up,trend_continuation,False,8.42,,ok
+BBGI,"Beasley Broadcast Group, Inc.",Communication Services,WATCH,59.0,82.9,up,trend_continuation,True,26.51,47980184,ok
+BBIO,,,NEUTRAL,60.6,60.6,sideways,base_building,False,72.01,,ok
+BBLG,Bone Biologics Corp,Healthcare,WATCH,49.4,63.0,down,reversal,True,1.38,2477458,ok
+BBN,,,NEUTRAL,58.4,58.4,sideways,base_building,False,16.24,,ok
+BBNX,,,NEUTRAL,56.0,56.0,sideways,base_building,False,17.0,,ok
+BBOT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,7.66,,ok
+BBSI,"Barrett Business Services, Inc.",Industrials,BUY,73.7,74.0,sideways,base_building,True,36.0,884147328,ok
+BBT,Beacon Financial Corporation,Financial Services,BUY,74.0,74.8,up,trend_continuation,True,30.91,2590755328,ok
+BBUC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,29.32,,ok
+BBVA,Banco Bilbao Vizcaya Argentaria,Financial Services,STRONG BUY,84.3,75.8,up,trend_continuation,True,24.71,137089335296,ok
+BBW,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,30.31,,ok
+BBWI,"Bath & Body Works, Inc.",Consumer Cyclical,BUY,70.2,70.7,sideways,base_building,True,23.5,4736702464,ok
+BBY,"Best Buy Co., Inc.",Consumer Cyclical,BUY,69.3,71.3,sideways,base_building,True,77.64,16363959296,ok
+BC,Brunswick Corporation,Consumer Cyclical,BUY,67.8,70.9,up,trend_continuation,True,85.71,5568958976,ok
+BCAB,,,NEUTRAL,20.0,20.0,down,reversal,False,3.83,,ok
+BCAL,California BanCorp,Financial Services,STRONG BUY,75.8,77.3,up,trend_continuation,True,20.87,671279872,ok
+BCAR,,,NEUTRAL,39.2,39.2,up,trend_continuation,False,10.41,,ok
+BCAT,BlackRock Capital Allocation Term Trust,Financial Services,STRONG BUY,88.3,82.0,up,trend_continuation,True,16.07,1683738624,ok
+BCAX,Bicara Therapeutics Inc.,Healthcare,WATCH,63.0,83.9,up,trend_continuation,True,29.34,1927751424,ok
+BCBP,"BCB Bancorp, Inc. (NJ)",Financial Services,BUY,71.1,74.3,up,trend_continuation,True,10.72,186133040,ok
+BCC,"Boise Cascade, L.L.C.",Basic Materials,WATCH,55.8,65.7,sideways,reversal,True,79.26,2789138432,ok
+BCDA,"BioCardia, Inc.",Healthcare,WATCH,51.4,62.3,sideways,base_building,True,1.21,18010038,ok
+BCE,,,NEUTRAL,18.2,18.2,sideways,base_building,False,22.26,,ok
+BCG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.56,,ok
+BCH,,,NEUTRAL,50.2,50.2,sideways,base_building,False,39.05,,ok
+BCHT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.05,,ok
+BCML,BayCom Corp,Financial Services,STRONG BUY,81.3,80.3,up,trend_continuation,True,32.7,356734688,ok
+BCO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,92.16,,ok
+BCPC,Balchem Corporation,Basic Materials,BUY,74.1,67.9,sideways,base_building,True,169.21,5436689920,ok
+BCRX,"BioCryst Pharmaceuticals, Inc.",Healthcare,BUY,69.0,69.2,up,trend_continuation,True,9.55,2427253504,ok
+BCS,Barclays PLC,Financial Services,STRONG BUY,79.6,77.6,up,trend_continuation,True,26.86,90562650112,ok
+BCSF,,,NEUTRAL,36.8,36.8,sideways,base_building,False,12.5,,ok
+BCSS,,,NEUTRAL,60.9,60.9,sideways,base_building,False,10.27,,ok
+BCTX,,,NEUTRAL,15.9,15.9,down,reversal,False,3.1,,ok
+BCX,,,NEUTRAL,23.2,23.2,sideways,base_building,False,10.95,,ok
+BDC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,118.66,,ok
+BDCI,BTC Development Corp.,Financial Services,WATCH,59.9,62.2,sideways,base_building,True,10.06,349725184,ok
+BDJ,Blackrock Enhanced Equity Divid,Financial Services,STRONG BUY,85.7,79.1,up,trend_continuation,True,9.55,1689821824,ok
+BDL,"Flanigan's Enterprises, Inc.",Consumer Cyclical,BUY,74.5,75.3,up,trend_continuation,True,46.97,87300648,ok
+BDMD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.14,,ok
+BDN,Brandywine Realty Trust,Real Estate,STRONG BUY,79.0,76.5,sideways,base_building,True,3.24,562826368,ok
+BDSX,"Biodesix, Inc.",Healthcare,WATCH,65.6,78.0,up,trend_continuation,True,23.81,246571808,ok
+BDTX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.75,,ok
+BDX,,,NEUTRAL,57.6,57.6,sideways,base_building,False,155.19,,ok
+BE,,,NEUTRAL,56.7,56.7,up,trend_continuation,False,275.01,,ok
+BEAG,Bold Eagle Acquisition Corp.,Financial Services,BUY,65.9,72.8,sideways,base_building,True,10.69,334789408,ok
+BEAM,Beam Therapeutics Inc.,Healthcare,WATCH,72.1,87.9,up,trend_continuation,True,34.95,3595628800,ok
+BEAT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.65,,ok
+BEBE,,,NEUTRAL,53.8,53.8,sideways,base_building,False,9.97,,ok
+BEEM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.23,,ok
+BEEP,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.48,,ok
+BELFA,Bel Fuse Inc.,Technology,BUY,71.0,78.3,up,trend_continuation,True,272.57,3467828224,ok
+BELFB,Bel Fuse Inc.,Technology,STRONG BUY,80.0,92.3,up,trend_continuation,True,315.65,4489397248,ok
+BEN,"Franklin Resources, Inc.",Financial Services,STRONG BUY,80.9,83.7,up,trend_continuation,True,33.17,17236363264,ok
+BENF,,,NEUTRAL,58.2,58.2,sideways,base_building,False,3.87,,ok
+BEPC,,,NEUTRAL,24.4,24.4,sideways,base_building,False,37.23,,ok
+BEPH,,,NEUTRAL,18.7,18.7,sideways,base_building,False,14.62,,ok
+BEPI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,15.27,,ok
+BEPJ,Brookfield BRP Holdings (Canada,Default,WATCH,55.8,62.0,up,trend_continuation,True,25.58,,ok
+BESS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.87,,ok
+BETA,,,NEUTRAL,21.1,21.1,sideways,base_building,False,16.37,,ok
+BETR,,,NEUTRAL,23.5,23.5,sideways,reversal,False,26.58,,ok
+BF.A,,,,,,,,,,,data_error
+BF.B,,,,,,,,,,,data_error
+BFC,Bank First Corporation,Financial Services,BUY,73.0,71.9,up,trend_continuation,True,147.81,1658850048,ok
+BFH,"Bread Financial Holdings, Inc.",Financial Services,STRONG BUY,91.5,87.4,up,trend_continuation,True,108.73,4393460224,ok
+BFLY,"Butterfly Network, Inc.",Healthcare,STRONG BUY,77.3,86.1,up,trend_continuation,True,8.91,2331220480,ok
+BFRG,,,NEUTRAL,31.1,31.1,down,reversal,False,0.68,,ok
+BFRI,Biofrontera Inc.,Healthcare,BUY,64.9,67.0,sideways,base_building,True,1.02,13059411,ok
+BFS,"Saul Centers, Inc.",Real Estate,STRONG BUY,75.3,80.9,up,trend_continuation,True,37.74,1303828352,ok
+BFST,"Business First Bancshares, Inc.",Financial Services,STRONG BUY,81.9,82.0,up,trend_continuation,True,30.67,1002233280,ok
+BG,,,NEUTRAL,25.7,25.7,sideways,base_building,False,109.1,,ok
+BGC,,,NEUTRAL,42.9,42.9,up,trend_continuation,False,10.45,,ok
+BGDE,"Big Digital Energy, Inc.",Financial Services,WATCH,45.4,69.8,sideways,base_building,True,9.01,49746480,ok
+BGI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.56,,ok
+BGIN,,,NEUTRAL,9.9,9.9,sideways,base_building,False,1.8,,ok
+BGL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.25,,ok
+BGLC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.03,,ok
+BGM,,,NEUTRAL,57.0,57.0,down,reversal,False,0.38,,ok
+BGMS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.72,,ok
+BGR,,,NEUTRAL,23.3,23.3,sideways,base_building,False,14.73,,ok
+BGS,,,NEUTRAL,25.7,25.7,sideways,base_building,False,4.11,,ok
+BGSF,"BGSF, Inc.",Industrials,WATCH,52.1,65.7,sideways,base_building,True,5.89,63128872,ok
+BGSI,,,NEUTRAL,21.1,21.1,sideways,base_building,False,94.54,,ok
+BGT,,,NEUTRAL,19.9,19.9,sideways,base_building,False,10.55,,ok
+BGY,,,NEUTRAL,47.5,47.5,up,trend_continuation,False,5.67,,ok
+BH,Biglari Holdings Inc.,Consumer Cyclical,BUY,67.1,75.5,sideways,base_building,True,437.33,1372787584,ok
+BH.A,Biglari Holdings Inc.,Consumer Cyclical,BUY,67.1,75.5,sideways,base_building,True,437.33,1372787584,ok
+BHAV,,,NEUTRAL,47.1,47.1,sideways,base_building,False,9.95,,ok
+BHB,"Bar Harbor Bankshares, Inc.",Financial Services,STRONG BUY,85.4,86.5,up,trend_continuation,True,38.35,642059648,ok
+BHC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.85,,ok
+BHE,"Benchmark Electronics, Inc.",Technology,BUY,73.3,83.4,up,trend_continuation,True,95.16,3414058752,ok
+BHK,,,NEUTRAL,60.8,60.8,sideways,base_building,False,9.16,,ok
+BHM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,9.24,,ok
+BHR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.96,,ok
+BHRB,Burke & Herbert Financial Servi,Financial Services,STRONG BUY,82.4,80.7,up,trend_continuation,True,71.97,1450181504,ok
+BHST,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.79,,ok
+BHV,BlackRock Virginia Municipal Bo,Financial Services,STRONG BUY,77.1,89.6,up,trend_continuation,True,12.64,20076834,ok
+BHVN,Biohaven Ltd.,Healthcare,WATCH,60.5,80.0,sideways,base_building,True,14.95,2250886912,ok
+BIAF,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.8,,ok
+BIIB,Biogen Inc.,Healthcare,STRONG BUY,75.2,74.4,up,trend_continuation,True,216.63,31982630912,ok
+BIII,,,NEUTRAL,47.2,47.2,sideways,base_building,False,9.97,,ok
+BILL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,35.93,,ok
+BIO,,,NEUTRAL,54.0,54.0,sideways,reversal,False,295.3,,ok
+BIO.B,,,NEUTRAL,54.0,54.0,sideways,reversal,False,295.3,,ok
+BIOA,"BioAge Labs, Inc.",Healthcare,WATCH,71.6,87.2,up,trend_continuation,True,24.95,1109095808,ok
+BIOX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.33,,ok
+BIPC,,,NEUTRAL,30.7,30.7,sideways,base_building,False,38.55,,ok
+BIPH,,,NEUTRAL,19.9,19.9,sideways,base_building,False,15.75,,ok
+BIPI,,,NEUTRAL,61.5,61.5,sideways,base_building,False,16.3,,ok
+BIPJ,Brookfield Infrastructure Corpo,Default,WATCH,56.0,62.2,up,trend_continuation,True,24.83,,ok
+BIRD,,,NEUTRAL,54.7,54.7,sideways,reversal,False,4.29,,ok
+BIRK,,,NEUTRAL,52.1,52.1,sideways,base_building,False,43.41,,ok
+BIT,,,NEUTRAL,54.6,54.6,up,trend_continuation,False,12.46,,ok
+BIVI,BioVie Inc.,Healthcare,WATCH,62.4,83.0,sideways,base_building,True,2.01,15159096,ok
+BIXI,,,NEUTRAL,42.3,42.3,sideways,base_building,False,9.99,,ok
+BIYA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.28,,ok
+BJ,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,89.34,,ok
+BJDX,,,NEUTRAL,30.1,30.1,sideways,base_building,False,1.44,,ok
+BJRI,"BJ's Restaurants, Inc.",Consumer Cyclical,WATCH,69.4,88.9,up,trend_continuation,True,59.38,1247985024,ok
+BKD,Brookdale Senior Living Inc.,Healthcare,WATCH,51.9,79.8,up,trend_continuation,True,15.86,3787664896,ok
+BKE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,41.53,,ok
+BKH,Black Hills Corporation,Utilities,BUY,65.3,62.7,up,trend_continuation,True,75.25,5728641024,ok
+BKHA,Black Hawk Acquisition Corporat,Financial Services,WATCH,58.5,67.5,up,trend_continuation,True,11.91,50258284,ok
+BKKT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,8.28,,ok
+BKNG,,,NEUTRAL,57.2,57.2,sideways,reversal,False,182.41,,ok
+BKR,,,NEUTRAL,27.8,27.8,sideways,base_building,False,56.31,,ok
+BKSY,,,NEUTRAL,39.1,39.1,sideways,base_building,False,28.35,,ok
+BKT,,,NEUTRAL,60.6,60.6,sideways,base_building,False,10.7,,ok
+BKTI,,,NEUTRAL,47.4,47.4,up,trend_continuation,False,84.99,,ok
+BKV,,,NEUTRAL,44.1,44.1,sideways,base_building,False,26.0,,ok
+BL,,,NEUTRAL,16.8,16.8,down,reversal,False,28.0,,ok
+BLBD,Blue Bird Corporation,Industrials,STRONG BUY,85.3,88.8,up,trend_continuation,True,78.33,2478877184,ok
+BLCO,,,NEUTRAL,54.4,54.4,sideways,base_building,False,16.63,,ok
+BLD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,359.76,,ok
+BLDP,,,NEUTRAL,44.0,44.0,sideways,base_building,False,3.73,,ok
+BLDR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,90.51,,ok
+BLFS,"BioLife Solutions, Inc.",Healthcare,WATCH,71.6,87.1,sideways,base_building,True,28.3,1382664832,ok
+BLIN,"Bridgeline Digital, Inc.",Technology,WATCH,55.1,71.2,sideways,base_building,True,1.13,14237863,ok
+BLIV,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.16,,ok
+BLK,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,950.17,,ok
+BLKB,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,29.37,,ok
+BLLN,"BillionToOne, Inc.",Healthcare,BUY,71.1,76.4,sideways,base_building,True,120.4,5537856512,ok
+BLMN,"Bloomin' Brands, Inc.",Consumer Cyclical,WATCH,65.8,81.0,sideways,base_building,True,9.16,784226880,ok
+BLND,,,NEUTRAL,34.3,34.3,down,reversal,False,1.69,,ok
+BLNE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.36,,ok
+BLNK,,,NEUTRAL,17.0,17.0,sideways,base_building,False,0.63,,ok
+BLRK,,,NEUTRAL,58.1,58.1,sideways,base_building,False,9.99,,ok
+BLSH,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,23.69,,ok
+BLUW,,,NEUTRAL,61.2,61.2,sideways,base_building,False,10.33,,ok
+BLW,,,NEUTRAL,32.9,32.9,down,reversal,False,12.38,,ok
+BLX,"Bladex, Inc. Class E",Financial Services,STRONG BUY,87.4,90.1,up,trend_continuation,True,61.61,2293753088,ok
+BLZE,"Backblaze, Inc.",Technology,WATCH,67.8,80.8,sideways,base_building,True,14.97,898420544,ok
+BLZR,,,NEUTRAL,44.7,44.7,sideways,base_building,False,10.12,,ok
+BMA,Banco Macro S.A.,Financial Services,WATCH,63.3,73.7,up,trend_continuation,True,92.5,5914360320,ok
+BMBL,,,NEUTRAL,41.8,41.8,down,reversal,False,3.2,,ok
+BME,Blackrock Health Sciences Trust,Financial Services,STRONG BUY,82.8,77.9,up,trend_continuation,True,42.91,554573248,ok
+BMEA,,,NEUTRAL,34.2,34.2,down,reversal,False,1.39,,ok
+BMEZ,BlackRock Health Sciences Trust,Financial Services,STRONG BUY,81.2,71.0,up,trend_continuation,True,15.33,958146496,ok
+BMGL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,6.8,,ok
+BMHL,Bluemount Holdings Limited,Financial Services,BUY,72.5,84.6,up,trend_continuation,True,5.99,152865680,ok
+BMI,,,NEUTRAL,39.7,39.7,down,reversal,False,138.67,,ok
+BMM,,,NEUTRAL,16.1,16.1,sideways,base_building,False,6.07,,ok
+BMN,,,NEUTRAL,35.2,35.2,sideways,base_building,False,25.69,,ok
+BMNR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,13.8,,ok
+BMO,Bank Of Montreal,Financial Services,STRONG BUY,88.7,89.0,up,trend_continuation,True,176.08,123329363968,ok
+BMR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.49,,ok
+BMRA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.77,,ok
+BMRC,Bank of Marin Bancorp,Financial Services,STRONG BUY,75.0,77.7,up,trend_continuation,True,27.59,446674016,ok
+BMRN,BioMarin Pharmaceutical Inc.,Healthcare,WATCH,55.6,63.6,sideways,base_building,True,57.67,11146713088,ok
+BMY,,,NEUTRAL,59.0,59.0,up,trend_continuation,False,58.56,,ok
+BN,,,NEUTRAL,12.9,12.9,sideways,base_building,False,42.14,,ok
+BNAI,,,NEUTRAL,43.5,43.5,sideways,base_building,False,15.61,,ok
+BNBX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.35,,ok
+BNC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.96,,ok
+BNED,"Barnes & Noble Education, Inc",Consumer Cyclical,BUY,74.3,87.5,up,trend_continuation,True,13.56,465055392,ok
+BNGO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.17,,ok
+BNH,,,NEUTRAL,25.2,25.2,sideways,base_building,False,15.22,,ok
+BNJ,,,NEUTRAL,21.7,21.7,sideways,base_building,False,14.84,,ok
+BNKK,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.51,,ok
+BNL,"Broadstone Net Lease, Inc.",Real Estate,STRONG BUY,88.9,84.1,up,trend_continuation,True,21.16,4233323776,ok
+BNRG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.81,,ok
+BNS,Bank Nova Scotia Halifax Pfd 3,Financial Services,STRONG BUY,86.6,85.7,up,trend_continuation,True,86.6,106178183168,ok
+BNT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,42.14,,ok
+BNTC,,,NEUTRAL,59.0,59.0,sideways,reversal,False,12.7,,ok
+BNY,The Bank of New York Mellon Cor,Financial Services,STRONG BUY,77.3,69.1,up,trend_continuation,True,143.8,98701312000,ok
+BNZI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.01,,ok
+BOBS,"Bob's Discount Furniture, Inc.",Consumer Cyclical,WATCH,56.9,63.0,sideways,base_building,True,16.44,2147515904,ok
+BOC,,,NEUTRAL,61.1,61.1,sideways,base_building,False,13.41,,ok
+BODI,,,NEUTRAL,31.9,31.9,sideways,base_building,False,10.25,,ok
+BOE,Blackrock Enhanced Global Divid,Financial Services,STRONG BUY,75.3,65.2,up,trend_continuation,True,11.99,666645504,ok
+BOF,BranchOut Food Inc.,Consumer Defensive,WATCH,53.0,81.6,up,trend_continuation,True,4.3,65858932,ok
+BOH,Bank of Hawaii Corporation,Financial Services,STRONG BUY,77.6,70.6,up,trend_continuation,True,80.8,3201378304,ok
+BOKF,BOK Financial Corporation,Financial Services,STRONG BUY,78.7,74.0,up,trend_continuation,True,138.52,8416474112,ok
+BOLD,"Boundless Bio, Inc.",Healthcare,WATCH,60.9,80.6,up,trend_continuation,True,2.45,55063204,ok
+BOLT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.9,,ok
+BON,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.21,,ok
+BOOM,,,NEUTRAL,23.2,23.2,sideways,base_building,False,5.91,,ok
+BOOT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,164.55,,ok
+BORR,,,NEUTRAL,24.0,24.0,sideways,base_building,False,4.21,,ok
+BOSC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.5,,ok
+BOT,,,NEUTRAL,41.3,41.3,sideways,base_building,False,33.29,,ok
+BOTJ,Bank of the James Financial Gro,Financial Services,STRONG BUY,88.9,86.0,up,trend_continuation,True,24.7,112220480,ok
+BOW,Bowhead Specialty Holdings Inc.,Financial Services,STRONG BUY,86.3,83.2,sideways,base_building,True,30.01,985469440,ok
+BOX,,,NEUTRAL,42.0,42.0,sideways,reversal,False,26.57,,ok
+BOXL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.6,,ok
+BP,,,NEUTRAL,24.6,24.6,sideways,base_building,False,37.35,,ok
+BPAC,,,NEUTRAL,50.2,50.2,sideways,base_building,False,10.12,,ok
+BPOP,"Popular, Inc.",Financial Services,STRONG BUY,91.0,89.0,up,trend_continuation,True,164.85,10639041536,ok
+BPRN,"Princeton Bancorp, Inc.",Financial Services,STRONG BUY,77.9,75.7,up,trend_continuation,True,37.87,257938240,ok
+BQ,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.78,,ok
+BR,,,NEUTRAL,14.6,14.6,down,reversal,False,135.44,,ok
+BRAG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.72,,ok
+BRAI,,,NEUTRAL,35.9,35.9,sideways,base_building,False,5.97,,ok
+BRBI,,,NEUTRAL,13.5,13.5,sideways,base_building,False,11.17,,ok
+BRBR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,12.38,,ok
+BRBS,"Blue Ridge Bankshares, Inc.",Financial Services,BUY,63.9,63.8,sideways,base_building,True,3.56,320085696,ok
+BRC,Brady Corporation,Industrials,STRONG BUY,79.2,70.9,sideways,base_building,True,90.0,4240151296,ok
+BRCB,,,NEUTRAL,36.2,36.2,sideways,base_building,False,8.15,,ok
+BRCC,,,NEUTRAL,28.7,28.7,sideways,base_building,False,1.2,,ok
+BREZ,,,NEUTRAL,19.8,19.8,sideways,base_building,False,9.92,,ok
+BRFH,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.07,,ok
+BRIA,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.47,,ok
+BRID,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,6.56,,ok
+BRK.A,,,,,,,,,,,data_error
+BRK.B,,,,,,,,,,,data_error
+BRKR,Bruker Corporation,Healthcare,WATCH,61.6,75.0,up,trend_continuation,True,59.71,9089392640,ok
+BRLS,,,NEUTRAL,56.8,56.8,sideways,base_building,False,1.5,,ok
+BRLT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.11,,ok
+BRN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.03,,ok
+BRO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,63.96,,ok
+BROS,Dutch Bros Inc.,Consumer Cyclical,BUY,70.5,79.3,up,trend_continuation,True,71.69,12523054080,ok
+BRR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.49,,ok
+BRT,BRT Apartments Corp. (MD),Real Estate,BUY,74.1,73.6,up,trend_continuation,True,15.33,288546176,ok
+BRTX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.37,,ok
+BRUN,Boost Run Inc.,Technology,BUY,68.8,78.0,up,trend_continuation,True,33.96,2086117632,ok
+BRX,Brixmor Property Group Inc.,Real Estate,STRONG BUY,79.1,76.0,up,trend_continuation,True,32.2,9880138752,ok
+BRZE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,20.97,,ok
+BSAA,,,NEUTRAL,58.6,58.6,up,trend_continuation,False,11.7,,ok
+BSAC,,,NEUTRAL,58.0,58.0,sideways,base_building,False,32.43,,ok
+BSBK,Bogota Financial Corp.,Financial Services,WATCH,53.1,62.4,sideways,base_building,True,9.14,117489224,ok
+BSET,"Bassett Furniture Industries, I",Consumer Cyclical,WATCH,65.8,83.6,up,trend_continuation,True,18.24,157725552,ok
+BSIN,,,NEUTRAL,56.6,56.6,sideways,base_building,False,1.07,,ok
+BSRR,Sierra Bancorp,Financial Services,STRONG BUY,81.2,75.8,up,trend_continuation,True,40.66,531799616,ok
+BST,BlackRock Science and Technolog,Financial Services,STRONG BUY,84.0,75.4,up,trend_continuation,True,49.06,1703364224,ok
+BSTZ,BlackRock Science and Technolog,Financial Services,STRONG BUY,80.1,69.4,up,trend_continuation,True,29.37,2019015808,ok
+BSVN,Bank7 Corp.,Financial Services,STRONG BUY,88.4,82.2,up,trend_continuation,True,48.91,465590720,ok
+BSX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,43.48,,ok
+BSY,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,29.72,,ok
+BTAI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.4,,ok
+BTBD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.11,,ok
+BTBT,,,NEUTRAL,47.7,47.7,sideways,base_building,False,1.83,,ok
+BTCS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.09,,ok
+BTCT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.68,,ok
+BTDR,,,NEUTRAL,59.2,59.2,sideways,base_building,False,15.86,,ok
+BTE,,,NEUTRAL,37.6,37.6,up,trend_continuation,False,4.01,,ok
+BTG,,,NEUTRAL,10.5,10.5,sideways,base_building,False,3.79,,ok
+BTGO,,,NEUTRAL,15.1,15.1,sideways,base_building,False,5.28,,ok
+BTI,,,NEUTRAL,60.5,60.5,up,trend_continuation,False,62.74,,ok
+BTMD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.67,,ok
+BTOC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.29,,ok
+BTOG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.23,,ok
+BTQ,BTQ Technologies Corp.,Technology,WATCH,48.9,65.4,sideways,base_building,True,5.57,788884288,ok
+BTT,,,NEUTRAL,46.3,46.3,up,trend_continuation,False,22.63,,ok
+BTTC,,,NEUTRAL,11.9,11.9,sideways,base_building,False,0.76,,ok
+BTU,,,NEUTRAL,22.4,22.4,sideways,base_building,False,23.28,,ok
+BTX,BlackRock Technology and Privat,Financial Services,STRONG BUY,77.6,73.4,up,trend_continuation,True,8.85,1032886144,ok
+BTZ,,,NEUTRAL,60.5,60.5,sideways,base_building,False,10.25,,ok
+BUD,Anheuser-Busch Inbev SA Sponsor,Consumer Defensive,STRONG BUY,85.1,83.2,up,trend_continuation,True,83.84,162121252864,ok
+BUDA,,,NEUTRAL,46.6,46.6,sideways,base_building,False,9.03,,ok
+BULL,,,NEUTRAL,44.2,44.2,sideways,base_building,False,6.75,,ok
+BUR,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.96,,ok
+BURL,,,NEUTRAL,35.0,35.0,up,trend_continuation,False,314.28,,ok
+BURU,,,NEUTRAL,10.9,10.9,down,reversal,False,0.14,,ok
+BUSE,First Busey Corporation,Financial Services,STRONG BUY,83.9,84.3,up,trend_continuation,True,29.53,2497563648,ok
+BUUU,BUUU Group Limited,Industrials,BUY,73.8,85.8,up,trend_continuation,True,20.66,344918688,ok
+BVC,,,NEUTRAL,52.0,52.0,up,trend_continuation,False,10.3,,ok
+BVFL,"BV Financial, Inc.",Financial Services,BUY,73.6,79.8,up,trend_continuation,True,21.33,184695728,ok
+BVN,,,NEUTRAL,12.3,12.3,sideways,base_building,False,28.58,,ok
+BVS,Bioventus Inc.,Healthcare,BUY,72.6,71.7,up,trend_continuation,True,9.78,662575872,ok
+BW,,,NEUTRAL,25.1,25.1,up,trend_continuation,False,14.11,,ok
+BWA,BorgWarner Inc.,Consumer Cyclical,WATCH,59.1,62.3,up,trend_continuation,True,65.89,13515023360,ok
+BWB,"Bridgewater Bancshares, Inc.",Financial Services,STRONG BUY,84.6,83.5,up,trend_continuation,True,21.07,587502528,ok
+BWEN,"Broadwind, Inc.",Industrials,BUY,71.7,82.5,up,trend_continuation,True,4.72,110350408,ok
+BWFG,"Bankwell Financial Group, Inc.",Financial Services,STRONG BUY,88.3,86.0,up,trend_continuation,True,59.81,476875904,ok
+BWIN,"The Baldwin Insurance Group, In",Financial Services,BUY,61.6,67.9,sideways,base_building,True,26.25,2559111168,ok
+BWIV,,,NEUTRAL,32.0,32.0,sideways,base_building,False,9.89,,ok
+BWLP,,,NEUTRAL,41.5,41.5,up,trend_continuation,False,17.47,,ok
+BWMN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,29.6,,ok
+BWMX,"Betterware de Mexico, S.A.P.I. ",Consumer Cyclical,BUY,68.5,70.3,up,trend_continuation,True,18.16,676349568,ok
+BWNB,"Babcock & Wilcox Enterprises, I",Default,WATCH,58.6,65.1,up,trend_continuation,True,24.99,,ok
+BWXT,,,NEUTRAL,25.8,25.8,sideways,base_building,False,189.25,,ok
+BX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,114.88,,ok
+BXC,Bluelinx Holdings Inc.,Industrials,WATCH,57.8,68.3,sideways,base_building,True,63.23,492080832,ok
+BXDC,,,NEUTRAL,45.5,45.5,sideways,base_building,False,21.71,,ok
+BXMT,,,NEUTRAL,23.1,23.1,sideways,base_building,False,17.42,,ok
+BXP,"BXP, Inc.",Real Estate,STRONG BUY,79.5,79.8,sideways,base_building,True,67.07,11959347200,ok
+BY,"Byline Bancorp, Inc.",Financial Services,STRONG BUY,86.5,85.0,up,trend_continuation,True,37.61,1707842304,ok
+BYAH,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.17,,ok
+BYD,Boyd Gaming Corporation,Consumer Cyclical,BUY,69.5,71.1,up,trend_continuation,True,89.57,6657752576,ok
+BYFC,Broadway Financial Corporation,Financial Services,BUY,60.3,68.2,up,trend_continuation,True,10.07,93433592,ok
+BYND,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.71,,ok
+BYRN,,,NEUTRAL,48.8,48.8,down,reversal,False,6.24,,ok
+BYSI,"BeyondSpring, Inc.",Healthcare,BUY,62.3,62.2,sideways,base_building,True,1.79,73604480,ok
+BZ,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,12.97,,ok
+BZAI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.38,,ok
+BZFD,,,NEUTRAL,60.8,60.8,sideways,base_building,False,1.52,,ok
+BZH,"Beazer Homes USA, Inc.",Consumer Cyclical,WATCH,65.5,79.7,up,trend_continuation,True,29.26,799787712,ok
+C,"Citigroup, Inc.",Financial Services,STRONG BUY,80.0,78.6,up,trend_continuation,True,142.49,243027673088,ok
+CAAP,,,NEUTRAL,37.5,37.5,sideways,base_building,False,25.75,,ok
+CAAS,,,NEUTRAL,29.3,29.3,up,trend_continuation,False,4.43,,ok
+CABA,,,NEUTRAL,51.6,51.6,up,trend_continuation,False,3.11,,ok
+CABO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,53.56,,ok
+CABR,,,NEUTRAL,51.4,51.4,sideways,base_building,False,1.24,,ok
+CAC,Camden National Corporation,Financial Services,STRONG BUY,79.8,74.5,up,trend_continuation,True,53.96,912716096,ok
+CACC,Credit Acceptance Corporation,Financial Services,STRONG BUY,89.6,88.1,up,trend_continuation,True,638.23,6675931136,ok
+CACI,,,NEUTRAL,12.0,12.0,sideways,base_building,False,457.04,,ok
+CADL,"Candel Therapeutics, Inc.",Healthcare,WATCH,53.8,82.7,up,trend_continuation,True,10.36,759079680,ok
+CAE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,25.2,,ok
+CAES,,,NEUTRAL,19.8,19.8,sideways,base_building,False,10.09,,ok
+CAG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,13.98,,ok
+CAH,"Cardinal Health, Inc.",Healthcare,BUY,66.9,77.4,sideways,base_building,True,236.22,55324106752,ok
+CAI,,,NEUTRAL,44.7,44.7,down,reversal,False,18.32,,ok
+CAII,,,NEUTRAL,26.8,26.8,sideways,base_building,False,9.92,,ok
+CAKE,The Cheesecake Factory Incorpor,Consumer Cyclical,STRONG BUY,77.0,83.3,up,trend_continuation,True,79.36,3943030528,ok
+CAL,,,NEUTRAL,44.3,44.3,up,trend_continuation,False,12.76,,ok
+CALC,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.99,,ok
+CALM,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,79.34,,ok
+CALX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,36.05,,ok
+CALY,Callaway Golf Company,Consumer Cyclical,BUY,72.1,81.9,up,trend_continuation,True,19.21,3453142784,ok
+CAMP,,,NEUTRAL,53.0,53.0,sideways,reversal,False,4.44,,ok
+CAMT,,,NEUTRAL,35.2,35.2,sideways,base_building,False,157.32,,ok
+CANG,,,NEUTRAL,22.5,22.5,down,reversal,False,0.2,,ok
+CAPN,,,NEUTRAL,55.6,55.6,up,trend_continuation,False,11.03,,ok
+CAPR,,,NEUTRAL,20.6,20.6,sideways,base_building,False,23.8,,ok
+CAPS,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.25,,ok
+CAQ,,,NEUTRAL,50.6,50.6,sideways,base_building,False,9.91,,ok
+CAR,,,NEUTRAL,27.0,27.0,sideways,base_building,False,155.18,,ok
+CARE,"Carter Bankshares, Inc.",Financial Services,STRONG BUY,90.8,85.8,up,trend_continuation,True,33.32,740437376,ok
+CARG,,,NEUTRAL,57.9,57.9,sideways,reversal,False,34.0,,ok
+CARL,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,11.12,,ok
+CARR,Carrier Global Corporation,Industrials,WATCH,67.5,84.1,up,trend_continuation,True,73.43,60989521920,ok
+CARS,Cars.com Inc.,Communication Services,BUY,61.3,67.0,sideways,base_building,True,11.14,622759744,ok
+CART,Maplebear Inc.,Consumer Cyclical,STRONG BUY,85.6,82.8,up,trend_continuation,True,47.23,11100457984,ok
+CASH,"Pathward Financial, Inc.",Financial Services,STRONG BUY,79.8,70.8,sideways,base_building,True,86.42,1824329088,ok
+CASS,"Cass Information Systems, Inc",Industrials,STRONG BUY,83.3,87.6,up,trend_continuation,True,51.32,660547392,ok
+CAST,"FreeCast, Inc.",Communication Services,WATCH,54.2,73.7,sideways,base_building,True,5.6,231514160,ok
+CASY,,,NEUTRAL,43.7,43.7,up,trend_continuation,False,780.24,,ok
+CAT,"Caterpillar, Inc.",Industrials,STRONG BUY,79.3,85.5,up,trend_continuation,True,1033.19,475878981632,ok
+CATO,,,NEUTRAL,54.7,54.7,sideways,base_building,False,3.23,,ok
+CATX,,,NEUTRAL,40.9,40.9,down,reversal,False,3.55,,ok
+CATY,Cathay General Bancorp,Financial Services,STRONG BUY,86.3,84.9,up,trend_continuation,True,61.83,4144803584,ok
+CAVA,,,NEUTRAL,54.2,54.2,up,trend_continuation,False,81.87,,ok
+CB,Chubb Limited,Financial Services,STRONG BUY,79.5,70.7,up,trend_continuation,True,343.29,133148491776,ok
+CBAN,"Colony Bankcorp, Inc.",Financial Services,BUY,67.9,62.2,up,trend_continuation,True,20.26,428668224,ok
+CBAT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.58,,ok
+CBC,"Central Bancompany, Inc.",Financial Services,STRONG BUY,82.1,80.0,sideways,base_building,True,30.44,7298543104,ok
+CBFV,"CB Financial Services, Inc.",Financial Services,BUY,67.9,67.0,up,trend_continuation,True,37.3,189208384,ok
+CBIO,,,NEUTRAL,49.4,49.4,up,trend_continuation,False,18.0,,ok
+CBK,"Commercial Bancgroup, Inc.",Financial Services,STRONG BUY,81.6,80.2,sideways,base_building,True,32.67,447620448,ok
+CBL,"CBL & Associates Properties, In",Real Estate,STRONG BUY,84.4,89.7,up,trend_continuation,True,53.27,1648427264,ok
+CBLL,"CeriBell, Inc.",Healthcare,WATCH,56.2,63.5,sideways,base_building,True,19.96,757336256,ok
+CBNA,"Chain Bridge Bancorp, Inc.",Financial Services,STRONG BUY,88.9,87.6,up,trend_continuation,True,40.47,265556736,ok
+CBNK,"Capital Bancorp, Inc.",Financial Services,STRONG BUY,84.0,86.9,up,trend_continuation,True,35.12,572036480,ok
+CBOE,,,NEUTRAL,13.5,13.5,sideways,base_building,False,231.51,,ok
+CBRE,,,NEUTRAL,31.7,31.7,down,reversal,False,136.09,,ok
+CBRL,Cracker Barrel Old Country Stor,Consumer Cyclical,WATCH,59.8,77.8,sideways,base_building,True,53.94,1205637760,ok
+CBRS,,,NEUTRAL,20.3,20.3,sideways,base_building,False,216.16,,ok
+CBSH,"Commerce Bancshares, Inc.",Financial Services,STRONG BUY,80.5,76.1,up,trend_continuation,True,58.09,8468194816,ok
+CBT,Cabot Corporation,Basic Materials,STRONG BUY,83.9,86.0,up,trend_continuation,True,90.36,4664510976,ok
+CBUS,,,NEUTRAL,36.1,36.1,down,reversal,False,1.43,,ok
+CBZ,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,32.33,,ok
+CC,,,NEUTRAL,30.3,30.3,up,trend_continuation,False,20.26,,ok
+CCAP,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,11.22,,ok
+CCAQ,Collective Acquisition Corp.,Financial Services,BUY,70.0,73.4,up,trend_continuation,True,10.43,211028240,ok
+CCB,,,NEUTRAL,43.9,43.9,down,reversal,False,76.95,,ok
+CCBG,Capital City Bank Group,Financial Services,STRONG BUY,82.4,86.0,up,trend_continuation,True,49.66,849255936,ok
+CCC,,,NEUTRAL,42.0,42.0,down,reversal,False,4.9,,ok
+CCCC,"C4 Therapeutics, Inc.",Healthcare,WATCH,52.9,71.6,up,trend_continuation,True,4.35,480967424,ok
+CCEC,,,NEUTRAL,32.8,32.8,up,trend_continuation,False,20.87,,ok
+CCEL,,,NEUTRAL,26.9,26.9,sideways,base_building,False,3.32,,ok
+CCEP,Coca-Cola Europacific Partners ,Consumer Defensive,BUY,72.1,72.8,up,trend_continuation,True,101.38,44888735744,ok
+CCG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.45,,ok
+CCHH,,,NEUTRAL,39.3,39.3,sideways,base_building,False,0.44,,ok
+CCI,,,NEUTRAL,16.4,16.4,sideways,base_building,False,78.63,,ok
+CCII,Cohen Circle Acquisition Corp. ,Financial Services,BUY,67.0,68.5,up,trend_continuation,True,10.35,359076000,ok
+CCIX,Churchill Capital Corp IX,Financial Services,WATCH,56.4,64.3,up,trend_continuation,True,10.9,399621248,ok
+CCJ,,,NEUTRAL,27.2,27.2,sideways,base_building,False,103.47,,ok
+CCK,"Crown Holdings, Inc.",Consumer Cyclical,BUY,65.7,66.2,sideways,base_building,True,111.12,12417284096,ok
+CCL,,,NEUTRAL,52.0,52.0,sideways,base_building,False,29.19,,ok
+CCLD,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.16,,ok
+CCNE,CNB Financial Corporation,Financial Services,STRONG BUY,81.4,77.8,up,trend_continuation,True,33.86,1003238336,ok
+CCO,"Clear Channel Outdoor Holdings,",Communication Services,BUY,61.2,66.9,up,trend_continuation,True,2.4,1221560448,ok
+CCOI,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,13.14,,ok
+CCRN,"Cross Country Healthcare, Inc.",Healthcare,WATCH,50.9,68.4,sideways,base_building,True,13.21,426768640,ok
+CCSI,"Consensus Cloud Solutions, Inc.",Technology,STRONG BUY,78.2,75.4,up,trend_continuation,True,38.26,703905536,ok
+CCTG,CCSC Technology International H,Industrials,WATCH,49.7,63.4,sideways,base_building,True,0.8,3126883,ok
+CCU,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,11.18,,ok
+CCXI,Churchill Capital Corp XI,Financial Services,STRONG BUY,86.8,79.7,sideways,base_building,True,16.4,913480000,ok
+CCZ,Comcast Holdings ZONES,Default,WATCH,42.2,64.9,up,trend_continuation,True,66.25,,ok
+CD,,,NEUTRAL,37.2,37.2,sideways,base_building,False,4.8,,ok
+CDE,,,NEUTRAL,14.6,14.6,sideways,base_building,False,16.33,,ok
+CDIO,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,2.08,,ok
+CDLX,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,4.87,,ok
+CDNA,"CareDx, Inc.",Healthcare,STRONG BUY,75.1,85.5,up,trend_continuation,True,29.28,1512589568,ok
+CDNL,Cardinal Infrastructure Group I,Industrials,BUY,69.7,79.7,sideways,base_building,True,94.31,1819813632,ok
+CDNS,,,NEUTRAL,56.3,56.3,sideways,base_building,False,372.72,,ok
+CDP,COPT Defense Properties,Real Estate,STRONG BUY,86.5,84.6,up,trend_continuation,True,36.64,4231585792,ok
+CDRE,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,27.36,,ok
+CDRO,,,NEUTRAL,58.7,58.7,up,trend_continuation,False,9.57,,ok
+CDT,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.58,,ok
+CDTG,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,1.99,,ok
+CDW,CDW Corporation,Technology,BUY,73.3,69.1,sideways,base_building,True,139.82,17862488064,ok
+CDXS,,,NEUTRAL,46.3,46.3,sideways,base_building,False,2.33,,ok
+CDZI,,,NEUTRAL,21.1,21.1,sideways,base_building,False,3.88,,ok
+CE,,,NEUTRAL,18.9,18.9,sideways,base_building,False,45.93,,ok
+CECO,CECO Environmental Corp.,Industrials,BUY,61.0,69.2,up,trend_continuation,True,90.07,5260361216,ok
+CEG,,,NEUTRAL,11.1,11.1,down,reversal,False,259.32,,ok
+CELC,,,NEUTRAL,32.3,32.3,sideways,base_building,False,102.52,,ok
+CELH,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,29.79,,ok
+CELU,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.61,,ok
+CELZ,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,0.81,,ok
+CENN,,,REJECTED,0.0,0.0,down,weekly_downtrend,False,3.58,,ok
+CENT,Central Garden & Pet Company,Consumer Defensive,STRONG BUY,82.6,85.9,up,trend_continuation,True,44.6,2790656768,ok
+CENTA,Central Garden & Pet Company,Consumer Defensive,STRONG BUY,83.5,87.3,up,trend_continuation,True,38.94,2436506112,ok
+CENX,,,NEUTRAL,25.0,25.0,sideways,base_building,False,46.55,,ok
+CEPF,,,NEUTRAL,61.0,61.0,sideways,base_building,False,10.38,,ok
+CEPO,,,NEUTRAL,27.7,27.7,sideways,base_building,False,10.45,,ok
+CEPS,,,NEUTRAL,58.7,58.7,sideways,base_building,False,10.37,,ok

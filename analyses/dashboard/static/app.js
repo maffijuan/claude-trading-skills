@@ -28,10 +28,16 @@ const SHORT = {dRev:'ΔRev',dNI:'ΔNI',pe_ttm:'P/E',fwd_pe:'FwdP/E',roce:'ROCE',
   capex_da:'Cx/D&A',debt_assets:'Debt/A',debt_book:'ND/A',debt_mkt:'ND/Mcap'};
 
 // blank cell: plain "—", or "n/a" (grey, tooltip) when structurally N/A for a bank
+// ratios where a null = "not meaningful" (negative/invalid denominator, e.g. P/B
+// with negative equity, P/E with losses) rather than genuinely missing data.
+const NM_KEYS = ['pe_ttm','fwd_pe','roce','roe','mod_roce','ev_ebitda','pb','ptbv',
+  'ev_fcf','capex_ebitda'];
 function cellText(v, kind, key, isFin, bankNa){
   if(v===null||v===undefined){
     if(isFin && bankNa && bankNa.indexOf(key)>=0)
       return '<span class="muted" title="No aplica a bancos / financieras">n/a</span>';
+    if(NM_KEYS.indexOf(key)>=0)
+      return '<span class="muted" title="No significativo (denominador negativo: p.ej. equity o ganancias < 0)">n/m</span>';
     return '<span class="muted">—</span>';
   }
   return fmt(v, kind);

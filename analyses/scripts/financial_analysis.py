@@ -145,38 +145,40 @@ LAYOUT: list[Row] = [
         note="YoY earnings growth (capped at +100% when prior year <= 0)",
         rec=REC_GROWTH),
     Row("pe_ttm", "3. P/E (trailing)", FORMULA, fmt=MULT,
-        formula="={Market cap.}/{Net income}", note="Market cap / net income; vs peer median",
+        formula='=IF({Net income}>0,{Market cap.}/{Net income},"n/m")',
+        note="Market cap / net income; vs peer median (blank if losses)",
         rec=REC_MULT, peer=True),
     Row("fwd_pe", "   Forward P/E", FORMULA, fmt=MULT,
-        formula="=IF(ISNUMBER({dNI}),{Market cap.}/({Net income}*(1+{dNI})),{Market cap.}/{Net income})",
+        formula='=IF({Net income}<=0,"n/m",IF(ISNUMBER({dNI}),{Market cap.}/({Net income}*(1+{dNI})),{Market cap.}/{Net income}))',
         note="Market cap / (net income * (1 + earnings growth)); vs peer median",
         skip_first=True, rec=REC_MULT, peer=True),
     Row("roce", "4. ROCE", FORMULA, fmt=PCT,
-        formula="={EBIT}/{Capital employed}", note="EBIT / capital employed (>=15% BUY, <8% SELL)",
+        formula='=IF({Capital employed}>0,{EBIT}/{Capital employed},"n/m")',
+        note="EBIT / capital employed (>=15% BUY, <8% SELL)",
         rec=REC_ROCE, peer=True),
     Row("roe", "   ROE", FORMULA, fmt=PCT,
-        formula="={Net income}/{Stockholders' equity}",
-        note="Net income / equity — works for banks (>=15% BUY, <8% SELL)",
+        formula='=IF({Stockholders\' equity}>0,{Net income}/{Stockholders\' equity},"n/m")',
+        note="Net income / equity — blank if equity < 0 (e.g. MCD buybacks). >=15% BUY, <8% SELL",
         rec=REC_ROCE, peer=True),
     Row("mod_roce", "   Acid ROCE", FORMULA, fmt=PCT,
-        formula="={EBIT}/({Market cap.}-{Stockholders' equity})",
+        formula='=IF(({Market cap.}-{Stockholders\' equity})>0,{EBIT}/({Market cap.}-{Stockholders\' equity}),"n/m")',
         note="EBIT / (market cap - equity) (>=5% BUY, 4-5% HOLD, <4% SELL)",
         rec=REC_ACID, peer=True),
     Row("ev_ebitda", "5. EV / EBITDA", FORMULA, fmt=MULT,
-        formula="=({Market cap.}+{Total liabilities}-{Cash & mktb sec.})/{EBITDA}",
-        note="Enterprise value / EBITDA; vs peer median", rec=REC_MULT, peer=True),
+        formula='=IF({EBITDA}>0,({Market cap.}+{Total liabilities}-{Cash & mktb sec.})/{EBITDA},"n/m")',
+        note="Enterprise value / EBITDA; vs peer median (blank if EBITDA < 0)", rec=REC_MULT, peer=True),
     Row("pb", "6. P / B", FORMULA, fmt=MULT,
-        formula="={Market cap.}/{Stockholders' equity}", note="vs peer median",
-        rec=REC_MULT, peer=True),
+        formula='=IF({Stockholders\' equity}>0,{Market cap.}/{Stockholders\' equity},"n/m")',
+        note="vs peer median (blank if equity < 0)", rec=REC_MULT, peer=True),
     Row("ptbv", "   P / TBV", FORMULA, fmt=MULT,
-        formula="={Market cap.}/({Stockholders' equity}-{GW & intangibles})",
-        note="Price / tangible book — key for banks; vs peer median",
+        formula='=IF(({Stockholders\' equity}-{GW & intangibles})>0,{Market cap.}/({Stockholders\' equity}-{GW & intangibles}),"n/m")',
+        note="Price / tangible book — key for banks; blank if tangible book < 0",
         rec=REC_MULT, peer=True),
     Row("ps", "7. P / S", FORMULA, fmt=MULT,
         formula="={Market cap.}/{Revenue}", note="vs peer median", rec=REC_MULT, peer=True),
     Row("ev_fcf", "8. EV / FCF", FORMULA, fmt=MULT,
-        formula="=({Market cap.}+{Total liabilities}-{Cash & mktb sec.})/{FCF}",
-        note="vs peer median", rec=REC_MULT, peer=True),
+        formula='=IF({FCF}>0,({Market cap.}+{Total liabilities}-{Cash & mktb sec.})/{FCF},"n/m")',
+        note="vs peer median (blank if FCF < 0)", rec=REC_MULT, peer=True),
     Row("DY", "9. Dividend yield", FORMULA, fmt=PCT2,
         formula="={Cash dividend paid}/{Market cap.}",
         note="Dividends paid / market cap (>=3% BUY, <1% SELL)", rec=REC_DY),
@@ -185,7 +187,7 @@ LAYOUT: list[Row] = [
         note="(dividends + buybacks) / market cap (>=5% BUY, <2% SELL)",
         rec=REC_TSR, peer=True),
     Row("capex_ebitda", "11. CapEx / EBITDA", FORMULA, fmt=PCT,
-        formula="={CapEx}/{EBITDA}", note="informational; vs peer median", peer=True),
+        formula='=IF({EBITDA}>0,{CapEx}/{EBITDA},"n/m")', note="informational; vs peer median", peer=True),
     Row("capex_da", "12. CapEx / D&A", FORMULA, fmt=MULT,
         formula="={CapEx}/{D&A}", note="informational; vs peer median", peer=True),
     Row("debt_assets", "13. Ratio de endeudamiento", FORMULA, fmt=PCT,
@@ -1095,9 +1097,10 @@ def compute_ratios_for_period(inputs: dict, p: int) -> dict:
         "dNI": dNI,
         "pe_ttm": safe(mktcap, ni, pos_den=True) if ni and ni > 0 else None,
         "fwd_pe": fwd_pe,
-        "roce": safe(ebit, capemp),
+        "roce": safe(ebit, capemp, pos_den=True) if capemp and capemp > 0 else None,
         "roe": safe(ni, equity, pos_den=True) if equity and equity > 0 else None,
-        "mod_roce": safe(ebit, (mktcap - equity)) if mktcap is not None and equity is not None else None,
+        "mod_roce": (safe(ebit, (mktcap - equity)) if mktcap is not None and equity is not None
+                     and (mktcap - equity) > 0 else None),
         "ptbv": safe(mktcap, tbv, pos_den=True) if tbv and tbv > 0 else None,
         "ev_ebitda": safe(ev, ebitda, pos_den=True) if ebitda and ebitda > 0 else None,
         "pb": safe(mktcap, equity, pos_den=True) if equity and equity > 0 else None,
@@ -1459,23 +1462,47 @@ def compute_peer_medians(peer_tickers: list[str], years: int,
 # --------------------------------------------------------------------------- #
 # CLI
 # --------------------------------------------------------------------------- #
+def _sector_peers(ticker: str, n: int = 8):
+    """Resolve S&P-500 sector peers via the dashboard's bundled list (best-effort)."""
+    try:
+        dash = Path(__file__).resolve().parents[1] / "dashboard"
+        if str(dash) not in sys.path:
+            sys.path.insert(0, str(dash))
+        from peers import sector_of, sector_peers
+        return sector_peers(ticker, n=n), sector_of(ticker)
+    except Exception:  # noqa: BLE001
+        return [], ""
+
+
 def build_workbook(tickers: list[str], years: int, output: str,
                    partial_method: str = "runrate",
                    peers: list[str] | None = None,
-                   with_trefis: bool = True) -> str:
+                   with_trefis: bool = True,
+                   auto_peers: bool = False) -> str:
     wb = openpyxl.Workbook()
     wb.remove(wb.active)
 
-    peer_median: dict[str, float] = {}
-    peer_note = ""
+    explicit = None
     if peers:
         subjects = {t.upper() for t in tickers}
         peer_list = [p for p in peers if p.upper() not in subjects]
-        print(f"Computing sector peer medians from {len(peer_list)} peers ...", file=sys.stderr)
-        peer_median = compute_peer_medians(peer_list, years, partial_method)
-        peer_note = "Peers: " + ", ".join(p.upper() for p in peer_list)
+        print(f"Computing peer medians from {len(peer_list)} peers ...", file=sys.stderr)
+        explicit = (compute_peer_medians(peer_list, years, partial_method),
+                    "Peers: " + ", ".join(p.upper() for p in peer_list))
 
     for t in tickers:
+        if explicit:
+            peer_median, peer_note = explicit
+        elif auto_peers:
+            sp, sector = _sector_peers(t)
+            sp = [x for x in sp if x.upper() != t.upper()]
+            print(f"Auto peers for {t} (S&P {sector or 'n/a'}): {len(sp)} peers ...", file=sys.stderr)
+            peer_median = compute_peer_medians(sp, years, partial_method) if sp else {}
+            peer_note = (f"Auto peers (S&P {sector}): " + ", ".join(sp)) if sp \
+                else "No S&P-500 sector peers found (ticker outside the index)"
+        else:
+            peer_median, peer_note = {}, ""
+
         print(f"Fetching {t} ...", file=sys.stderr)
         data = fetch_yfinance(t, years=years, partial_method=partial_method,
                               with_trefis=with_trefis)
@@ -1498,6 +1525,8 @@ def main(argv=None):
     p.add_argument("--peers", default=None,
                    help="Comma-separated peer tickers for sector-median comparison, "
                         "e.g. --peers KO,PG,CL. Drives the BUY/HOLD/SELL of valuation multiples.")
+    p.add_argument("--auto-peers", action="store_true",
+                   help="Auto-pick S&P-500 sector peers per ticker (ignored if --peers given).")
     p.add_argument("--no-trefis", action="store_true",
                    help="Skip the Trefis price-estimate lookup (avoids the external call).")
     p.add_argument("--output", "-o", default=None, help="Output .xlsx path")
@@ -1511,7 +1540,7 @@ def main(argv=None):
     peers = [x.strip() for x in args.peers.split(",") if x.strip()] if args.peers else None
     path = build_workbook(args.tickers, args.years, out,
                           partial_method=args.partial_method, peers=peers,
-                          with_trefis=not args.no_trefis)
+                          with_trefis=not args.no_trefis, auto_peers=args.auto_peers)
     print(f"Wrote {path}")
     return 0
 

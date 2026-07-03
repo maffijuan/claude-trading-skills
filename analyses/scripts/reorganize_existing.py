@@ -23,7 +23,7 @@ from financial_analysis import SheetData, fetch_yfinance, write_ticker_sheet
 
 # line items the original workbook lacks; back-filled from Yahoo Finance so the
 # new debt / shareholder-return ratios compute instead of showing 0%.
-ENRICH_KEYS = ["Total debt", "Net debt", "Cash dividend paid",
+ENRICH_KEYS = ["Total debt", "Net debt", "GW & intangibles", "Cash dividend paid",
                "Repurchase of capital stock"]
 
 SRC = Path(__file__).resolve().parents[1] / "Analisis_MSFT_GOOGL_PEP.xlsx"
@@ -99,7 +99,7 @@ def build():
         # (index-aligned: 3 full years + 1 trailing, oldest -> newest)
         enrich_note = ""
         try:
-            yf_data = fetch_yfinance(name, years=3)
+            yf_data = fetch_yfinance(name, years=3, with_trefis=False)
             for key in ENRICH_KEYS:
                 src_vals = yf_data.inputs.get(key) or []
                 inputs[key] = [src_vals[i] if i < len(src_vals) else None

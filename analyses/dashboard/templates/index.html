@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fundamental Analyzer</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+<header>
+  <h1>📊 Fundamental Analyzer</h1>
+  <span class="sub">yfinance · statements · valuation · BUY/HOLD/SELL</span>
+  <div class="spacer"></div>
+  <button class="ghost" id="theme">☾ Dark</button>
+</header>
+
+<div class="wrap">
+  <div class="card controls">
+    <div class="field grow">
+      <label>Ticker(s) — uno para detalle completo, varios para vista batch</label>
+      <input type="text" id="tickers" placeholder="MMM   ·   AAPL, MSFT, PEP   ·   pegá una lista" autofocus>
+    </div>
+    <div class="row">
+      <div class="field"><label>Período parcial</label>
+        <select id="method">
+          <option value="runrate">Run-rate (anualizado)</option>
+          <option value="ttm">TTM (últimos 4Q)</option>
+          <option value="none">Solo años completos</option>
+        </select>
+      </div>
+      <div class="field"><label>Años</label><input type="number" id="years" value="3" min="1" max="6" style="width:70px"></div>
+      <div class="field grow"><label>Peers (opcional, para múltiplos)</label>
+        <input type="text" id="peers" placeholder="dejar vacío = auto por sector S&P"></div>
+      <label class="chk"><input type="checkbox" id="autopeers" checked> Peers automáticos (sector S&P)</label>
+      <label class="chk"><input type="checkbox" id="selfpeer" checked> Batch: mediana del universo</label>
+      <label class="chk"><input type="checkbox" id="trefis"> Traer Trefis (best-effort)</label>
+      <button class="primary" id="go">Analizar</button>
+    </div>
+    <div class="presets">
+      <span>Índices:</span>
+      {% for key,label in indices %}<button class="ghost preset" data-u="{{key}}">{{label}} <span class="muted">{{counts[key]}}</span></button>{% endfor %}
+      <span class="legend" style="margin-left:auto">
+        <span><span class="badge BUY">BUY</span></span>
+        <span><span class="badge HOLD">HOLD</span></span>
+        <span><span class="badge SELL">SELL</span></span>
+      </span>
+    </div>
+    <div class="hint">Índices grandes (S&P 500) pueden tardar varios minutos por los lotes de yfinance; para eso conviene el reporte estático.</div>
+  </div>
+
+  <div id="status"></div>
+  <div id="out"></div>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script>
+const $ = s => document.querySelector(s);
+const out = $('#out'), statusEl = $('#status');
+setupTheme('#theme');
+
+function tickerList(){ return $('#tickers').value.replace(/\n/g,',').split(',').map(s=>s.trim().toUpperCase()).filter(Boolean); }
+function opts(){ return {method:$('#method').value, years:$('#years').value,
+  peers:$('#peers').value, trefis:$('#trefis').checked, selfpeer:$('#selfpeer').checked,
+  autopeers:$('#autopeers').checked}; }
+
+function wireTickerClicks(){
+  out.querySelectorAll('.tickcell').forEach(el=>el.onclick=()=>{
+    $('#tickers').value=el.dataset.t; run(); window.scrollTo({top:0,behavior:'smooth'}); });
+}
+
+async function run(){
+  const ts = tickerList(); if(!ts.length) return;
+  const o = opts();
+  statusEl.innerHTML = `<div class="card"><span class="spin"></span> Analizando ${ts.length} ticker(s)…</div>`;
+  out.innerHTML='';
+  try{
+    if(ts.length===1){
+      const q = new URLSearchParams({ticker:ts[0],method:o.method,years:o.years,
+        peers:o.peers,trefis:o.trefis,auto_peers:o.autopeers});
+      const d = await (await fetch('/api/analyze?'+q)).json();
+      if(d.error) throw new Error(d.error);
+      const xq = new URLSearchParams({ticker:ts[0],method:o.method,years:o.years,
+        peers:(d.peers||[]).join(','),trefis:o.trefis});
+      out.innerHTML = singleHTML(d, '/api/excel?'+xq);
+    }else{
+      const d = await (await fetch('/api/batch',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({tickers:ts,method:o.method,years:o.years,peers:o.peers,self_peer:o.selfpeer})})).json();
+      if(d.error) throw new Error(d.error);
+      out.innerHTML = batchHTML(d, exportButtonsHTML());
+      wireTickerClicks();
+      wireExports(d, 'analysis');
+    }
+    statusEl.innerHTML='';
+  }catch(e){ statusEl.innerHTML=`<div class="card err">Error: ${e.message}</div>`; }
+}
+
+$('#go').onclick = run;
+$('#tickers').addEventListener('keydown', e=>{ if(e.key==='Enter') run(); });
+async function loadUniverse(key){
+  const d = await (await fetch('/api/universe/'+key)).json();
+  $('#tickers').value = (d.tickers||[]).join(', '); run();
+}
+document.querySelectorAll('.preset').forEach(b=>b.onclick=()=>loadUniverse(b.dataset.u));
+
+// default view on load: DJIA valuation
+loadUniverse('djia');
+</script>
+</body>
+</html>

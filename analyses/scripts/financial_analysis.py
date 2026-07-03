@@ -28,7 +28,10 @@ from __future__ import annotations
 import argparse
 import statistics
 import sys
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
+from statistics import median
 
 import openpyxl
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -74,6 +77,8 @@ REC_LEV_MKT = ('=IF(NOT(ISNUMBER({last})),"",'
                'IF({last}<=0.15,"BUY",IF({last}>0.4,"SELL","HOLD")))')
 REC_UPSIDE = ('=IF(OR({trefis}="",{price}=""),"",'
               'IF({trefis}>{price}*1.1,"BUY",IF({trefis}<{price}*0.9,"SELL","HOLD")))')
+REC_ACID = ('=IF(NOT(ISNUMBER({last})),"",'
+            'IF({last}>=0.05,"BUY",IF({last}<0.04,"SELL","HOLD")))')
 
 
 @dataclass
@@ -112,6 +117,7 @@ LAYOUT: list[Row] = [
     Row("Total liabilities", "Total liabilities"),
     Row("Total debt", "Total debt", note="Short-term + long-term interest-bearing debt"),
     Row("Net debt", "Net debt", note="Total debt - cash & equivalents"),
+    Row("GW & intangibles", "Goodwill & intangibles", note="For tangible book value (P/TBV)"),
 
     Row("hdr_cf", "CASH FLOW", HEADER),
     Row("Operating CF", "Operating cash flow"),
@@ -129,11 +135,11 @@ LAYOUT: list[Row] = [
     Row("hdr_rt", "VALUATION & QUALITY RATIOS", HEADER),
     Row("dRev", "1. Δ Revenue (YoY)", FORMULA, fmt=PCT,
         formula="={Revenue}/{Revenue:prev}-1", note="YoY revenue growth",
-        rec=REC_GROWTH, peer=True),
+        rec=REC_GROWTH),
     Row("dNI", "2. Δ Net income (YoY)", FORMULA, fmt=PCT,
-        formula='=IF({Net income:prev}<=0,"n.m.",{Net income}/{Net income:prev}-1)',
-        note="YoY earnings growth (n.m. when prior year <= 0)",
-        rec=REC_GROWTH, peer=True),
+        formula="=IF({Net income:prev}<=0,1,{Net income}/{Net income:prev}-1)",
+        note="YoY earnings growth (capped at +100% when prior year <= 0)",
+        rec=REC_GROWTH),
     Row("pe_ttm", "3. P/E (trailing)", FORMULA, fmt=MULT,
         formula="={Market cap.}/{Net income}", note="Market cap / net income; vs peer median",
         rec=REC_MULT, peer=True),
@@ -144,22 +150,32 @@ LAYOUT: list[Row] = [
     Row("roce", "4. ROCE", FORMULA, fmt=PCT,
         formula="={EBIT}/{Capital employed}", note="EBIT / capital employed (>=15% BUY, <8% SELL)",
         rec=REC_ROCE, peer=True),
-    Row("mod_roce", "   Modified ROCE", FORMULA, fmt=PCT,
+    Row("roe", "   ROE", FORMULA, fmt=PCT,
+        formula="={Net income}/{Stockholders' equity}",
+        note="Net income / equity — works for banks (>=15% BUY, <8% SELL)",
+        rec=REC_ROCE, peer=True),
+    Row("mod_roce", "   Acid ROCE", FORMULA, fmt=PCT,
         formula="={EBIT}/({Market cap.}-{Stockholders' equity})",
-        note="EBIT / (market cap - equity)", peer=True),
+        note="EBIT / (market cap - equity) (>=5% BUY, 4-5% HOLD, <4% SELL)",
+        rec=REC_ACID, peer=True),
     Row("ev_ebitda", "5. EV / EBITDA", FORMULA, fmt=MULT,
         formula="=({Market cap.}+{Total liabilities}-{Cash & mktb sec.})/{EBITDA}",
         note="Enterprise value / EBITDA; vs peer median", rec=REC_MULT, peer=True),
     Row("pb", "6. P / B", FORMULA, fmt=MULT,
         formula="={Market cap.}/{Stockholders' equity}", note="vs peer median",
         rec=REC_MULT, peer=True),
+    Row("ptbv", "   P / TBV", FORMULA, fmt=MULT,
+        formula="={Market cap.}/({Stockholders' equity}-{GW & intangibles})",
+        note="Price / tangible book — key for banks; vs peer median",
+        rec=REC_MULT, peer=True),
     Row("ps", "7. P / S", FORMULA, fmt=MULT,
         formula="={Market cap.}/{Revenue}", note="vs peer median", rec=REC_MULT, peer=True),
     Row("ev_fcf", "8. EV / FCF", FORMULA, fmt=MULT,
         formula="=({Market cap.}+{Total liabilities}-{Cash & mktb sec.})/{FCF}",
         note="vs peer median", rec=REC_MULT, peer=True),
-    Row("DY", "9. Dividend yield", INPUT, fmt=PCT2,
-        note=">=3% BUY, <1% SELL", rec=REC_DY),
+    Row("DY", "9. Dividend yield", FORMULA, fmt=PCT2,
+        formula="={Cash dividend paid}/{Market cap.}",
+        note="Dividends paid / market cap (>=3% BUY, <1% SELL)", rec=REC_DY),
     Row("tsr", "10. Total shareholder return", FORMULA, fmt=PCT,
         formula="=({Cash dividend paid}+{Repurchase of capital stock})/{Market cap.}",
         note="(dividends + buybacks) / market cap (>=5% BUY, <2% SELL)",
@@ -203,6 +219,9 @@ class SheetData:
     source_note: str = ""
     peer_median: dict[str, float] = field(default_factory=dict)  # ratio key -> sector peer median
     peer_note: str = ""                                          # e.g. "Peers: KO, PG, CL"
+    sector: str = ""
+    industry: str = ""
+    is_financial: bool = False
 
 
 def write_ticker_sheet(ws, data: SheetData) -> None:
@@ -407,6 +426,63 @@ def write_ticker_sheet(ws, data: SheetData) -> None:
 
 
 # --------------------------------------------------------------------------- #
+# Trefis price-estimate fetcher (public feed, best-effort)
+# --------------------------------------------------------------------------- #
+_TREFIS_CACHE: dict | None = None
+_TREFIS_URL = "https://www.trefis.com/api/price-estimates"
+
+
+def _load_trefis_feed() -> dict:
+    """Return {ticker: price_estimate} from the Trefis public feed (cached).
+
+    The public endpoint only exposes ~200 tickers, so many names are absent;
+    callers must handle a missing ticker (returns None from the lookup).
+    """
+    global _TREFIS_CACHE
+    if _TREFIS_CACHE is not None:
+        return _TREFIS_CACHE
+    out: dict[str, float] = {}
+    try:
+        import time
+
+        import requests
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+            "Accept": "application/json",
+            "Referer": "https://www.trefis.com/data/price-estimates",
+        }
+        # the AWS-fronted endpoint returns intermittent 504s -> retry a few times
+        data = None
+        for attempt in range(4):
+            r = requests.get(_TREFIS_URL, headers=headers, timeout=25)
+            if r.status_code == 200 and "json" in r.headers.get("content-type", ""):
+                data = r.json()
+                break
+            time.sleep(1.5)
+        if data is None:
+            print("  [warn] Trefis feed unavailable after retries "
+                  "(flaky endpoint); leaving estimate blank.", file=sys.stderr)
+        for row in (data or {}).get("contents", []):
+            tk = (row.get("ticker") or "").upper()
+            est = row.get("trefisPriceGF")
+            if est is None:  # fall back to marketPrice * (1 + upside)
+                mp, up = row.get("marketPrice"), row.get("trefisPriceUpsideGF")
+                est = mp * (1 + up) if mp is not None and up is not None else None
+            if tk and est is not None:
+                out[tk] = round(float(est), 2)
+    except Exception as exc:
+        print(f"  [warn] Trefis feed unavailable: {exc}", file=sys.stderr)
+    _TREFIS_CACHE = out
+    return out
+
+
+def fetch_trefis_estimate(ticker: str) -> float | None:
+    """Trefis price estimate for ``ticker`` if the public feed exposes it."""
+    return _load_trefis_feed().get(ticker.upper())
+
+
+# --------------------------------------------------------------------------- #
 # yfinance fetcher
 # --------------------------------------------------------------------------- #
 # Yahoo Finance row labels can vary; we try a list of candidates per concept.
@@ -441,7 +517,7 @@ def _get(series, col, default=None):
 
 
 def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
-                   partial_method: str = "runrate") -> SheetData:
+                   partial_method: str = "runrate", with_trefis: bool = True) -> SheetData:
     """Build a :class:`SheetData` for ``ticker`` from Yahoo Finance.
 
     ``partial_method`` controls the trailing column:
@@ -471,8 +547,15 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
     def s(x):
         return None if x is None else x / scale
 
-    # annual period-end dates, newest first -> take ``years`` most recent, oldest->newest
-    ann_cols = list(inc.columns)[:years][::-1]
+    # annual period-end dates, newest first -> take ``years`` most recent, oldest->newest.
+    # Drop columns Yahoo lists but hasn't populated yet (all-NaN) — e.g. a just-ended
+    # fiscal year with no annual figures loaded (NKE's May year-end). Otherwise that
+    # empty column becomes the "latest year" and every ratio reads blank/zero. The
+    # trailing run-rate/TTM column then reconstructs it from the quarterlies instead.
+    _rev_row = _pick(inc, ["Total Revenue", "Operating Revenue"])
+    ann_cols = [c for c in inc.columns if _get(_rev_row, c) is not None][:years][::-1]
+    if not ann_cols:
+        ann_cols = list(inc.columns)[:years][::-1]
 
     # concept -> candidate Yahoo labels
     C = {
@@ -500,6 +583,9 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
         "LT debt": ["Long Term Debt And Capital Lease Obligation", "Long Term Debt"],
         "Current debt": ["Current Debt And Capital Lease Obligation", "Current Debt"],
         "CashOnly": ["Cash And Cash Equivalents"],
+        "GW combined": ["Goodwill And Other Intangible Assets"],
+        "Goodwill": ["Goodwill"],
+        "Intangibles": ["Other Intangible Assets"],
     }
     CC = {
         "Operating CF": ["Operating Cash Flow", "Cash Flow From Continuing Operating Activities",
@@ -558,6 +644,19 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
             return td - c0
         return None
 
+    gw_combined = _pick(bal, CB["GW combined"])
+    goodwill = _pick(bal, CB["Goodwill"])
+    intangibles = _pick(bal, CB["Intangibles"])
+
+    def gw_at(col):
+        v = _get(gw_combined, col)
+        if v is not None:
+            return v
+        g, i = _get(goodwill, col), _get(intangibles, col)
+        if g is not None or i is not None:
+            return (g or 0) + (i or 0)
+        return None
+
     def da_at(col):
         v = _get(da_inc, col)
         if v is None:
@@ -590,6 +689,7 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
         "Revenue", "EBITDA", "EBIT", "Net income", "D&A",
         "Total assets", "Cash & mktb sec.", "Non-mktb sec.", "Current liabilities",
         "Stockholders' equity", "Total liabilities", "Total debt", "Net debt",
+        "GW & intangibles",
         "Operating CF", "Cash dividend paid", "Repurchase of capital stock", "CapEx", "FCF",
         "Total shares", "Market price", "DY", "trefis",
     ]}
@@ -614,15 +714,17 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
             return None
         return float(sub.iloc[-1])
 
-    # dividend yield (trailing) & current price from info
+    # current price + sector from info (dividend yield is now a formula)
     try:
         info = tk.info
     except Exception:
         info = {}
-    div_yield = info.get("dividendYield")
-    if div_yield is not None and div_yield > 1:  # some feeds return percent
-        div_yield = div_yield / 100.0
     cur_price = info.get("currentPrice") or info.get("regularMarketPrice")
+    currency = info.get("financialCurrency") or info.get("currency") or "USD"
+    sector = info.get("sector") or ""
+    industry = info.get("industry") or ""
+    fin_sector = (sector == "Financial Services") or any(
+        k in industry for k in ("Bank", "Capital Markets", "Insurance", "Credit"))
 
     period_meta = []
 
@@ -641,6 +743,7 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
         inputs["Total liabilities"].append(s(_get(tl, col)))
         inputs["Total debt"].append(s(total_debt_at(col)))
         inputs["Net debt"].append(s(net_debt_at(col)))
+        inputs["GW & intangibles"].append(s(gw_at(col)))
         inputs["Operating CF"].append(s(_get(ocf, col)))
         dv = _get(dividends, col)
         inputs["Cash dividend paid"].append(s(abs(dv)) if dv is not None else None)
@@ -674,23 +777,30 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
             inputs[k].append(vals.get(k))
         # latest price for the trailing column
         inputs["Market price"][-1] = cur_price if cur_price is not None else inputs["Market price"][-1]
-        inputs["DY"][-1] = None
         period_meta.append({"label": label, "partial": True})
 
-    # attach trailing dividend yield to the most recent *full* year column
-    if div_yield is not None and period_meta:
-        # place on last full-year column (index of last non-partial)
-        for i in range(len(period_meta) - 1, -1, -1):
-            if not period_meta[i]["partial"]:
-                inputs["DY"][i] = div_yield
-                break
-
-    unit_label = "US$ millions" if unit_millions else "US$"
-    src = (f"Source: Yahoo Finance via yfinance. Non-marketable securities and "
-           f"dividend yield are best-effort. Generated for {ticker}.")
+    # ---- Trefis price estimate on the current-year (last) column --------
     notes = [warning] if warning else []
+    if with_trefis and period_meta:
+        est = fetch_trefis_estimate(ticker)
+        if est is not None:
+            inputs["trefis"][-1] = est
+        else:
+            notes.append(f"Trefis price estimate for {ticker.upper()} is not in the "
+                         "public feed (only ~200 tickers exposed); enter it by hand.")
+
+    cur_sym = {"USD": "US$", "EUR": "€", "GBP": "£", "GBp": "£", "CHF": "CHF",
+               "JPY": "¥", "SEK": "SEK", "DKK": "DKK"}.get(currency, currency)
+    unit_label = f"{cur_sym} millions" if unit_millions else cur_sym
+    src = (f"Source: Yahoo Finance via yfinance; Trefis price estimate via "
+           f"trefis.com public feed. Non-marketable securities are best-effort. "
+           f"Generated for {ticker}.")
+    # bank-like = a financial-sector name that structurally lacks EBITDA
+    # (true banks/insurers) — excludes Visa/Mastercard which do report EBITDA.
+    is_financial = fin_sector and all(v is None for v in inputs["EBITDA"])
     return SheetData(ticker=ticker.upper(), inputs=inputs, periods=period_meta,
-                     unit_label=unit_label, notes=notes, source_note=src)
+                     unit_label=unit_label, notes=notes, source_note=src,
+                     sector=sector, industry=industry, is_financial=is_financial)
 
 
 def _build_runrate(qinc, qbal, qcf, last_annual_end,
@@ -754,6 +864,9 @@ def _build_runrate(qinc, qbal, qcf, last_annual_end,
     qfcf = _pick(qcf, CC["FCF"]) if qcf is not None else None
     qtdebt = _pick(qbal, CB["Total debt"]) if qbal is not None else None
     qndebt = _pick(qbal, CB["Net debt"]) if qbal is not None else None
+    qgwc = _pick(qbal, CB["GW combined"]) if qbal is not None else None
+    qgood = _pick(qbal, CB["Goodwill"]) if qbal is not None else None
+    qintang = _pick(qbal, CB["Intangibles"]) if qbal is not None else None
     qdiv = _pick(qcf, CC["Dividends"]) if qcf is not None else None
     qbuy = _pick(qcf, CC["Buyback"]) if qcf is not None else None
 
@@ -796,15 +909,38 @@ def _build_runrate(qinc, qbal, qcf, last_annual_end,
 
     latest = qcols[-1]
 
-    def bs_latest(series):
-        return s(_get(series, latest)) if series is not None else None
+    # Balance-sheet stocks use the latest QUARTERLY BALANCE column that actually
+    # has data, which can lag the income statement (Yahoo loads them separately —
+    # e.g. NKE's income has a May quarter the balance sheet doesn't yet). Using the
+    # income quarter's date to look up the balance sheet would return None for every
+    # stock (blank shares -> blank market cap -> all multiples blank).
+    bs_ref = None
+    if qbal is not None:
+        for c in sorted(qbal.columns, reverse=True):
+            if _get(qeq, c) is not None or _get(qta, c) is not None:
+                bs_ref = c
+                break
 
-    cash_latest = _get(qcash, latest) if qcash is not None else None
+    def bs_latest(series):
+        return s(_get(series, bs_ref)) if series is not None and bs_ref is not None else None
+
+    cash_latest = _get(qcash, bs_ref) if (qcash is not None and bs_ref is not None) else None
     if cash_latest is not None and qcash is not None and qshinv is not None and \
             qcash.name not in ("Cash Cash Equivalents And Short Term Investments",):
-        si = _get(qshinv, latest)
+        si = _get(qshinv, bs_ref)
         if si is not None:
             cash_latest = cash_latest + si
+
+    def gw_latest():
+        if bs_ref is None:
+            return None
+        v = _get(qgwc, bs_ref)
+        if v is not None:
+            return v
+        g, i = _get(qgood, bs_ref), _get(qintang, bs_ref)
+        if g is not None or i is not None:
+            return (g or 0) + (i or 0)
+        return None
 
     div_sum = flow_sum(qdiv)
     div_rr = abs(div_sum) * factor if div_sum is not None else None
@@ -826,6 +962,7 @@ def _build_runrate(qinc, qbal, qcf, last_annual_end,
         "Total liabilities": bs_latest(qtl),
         "Total debt": bs_latest(qtdebt),
         "Net debt": bs_latest(qndebt),
+        "GW & intangibles": s(gw_latest()),
         "Operating CF": s(ann(qocf)),
         "Cash dividend paid": s(div_rr),
         "Repurchase of capital stock": s(buy_rr),
@@ -869,6 +1006,8 @@ def compute_ratios_for_period(inputs: dict, p: int) -> dict:
     td, nd = g("Total debt"), g("Net debt")
     div, buy = g("Cash dividend paid"), g("Repurchase of capital stock")
     da, capex = g("D&A"), g("CapEx")
+    gw = g("GW & intangibles")
+    tbv = equity - (gw or 0) if equity is not None else None
 
     def safe(num, den, pos_den=False):
         if num is None or den is None or den == 0:
@@ -878,7 +1017,12 @@ def compute_ratios_for_period(inputs: dict, p: int) -> dict:
         return num / den
 
     dRev = safe(rev, rev_prev, pos_den=True) - 1 if rev and rev_prev and rev_prev > 0 else None
-    dNI = ni / ni_prev - 1 if ni is not None and ni_prev is not None and ni_prev > 0 else None
+    if ni is None or ni_prev is None:
+        dNI = None
+    elif ni_prev <= 0:
+        dNI = 1.0                      # cap at +100% off a non-positive base (mirrors Excel)
+    else:
+        dNI = ni / ni_prev - 1
     fwd_pe = None
     if mktcap is not None and ni is not None and ni > 0:
         fwd_pe = mktcap / (ni * (1 + dNI)) if dNI is not None else mktcap / ni
@@ -889,7 +1033,9 @@ def compute_ratios_for_period(inputs: dict, p: int) -> dict:
         "pe_ttm": safe(mktcap, ni, pos_den=True) if ni and ni > 0 else None,
         "fwd_pe": fwd_pe,
         "roce": safe(ebit, capemp),
+        "roe": safe(ni, equity, pos_den=True) if equity and equity > 0 else None,
         "mod_roce": safe(ebit, (mktcap - equity)) if mktcap is not None and equity is not None else None,
+        "ptbv": safe(mktcap, tbv, pos_den=True) if tbv and tbv > 0 else None,
         "ev_ebitda": safe(ev, ebitda, pos_den=True) if ebitda and ebitda > 0 else None,
         "pb": safe(mktcap, equity, pos_den=True) if equity and equity > 0 else None,
         "ps": safe(mktcap, rev),
@@ -900,23 +1046,340 @@ def compute_ratios_for_period(inputs: dict, p: int) -> dict:
         "debt_assets": safe(td, ta),
         "debt_book": safe(nd, (nd + ta)) if nd is not None and ta is not None else None,
         "debt_mkt": safe(nd, mktcap),
+        "DY": safe(div, mktcap),
     }
 
 
-def compute_peer_medians(peer_tickers: list[str], years: int,
-                         partial_method: str) -> dict[str, float]:
-    """Fetch each peer, compute its latest-period ratios, return per-ratio median."""
-    buckets: dict[str, list] = {}
-    for pt in peer_tickers:
+# ratio display metadata shared by the Excel writer intent and the web dashboard:
+# (key, label, format, has_peer_median)
+RATIO_DISPLAY = [
+    ("dRev", "Δ Revenue (YoY)", "pct", False),
+    ("dNI", "Δ Net income (YoY)", "pct", False),
+    ("pe_ttm", "P/E (trailing)", "mult", True),
+    ("fwd_pe", "Forward P/E", "mult", True),
+    ("roce", "ROCE", "pct", True),
+    ("roe", "ROE", "pct", True),
+    ("mod_roce", "Acid ROCE", "pct", True),
+    ("ev_ebitda", "EV / EBITDA", "mult", True),
+    ("pb", "P / B", "mult", True),
+    ("ptbv", "P / TBV", "mult", True),
+    ("ps", "P / S", "mult", True),
+    ("ev_fcf", "EV / FCF", "mult", True),
+    ("DY", "Dividend yield", "pct2", False),
+    ("tsr", "Total shareholder return", "pct", True),
+    ("capex_ebitda", "CapEx / EBITDA", "pct", True),
+    ("capex_da", "CapEx / D&A", "mult", True),
+    ("debt_assets", "Ratio de endeudamiento", "pct", True),
+    ("debt_book", "Deuda neta / activos (libros)", "pct", True),
+    ("debt_mkt", "Deuda neta / market cap", "pct", True),
+]
+_MULT_KEYS = {"pe_ttm", "fwd_pe", "ev_ebitda", "pb", "ptbv", "ps", "ev_fcf"}
+# ratios that are structurally N/A for banks / financials (no EBIT/EBITDA/CapEx/
+# current-liabilities) — the UI marks these "n/a" instead of a blank dash.
+BANK_NA_KEYS = ["roce", "mod_roce", "ev_ebitda", "ev_fcf", "capex_ebitda", "capex_da"]
+
+
+def recommend_ratio(key: str, value, peer=None, price=None, trefis_val=None) -> str:
+    """Return 'BUY' / 'HOLD' / 'SELL' / '' for a ratio, mirroring the Excel rules."""
+    def band(v, buy, sell, low_good=False):
+        if v is None:
+            return ""
+        if low_good:
+            return "BUY" if v <= buy else ("SELL" if v > sell else "HOLD")
+        return "BUY" if v >= buy else ("SELL" if v < sell else "HOLD")
+
+    if key in _MULT_KEYS:                       # valuation multiples: vs peer median
+        if peer is None or value is None or value <= 0:
+            return ""
+        return "BUY" if value < peer * 0.9 else ("SELL" if value > peer * 1.1 else "HOLD")
+    if key in ("dRev", "dNI"):
+        return band(value, 0.10, 0.0)
+    if key in ("roce", "roe"):
+        return band(value, 0.15, 0.08)
+    if key == "mod_roce":                        # Acid ROCE: >=5% BUY, 4-5% HOLD, <4% SELL
+        return band(value, 0.05, 0.04)
+    if key == "tsr":
+        return band(value, 0.05, 0.02)
+    if key == "DY":
+        return band(value, 0.03, 0.01)
+    if key == "debt_assets":
+        return band(value, 0.30, 0.60, low_good=True)
+    if key == "debt_book":
+        return band(value, 0.20, 0.40, low_good=True)
+    if key == "debt_mkt":
+        return band(value, 0.15, 0.40, low_good=True)
+    if key == "trefis":
+        if trefis_val is None or price is None:
+            return ""
+        return "BUY" if trefis_val > price * 1.1 else ("SELL" if trefis_val < price * 0.9 else "HOLD")
+    return ""                                    # capex_* -> informational
+
+
+# statement groupings for the dashboard (label, computed?) --------------------
+_STATEMENTS = {
+    "Income Statement": [
+        ("Revenue", "Revenue"), ("EBITDA", "EBITDA"),
+        ("EBIT", "EBIT (operating income)"), ("Net income", "Net income"), ("D&A", "D&A")],
+    "Balance Sheet": [
+        ("Total assets", "Total assets"), ("Cash & mktb sec.", "Cash & marketable securities"),
+        ("Non-mktb sec.", "Non-marketable securities"), ("Current liabilities", "Current liabilities"),
+        ("__capemp__", "Capital employed"), ("Stockholders' equity", "Stockholders' equity"),
+        ("Total liabilities", "Total liabilities"), ("Total debt", "Total debt"),
+        ("Net debt", "Net debt")],
+    "Cash Flow": [
+        ("Operating CF", "Operating cash flow"), ("Cash dividend paid", "Cash dividend paid"),
+        ("Repurchase of capital stock", "Repurchase of capital stock"),
+        ("CapEx", "CapEx"), ("FCF", "Free cash flow")],
+    "Market Data": [
+        ("Total shares", "Total shares (diluted)"), ("Market price", "Market price"),
+        ("__mktcap__", "Market cap.")],
+}
+
+
+def _series(inputs, key, n):
+    arr = inputs.get(key) or []
+    return [arr[i] if i < len(arr) else None for i in range(n)]
+
+
+def to_jsonable(obj):
+    """Recursively convert numpy scalars / NaN / inf into plain JSON-safe values."""
+    import math
+    if isinstance(obj, dict):
+        return {k: to_jsonable(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [to_jsonable(v) for v in obj]
+    if isinstance(obj, bool) or obj is None:
+        return obj
+    if isinstance(obj, int):
+        return obj
+    if isinstance(obj, float):
+        return None if (math.isnan(obj) or math.isinf(obj)) else obj
+    # numpy scalar with .item()
+    item = getattr(obj, "item", None)
+    if callable(item):
         try:
-            print(f"  peer {pt} ...", file=sys.stderr)
-            pdata = fetch_yfinance(pt, years=years, partial_method=partial_method)
-            last = len(pdata.periods) - 1
-            for k, v in compute_ratios_for_period(pdata.inputs, last).items():
-                if v is not None:
-                    buckets.setdefault(k, []).append(v)
-        except Exception as exc:
-            print(f"  [warn] peer {pt} skipped: {exc}", file=sys.stderr)
+            return to_jsonable(item())
+        except Exception:
+            return None
+    return obj
+
+
+def analyze_to_dict(ticker: str, years: int = 3, partial_method: str = "runrate",
+                    peer_median: dict | None = None, with_trefis: bool = False) -> dict:
+    """Full single-ticker analysis as a JSON-serializable dict for the dashboard."""
+    data = fetch_yfinance(ticker, years=years, partial_method=partial_method,
+                          with_trefis=with_trefis)
+    inputs = data.inputs
+    n = len(data.periods)
+    peer_median = peer_median or {}
+
+    def capemp(p):
+        ta = _series(inputs, "Total assets", n)[p]
+        cash = _series(inputs, "Cash & mktb sec.", n)[p]
+        nm = _series(inputs, "Non-mktb sec.", n)[p]
+        cl = _series(inputs, "Current liabilities", n)[p]
+        return ta - (cash or 0) - (nm or 0) - (cl or 0) if ta is not None else None
+
+    def mktcap(p):
+        pr = _series(inputs, "Market price", n)[p]
+        sh = _series(inputs, "Total shares", n)[p]
+        return pr * sh if pr is not None and sh is not None else None
+
+    statements = {}
+    for grp, rows in _STATEMENTS.items():
+        out_rows = []
+        for key, label in rows:
+            if key == "__capemp__":
+                vals = [capemp(p) for p in range(n)]
+                fmt = "num"
+            elif key == "__mktcap__":
+                vals = [mktcap(p) for p in range(n)]
+                fmt = "num"
+            else:
+                vals = _series(inputs, key, n)
+                fmt = "price" if key == "Market price" else "num"
+            out_rows.append({"label": label, "fmt": fmt, "values": vals})
+        statements[grp] = out_rows
+
+    per_period = [compute_ratios_for_period(inputs, p) for p in range(n)]
+    last = n - 1
+    price_last = _series(inputs, "Market price", n)[last]
+    trefis_series = _series(inputs, "trefis", n)
+
+    ratios = []
+    for key, label, fmt, has_peer in RATIO_DISPLAY:
+        vals = [per_period[p].get(key) for p in range(n)]
+        rec = recommend_ratio(key, vals[last], peer=peer_median.get(key), price=price_last)
+        ratios.append({
+            "key": key, "label": label, "fmt": fmt, "values": vals,
+            "peer": peer_median.get(key) if has_peer else None, "rec": rec,
+        })
+    # Trefis price-estimate row (manual by default; blank -> no rec)
+    ratios.append({
+        "key": "trefis", "label": "Price estimate (Trefis)", "fmt": "price",
+        "values": trefis_series, "peer": None,
+        "rec": recommend_ratio("trefis", None, price=price_last, trefis_val=trefis_series[last]),
+    })
+
+    tally = {"BUY": 0, "HOLD": 0, "SELL": 0}
+    for r in ratios:
+        if r["rec"] in tally:
+            tally[r["rec"]] += 1
+
+    return to_jsonable({
+        "ticker": data.ticker,
+        "price": price_last,
+        "periods": [pm["label"] for pm in data.periods],
+        "unit_label": data.unit_label,
+        "sector": data.sector,
+        "industry": data.industry,
+        "is_financial": data.is_financial,
+        "bank_na_keys": BANK_NA_KEYS,
+        "statements": statements,
+        "ratios": ratios,
+        "tally": tally,
+        "notes": data.notes,
+        "source_note": data.source_note,
+    })
+
+
+def summarize_ticker(ticker: str, years: int, partial_method: str,
+                     peer_median: dict | None = None, with_trefis: bool = False) -> dict:
+    """Compact last-period summary for batch view: per-ratio value + rec, no raw data."""
+    data = fetch_yfinance(ticker, years=years, partial_method=partial_method,
+                          with_trefis=with_trefis)
+    inputs = data.inputs
+    n = len(data.periods)
+    last = n - 1
+    peer_median = peer_median or {}
+    vals = compute_ratios_for_period(inputs, last)
+    price_last = (inputs.get("Market price") or [None])[last] if n else None
+    cells = {}
+    tally = {"BUY": 0, "HOLD": 0, "SELL": 0}
+    for key, label, fmt, has_peer in RATIO_DISPLAY:
+        v = vals.get(key)
+        rec = recommend_ratio(key, v, peer=peer_median.get(key), price=price_last)
+        cells[key] = {"value": v, "rec": rec, "fmt": fmt}
+        if rec in tally:
+            tally[rec] += 1
+    return to_jsonable({
+        "ticker": data.ticker,
+        "price": price_last,
+        "period": data.periods[last]["label"] if n else None,
+        "is_financial": data.is_financial,
+        "sector": data.sector,
+        "cells": cells,
+        "tally": tally,
+        "score": tally["BUY"] - tally["SELL"],
+    })
+
+
+def build_batch(tickers, years: int = 3, partial_method: str = "runrate",
+                peers=None, self_peer: bool = True, max_workers: int = 8,
+                with_trefis: bool = False) -> dict:
+    """Batch summary: one compact last-period row per ticker + universe medians.
+
+    When no explicit ``peers`` are given and ``self_peer`` is on, valuation
+    multiples are judged against the batch's OWN median (relative value within
+    the group). Returns the same shape the dashboard and static report consume.
+    """
+    tickers = list(dict.fromkeys(t.upper() for t in tickers))
+    explicit_peers = [p.upper() for p in (peers or []) if p]
+    self_peer = self_peer and not explicit_peers
+    peer_median = compute_peer_medians(explicit_peers, years, partial_method) if explicit_peers else {}
+
+    def work(t):
+        return summarize_ticker(t, years, partial_method,
+                                peer_median=peer_median, with_trefis=with_trefis)
+
+    results, errors = map_tickers_chunked(tickers, work, max_workers=max_workers,
+                                          label="batch")
+    rows = list(results.values())
+
+    used_median = dict(peer_median)
+    if self_peer and rows:
+        for key in _MULT_KEYS:
+            xs = [r["cells"][key]["value"] for r in rows
+                  if r["cells"][key]["value"] is not None and r["cells"][key]["value"] > 0]
+            if xs:
+                used_median[key] = median(xs)
+        for r in rows:
+            tally = {"BUY": 0, "HOLD": 0, "SELL": 0}
+            for key, *_ in RATIO_DISPLAY:
+                c = r["cells"][key]
+                if key in _MULT_KEYS:
+                    c["rec"] = recommend_ratio(key, c["value"], peer=used_median.get(key))
+                if c["rec"] in tally:
+                    tally[c["rec"]] += 1
+            r["tally"] = tally
+            r["score"] = tally["BUY"] - tally["SELL"]
+
+    rows.sort(key=lambda r: r["score"], reverse=True)
+    return to_jsonable({
+        "rows": rows,
+        "errors": errors,
+        "ratio_order": [k for k, *_ in RATIO_DISPLAY],
+        "ratio_labels": {k: lbl for k, lbl, *_ in RATIO_DISPLAY},
+        "ratio_fmts": {k: fmt for k, _, fmt, _ in RATIO_DISPLAY},
+        "bank_na_keys": BANK_NA_KEYS,
+        "peer_median": used_median,
+        "peer_basis": ("explicit: " + ", ".join(explicit_peers)) if explicit_peers
+        else ("universe self-median" if self_peer else "none"),
+    })
+
+
+def map_tickers_chunked(tickers, work_fn, max_workers: int = 6, chunk_size: int = 40,
+                        pause: float = 0.8, retries: int = 1, label: str = ""):
+    """Run ``work_fn(ticker)`` over many tickers in throttled batches.
+
+    Processes ``chunk_size`` tickers at a time with ``max_workers`` threads, pauses
+    ``pause`` seconds between chunks, and retries failures once (Yahoo rate-limits
+    on large sweeps otherwise). Returns ``(results_dict, errors_list)``.
+    """
+    results: dict = {}
+    remaining = list(dict.fromkeys(tickers))
+    failed: list = []
+    for attempt in range(retries + 1):
+        failed = []
+        total = len(remaining)
+        for i in range(0, total, chunk_size):
+            chunk = remaining[i:i + chunk_size]
+            if label:
+                print(f"  {label}: {min(i + chunk_size, total)}/{total}", file=sys.stderr)
+            with ThreadPoolExecutor(max_workers=max_workers) as ex:
+                futs = {ex.submit(work_fn, t): t for t in chunk}
+                for fut in as_completed(futs):
+                    t = futs[fut]
+                    try:
+                        results[t] = fut.result()
+                    except Exception as exc:  # noqa: BLE001
+                        failed.append((t, exc))
+            if i + chunk_size < total:
+                time.sleep(pause)
+        remaining = [t for t, _ in failed]
+        if not remaining:
+            break
+        time.sleep(pause * 2)   # backoff before the retry pass
+    errors = [{"ticker": t, "error": f"{type(e).__name__}: {e}"} for t, e in failed]
+    return results, errors
+
+
+def compute_peer_medians(peer_tickers: list[str], years: int,
+                         partial_method: str, max_workers: int = 8) -> dict[str, float]:
+    """Fetch each peer (throttled batches), compute its latest-period ratios,
+    return the per-ratio median across peers."""
+    def work(pt):
+        pdata = fetch_yfinance(pt, years=years, partial_method=partial_method,
+                               with_trefis=False)
+        last = len(pdata.periods) - 1
+        return compute_ratios_for_period(pdata.inputs, last)
+
+    results, _ = map_tickers_chunked(peer_tickers, work, max_workers=max_workers)
+    buckets: dict[str, list] = {}
+    for ratios in results.values():
+        for k, v in ratios.items():
+            if v is not None:
+                buckets.setdefault(k, []).append(v)
     return {k: statistics.median(vs) for k, vs in buckets.items() if vs}
 
 
@@ -925,7 +1388,8 @@ def compute_peer_medians(peer_tickers: list[str], years: int,
 # --------------------------------------------------------------------------- #
 def build_workbook(tickers: list[str], years: int, output: str,
                    partial_method: str = "runrate",
-                   peers: list[str] | None = None) -> str:
+                   peers: list[str] | None = None,
+                   with_trefis: bool = True) -> str:
     wb = openpyxl.Workbook()
     wb.remove(wb.active)
 
@@ -940,7 +1404,8 @@ def build_workbook(tickers: list[str], years: int, output: str,
 
     for t in tickers:
         print(f"Fetching {t} ...", file=sys.stderr)
-        data = fetch_yfinance(t, years=years, partial_method=partial_method)
+        data = fetch_yfinance(t, years=years, partial_method=partial_method,
+                              with_trefis=with_trefis)
         data.peer_median = dict(peer_median)
         data.peer_note = peer_note
         ws = wb.create_sheet(title=t.upper()[:31])
@@ -960,6 +1425,8 @@ def main(argv=None):
     p.add_argument("--peers", default=None,
                    help="Comma-separated peer tickers for sector-median comparison, "
                         "e.g. --peers KO,PG,CL. Drives the BUY/HOLD/SELL of valuation multiples.")
+    p.add_argument("--no-trefis", action="store_true",
+                   help="Skip the Trefis price-estimate lookup (avoids the external call).")
     p.add_argument("--output", "-o", default=None, help="Output .xlsx path")
     args = p.parse_args(argv)
 
@@ -970,7 +1437,8 @@ def main(argv=None):
 
     peers = [x.strip() for x in args.peers.split(",") if x.strip()] if args.peers else None
     path = build_workbook(args.tickers, args.years, out,
-                          partial_method=args.partial_method, peers=peers)
+                          partial_method=args.partial_method, peers=peers,
+                          with_trefis=not args.no_trefis)
     print(f"Wrote {path}")
     return 0
 

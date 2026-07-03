@@ -1,0 +1,94 @@
+:root{
+  --bg:#f4f5f3; --surface:#ffffff; --surface-2:#fafaf8; --border:#e3e3df;
+  --ink:#0b0b0b; --ink-2:#52514e; --muted:#8a8a85; --accent:#2a78d6;
+  --buy:#0a7a0a; --buy-bg:rgba(12,163,12,.14);
+  --hold:#8a6100; --hold-bg:rgba(250,178,25,.20);
+  --sell:#b32020; --sell-bg:rgba(208,59,59,.14);
+  --series-1:#2a78d6; --series-2:#1baf7a; --grid:#e8e8e4;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.04);
+}
+[data-theme="dark"]{
+  --bg:#111110; --surface:#1c1c1a; --surface-2:#232320; --border:#33332f;
+  --ink:#f5f5f0; --ink-2:#c3c2b7; --muted:#8f8e86; --accent:#3987e5;
+  --buy:#37c837; --buy-bg:rgba(12,163,12,.20);
+  --hold:#fab219; --hold-bg:rgba(250,178,25,.16);
+  --sell:#ff6b6b; --sell-bg:rgba(208,59,59,.22);
+  --series-1:#3987e5; --series-2:#199e70; --grid:#2b2b28;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 20px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+header{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--border);
+       background:var(--surface);position:sticky;top:0;z-index:10}
+header h1{font-size:17px;margin:0;font-weight:650;letter-spacing:-.01em}
+header .sub{color:var(--muted);font-size:12px}
+.spacer{flex:1}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 24px 60px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);
+      padding:16px 18px;margin-bottom:18px}
+.controls{display:grid;grid-template-columns:1fr;gap:12px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+input[type=text],select,input[type=number]{background:var(--surface-2);border:1px solid var(--border);
+   border-radius:8px;padding:8px 10px;color:var(--ink);font-size:14px;min-width:90px}
+input[type=text]{min-width:260px}
+.grow{flex:1}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2)}
+button{cursor:pointer;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);
+   border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.ghost{background:transparent}
+.presets{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.presets span{color:var(--muted);font-size:12px}
+.legend{display:flex;gap:14px;align-items:center;font-size:12px;color:var(--ink-2);margin-top:2px}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.03em}
+.badge.BUY{color:var(--buy);background:var(--buy-bg)}
+.badge.HOLD{color:var(--hold);background:var(--hold-bg)}
+.badge.SELL{color:var(--sell);background:var(--sell-bg)}
+.chip{display:inline-flex;gap:5px;align-items:center;padding:3px 10px;border-radius:20px;background:var(--surface-2);
+      border:1px solid var(--border);font-size:12px;font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{position:sticky;top:0;background:var(--surface);font-size:11px;text-transform:uppercase;
+         letter-spacing:.03em;color:var(--muted);font-weight:600;z-index:2}
+tbody tr:hover{background:var(--surface-2)}
+.sec-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);
+           margin:18px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--border)}
+.num{color:var(--ink)} .muted{color:var(--muted)}
+.scroll{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+.cell-BUY{background:var(--buy-bg)} .cell-HOLD{background:var(--hold-bg)} .cell-SELL{background:var(--sell-bg)}
+.tickcell{font-weight:700;cursor:pointer;color:var(--accent)}
+.score{font-weight:700;text-align:center}
+.peerv{color:var(--muted);font-size:12px}
+.err{color:var(--sell);font-size:13px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.spin{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;
+      animation:sp .7s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+a.dl{color:var(--accent);text-decoration:none;font-weight:600;font-size:13px}
+.hint{color:var(--muted);font-size:12px;margin-top:6px}
+h2.tk{margin:0;font-size:22px;letter-spacing:-.01em}
+/* charts */
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;margin-top:4px}
+.chart{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.chart h4{margin:0 0 1px;font-size:13px;font-weight:650;color:var(--ink)}
+.chart .lg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-2);margin:2px 0 4px}
+.chart .lg i{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart text{fill:var(--ink-2);font-size:11px}
+.chart .axlbl{fill:var(--muted);font-size:10px}
+.chart .val{fill:var(--ink);font-weight:600}
+.gridline{stroke:var(--grid);stroke-width:1}
+/* collapsible raw data */
+details.raw{margin-top:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);overflow:hidden}
+details.raw>summary{cursor:pointer;padding:9px 14px;font-weight:650;font-size:12px;text-transform:uppercase;
+  letter-spacing:.04em;color:var(--accent);list-style:none;user-select:none}
+details.raw>summary::-webkit-details-marker{display:none}
+details.raw>summary::before{content:'▸';color:var(--muted);margin-right:8px;display:inline-block;width:10px}
+details.raw[open]>summary::before{content:'▾'}
+details.raw .scroll{border:0;border-top:1px solid var(--border);border-radius:0}

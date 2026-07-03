@@ -58,7 +58,7 @@ Each sheet groups line items by source statement, then the ratios:
   CapEx, Free cash flow
 - **Market data** — Shares, Price, Market cap.*
 - **Ratios** — (1) ΔRevenue, (2) ΔNet income, (3) P/E trailing + Forward P/E,
-  (4) ROCE / Mod. ROCE, (5) EV/EBITDA, (6) P/B, (7) P/S, (8) EV/FCF,
+  (4) ROCE / ROE / Acid ROCE, (5) EV/EBITDA, (6) P/B / P/TBV, (7) P/S, (8) EV/FCF,
   (9) Dividend yield, (10) Total shareholder return, (11) CapEx/EBITDA,
   (12) CapEx/D&A, (13) Ratio de endeudamiento, (14) Deuda financiera neta /
   activos (libros), (15) Deuda financiera neta / market cap,
@@ -91,21 +91,38 @@ Decision rules (all thresholds are editable directly in the formulas):
 | Price estimate (Trefis) | vs current price | > +10% | < −10% |
 
 Valuation multiples stay blank until a peer median exists (relative call only).
-`Modified ROCE`, `CapEx/EBITDA`, `CapEx/D&A` are informational — peer median is
-shown but no recommendation is emitted.
+Growth (Δ Revenue, Δ Net income) is judged on absolute thresholds only — **no
+peer median** is shown for them. `Acid ROCE` (EBIT / (market cap − equity))
+recommends BUY ≥ 5%, HOLD 4–5%, SELL < 4%. `CapEx/EBITDA` and `CapEx/D&A` are
+informational — peer median is shown but no recommendation is emitted.
 
-### Manual columns / rows (filled by hand, blank on generation)
+### Trefis price estimate (auto, best-effort)
+
+The `Price estimate (Trefis)` row is auto-filled on the current-year column from
+the Trefis public feed (`trefis.com/api/price-estimates`). That feed only
+exposes ~200 tickers, so many names (e.g. MMM) are absent — those stay blank
+with a note, and you enter the target by hand. Pass `--no-trefis` to skip the
+lookup entirely. Its Rec. compares the estimate to the current price
+(> +10% → BUY, < −10% → SELL).
+
+### Computed automatically (no manual entry)
+
+- **Dividend yield** — now a live formula, `dividends paid / market cap`, for
+  every year (no more missing cells).
+- **Δ Net income (YoY)** — off a **non-positive** prior-year base it is capped
+  at **+100%** (instead of blank), so Forward P/E stays computable.
+
+### Still manual
 
 - **Peer median** — auto-filled with `--peers`; otherwise type it in.
-- **Price estimate (Trefis)** row — external analyst target (feeds its Rec.).
-- **Dividend yield** — best-effort from Yahoo; verify or overwrite.
+- **Price estimate (Trefis)** — only for tickers outside the public feed.
 
 ### Handling of negative-earnings years
 
-`Δ Net income (YoY)` returns `"n.m."` (not meaningful) when the prior year's net
-income was ≤ 0, since a percentage change off a negative base is meaningless.
-Forward P/E then falls back to trailing P/E for that column (via `ISNUMBER`),
-so no formula errors propagate.
+`Δ Net income (YoY)` is **capped at +100%** when the prior year's net income was
+≤ 0 (a percentage change off a non-positive base is otherwise meaningless).
+Forward P/E stays computable — it uses `net income × (1 + growth)`, i.e. ×2 in
+that case.
 
 ## Notes / caveats
 

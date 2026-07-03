@@ -1,0 +1,16 @@
+# Render Blueprint — one-click deploy of the live dashboard.
+# In Render: New + -> Blueprint -> point at this repo. Or set the fields below
+# manually in a new Web Service. Root directory MUST be analyses/dashboard.
+services:
+  - type: web
+    name: fundamental-analyzer
+    runtime: python
+    rootDir: analyses/dashboard
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 2
+    envVars:
+      # Optional password gate: set a value to require it (any username).
+      # Leave unset for open access.
+      - key: DASH_PASSWORD
+        sync: false

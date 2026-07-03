@@ -44,23 +44,12 @@ def build_report(tickers, years, method, peers, self_peer, with_trefis, peer_sou
     base_median = (fa.compute_peer_medians(explicit_peers, years, method)
                    if explicit_peers else {})
 
-    # ---- single parallel fetch of every ticker's full analysis --------------
-    analyses, errors = {}, []
-
+    # ---- throttle-resilient fetch (chunked + backoff + on-disk cache) -------
     def work(t):
-        return t, fa.analyze_to_dict(t, years=years, partial_method=method,
-                                     peer_median=base_median, with_trefis=with_trefis)
+        return fa.analyze_to_dict(t, years=years, partial_method=method,
+                                  peer_median=base_median, with_trefis=with_trefis)
 
-    with ThreadPoolExecutor(max_workers=8) as ex:
-        futs = {ex.submit(work, t): t for t in tickers}
-        for fut in as_completed(futs):
-            t = futs[fut]
-            try:
-                _, d = fut.result()
-                analyses[t] = d
-            except Exception as exc:  # noqa: BLE001
-                errors.append({"ticker": t, "error": f"{type(exc).__name__}: {exc}"})
-            print(f"  {t} {'ok' if t in analyses else 'FAILED'}", file=sys.stderr)
+    analyses, errors = fa.map_tickers_chunked(tickers, work, label="fetch")
 
     # ---- universe self-median for valuation multiples -----------------------
     used_median = dict(base_median)
@@ -208,7 +197,14 @@ def main(argv=None):
     p.add_argument("--title", default="Fundamental Analysis Report")
     p.add_argument("--output", "-o", default=None)
     p.add_argument("--as-of", default=None, help="Date stamp (YYYY-MM-DD); default today")
+    p.add_argument("--no-cache", action="store_true", help="Ignore the on-disk fundamentals cache")
+    p.add_argument("--refresh", action="store_true",
+                   help="Force a fresh fetch (cache TTL = 0 for this run, then repopulate)")
+    p.add_argument("--cache-ttl", type=float, default=6.0, help="Cache freshness in hours (default 6)")
     args = p.parse_args(argv)
+
+    fa.configure_cache(enabled=not args.no_cache,
+                       ttl=0 if args.refresh else int(args.cache_ttl * 3600))
 
     tickers = list(args.tickers)
     if args.universe:

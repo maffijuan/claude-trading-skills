@@ -26,11 +26,15 @@ spreadsheet's ``=12/9 * <9-month figure>`` column.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json as _json
+import random
 import statistics
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
+from pathlib import Path
 from statistics import median
 
 import openpyxl
@@ -426,6 +430,55 @@ def write_ticker_sheet(ws, data: SheetData) -> None:
 
 
 # --------------------------------------------------------------------------- #
+# On-disk cache for fetched fundamentals (survives throttles / re-runs)
+# --------------------------------------------------------------------------- #
+# Yahoo rate-limits large sweeps. Caching each ticker's fetched SheetData means a
+# re-run serves already-fetched names instantly and only re-hits Yahoo for the
+# ones that failed — turning a throttled S&P-500 sweep into a converging retry.
+_CACHE_DIR = Path(__file__).resolve().parents[1] / "dashboard" / ".cache"
+_CACHE_ENABLED = True
+_CACHE_TTL = 6 * 3600      # seconds; fundamentals barely move intraday
+
+
+def configure_cache(enabled: bool = True, ttl: int | None = None, cache_dir=None):
+    """Toggle / tune the on-disk fundamentals cache."""
+    global _CACHE_ENABLED, _CACHE_TTL, _CACHE_DIR
+    _CACHE_ENABLED = enabled
+    if ttl is not None:
+        _CACHE_TTL = ttl
+    if cache_dir is not None:
+        _CACHE_DIR = Path(cache_dir)
+
+
+def _cache_path(key: str) -> Path:
+    return _CACHE_DIR / (hashlib.md5(key.encode()).hexdigest()[:16] + ".json")
+
+
+def _cache_load(key: str):
+    if not _CACHE_ENABLED:
+        return None
+    p = _cache_path(key)
+    try:
+        if p.exists() and (time.time() - p.stat().st_mtime) < _CACHE_TTL:
+            return _json.loads(p.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return None
+    return None
+
+
+def _cache_store(key: str, obj: dict):
+    if not _CACHE_ENABLED:
+        return
+    try:
+        _CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        tmp = _cache_path(key).with_suffix(".tmp")
+        tmp.write_text(_json.dumps(obj), encoding="utf-8")
+        tmp.replace(_cache_path(key))
+    except Exception:  # noqa: BLE001
+        pass
+
+
+# --------------------------------------------------------------------------- #
 # Trefis price-estimate fetcher (public feed, best-effort)
 # --------------------------------------------------------------------------- #
 _TREFIS_CACHE: dict | None = None
@@ -529,6 +582,14 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
         "none"    -> omit the trailing column; full fiscal years only.
     """
     import yfinance as yf
+
+    cache_key = f"sd:{ticker.upper()}:{years}:{unit_millions}:{partial_method}:{with_trefis}"
+    cached = _cache_load(cache_key)
+    if cached is not None:
+        try:
+            return SheetData(**cached)
+        except Exception:  # noqa: BLE001 - stale/incompatible cache, refetch
+            pass
 
     tk = yf.Ticker(ticker)
     inc = tk.income_stmt           # annual, columns = period-end Timestamps
@@ -798,9 +859,11 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
     # bank-like = a financial-sector name that structurally lacks EBITDA
     # (true banks/insurers) — excludes Visa/Mastercard which do report EBITDA.
     is_financial = fin_sector and all(v is None for v in inputs["EBITDA"])
-    return SheetData(ticker=ticker.upper(), inputs=inputs, periods=period_meta,
-                     unit_label=unit_label, notes=notes, source_note=src,
-                     sector=sector, industry=industry, is_financial=is_financial)
+    result = SheetData(ticker=ticker.upper(), inputs=inputs, periods=period_meta,
+                       unit_label=unit_label, notes=notes, source_note=src,
+                       sector=sector, industry=industry, is_financial=is_financial)
+    _cache_store(cache_key, to_jsonable(asdict(result)))
+    return result
 
 
 def _build_runrate(qinc, qbal, qcf, last_annual_end,
@@ -1328,13 +1391,16 @@ def build_batch(tickers, years: int = 3, partial_method: str = "runrate",
     })
 
 
-def map_tickers_chunked(tickers, work_fn, max_workers: int = 6, chunk_size: int = 40,
-                        pause: float = 0.8, retries: int = 1, label: str = ""):
+def map_tickers_chunked(tickers, work_fn, max_workers: int = 6, chunk_size: int = 25,
+                        pause: float = 1.0, retries: int = 3, label: str = ""):
     """Run ``work_fn(ticker)`` over many tickers in throttled batches.
 
     Processes ``chunk_size`` tickers at a time with ``max_workers`` threads, pauses
-    ``pause`` seconds between chunks, and retries failures once (Yahoo rate-limits
-    on large sweeps otherwise). Returns ``(results_dict, errors_list)``.
+    between chunks, and retries the failures over several passes with EXPONENTIAL
+    backoff (Yahoo rate-limits large sweeps and returns empty frames). Combined with
+    the on-disk cache, a throttled S&P-500 sweep converges: each pass serves the
+    already-fetched names from cache and only re-hits Yahoo for the stragglers.
+    Returns ``(results_dict, errors_list)``.
     """
     results: dict = {}
     remaining = list(dict.fromkeys(tickers))
@@ -1345,7 +1411,9 @@ def map_tickers_chunked(tickers, work_fn, max_workers: int = 6, chunk_size: int 
         for i in range(0, total, chunk_size):
             chunk = remaining[i:i + chunk_size]
             if label:
-                print(f"  {label}: {min(i + chunk_size, total)}/{total}", file=sys.stderr)
+                done = len(results)
+                print(f"  {label}: pass {attempt + 1}, {min(i + chunk_size, total)}/{total} "
+                      f"(ok {done})", file=sys.stderr)
             with ThreadPoolExecutor(max_workers=max_workers) as ex:
                 futs = {ex.submit(work_fn, t): t for t in chunk}
                 for fut in as_completed(futs):
@@ -1357,9 +1425,14 @@ def map_tickers_chunked(tickers, work_fn, max_workers: int = 6, chunk_size: int 
             if i + chunk_size < total:
                 time.sleep(pause)
         remaining = [t for t, _ in failed]
-        if not remaining:
+        if not remaining or attempt == retries:
             break
-        time.sleep(pause * 2)   # backoff before the retry pass
+        # exponential backoff (with jitter) before retrying the stragglers
+        backoff = min(60.0, pause * (2 ** (attempt + 1))) + random.uniform(0, 1.5)
+        if label:
+            print(f"  {label}: {len(remaining)} failed, backing off {backoff:.0f}s "
+                  f"before retry", file=sys.stderr)
+        time.sleep(backoff)
     errors = [{"ticker": t, "error": f"{type(e).__name__}: {e}"} for t, e in failed]
     return results, errors
 

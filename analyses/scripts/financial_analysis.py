@@ -573,25 +573,8 @@ def _get(series, col, default=None):
 
 def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
                    partial_method: str = "runrate", with_trefis: bool = True) -> SheetData:
-    """Build a :class:`SheetData` for ``ticker`` from Yahoo Finance.
-
-    ``partial_method`` controls the trailing column:
-        "runrate" -> annualize the fiscal-year-to-date flows (default; matches
-                     the original spreadsheet, but distorts seasonal businesses
-                     when only 1-2 quarters have been reported).
-        "ttm"     -> sum the last 4 reported quarters (seasonally complete,
-                     robust for consumer/retail names with a Dec fiscal year).
-        "none"    -> omit the trailing column; full fiscal years only.
-    """
+    """Fetch ``ticker`` from Yahoo Finance and hand off to the shared parser."""
     import yfinance as yf
-
-    cache_key = f"sd:{ticker.upper()}:{years}:{unit_millions}:{partial_method}:{with_trefis}"
-    cached = _cache_load(cache_key)
-    if cached is not None:
-        try:
-            return SheetData(**cached)
-        except Exception:  # noqa: BLE001 - stale/incompatible cache, refetch
-            pass
 
     tk = yf.Ticker(ticker)
     inc = tk.income_stmt           # annual, columns = period-end Timestamps
@@ -604,6 +587,34 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
     if inc is None or inc.empty:
         raise RuntimeError(f"No income statement returned for {ticker} "
                            "(delisted, invalid ticker, or Yahoo throttling).")
+    try:
+        info = tk.info
+    except Exception:  # noqa: BLE001
+        info = {}
+    try:
+        price_hist = tk.history(period="6y", interval="1mo")["Close"]
+    except Exception:  # noqa: BLE001
+        price_hist = None
+
+    return _build_sheetdata(ticker, inc, bal, cf, qinc, qbal, qcf, info, price_hist,
+                            years=years, unit_millions=unit_millions,
+                            partial_method=partial_method, with_trefis=with_trefis)
+
+
+def _build_sheetdata(ticker, inc, bal, cf, qinc, qbal, qcf, info, price_hist,
+                     years: int = 3, unit_millions: bool = True,
+                     partial_method: str = "runrate", with_trefis: bool = True,
+                     data_source: str = "Yahoo Finance via yfinance") -> SheetData:
+    """Turn source statements (yfinance-labelled DataFrames) + ``info`` + a monthly
+    close ``price_hist`` into a :class:`SheetData`. Shared by the yfinance and FMP
+    fetchers so both produce identical output (and reuse the run-rate / NKE / empty-
+    column fixes).
+
+    ``partial_method``: "runrate" (annualize fiscal-YTD, default), "ttm" (last 4
+    quarters) or "none" (full fiscal years only).
+    """
+    if inc is None or inc.empty:
+        raise RuntimeError(f"No income statement for {ticker}.")
 
     scale = 1e6 if unit_millions else 1.0
 
@@ -758,10 +769,7 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
     ]}
 
     # ---- historical annual prices (close near each fiscal year end) ------
-    try:
-        hist = tk.history(period="6y", interval="1mo")["Close"]
-    except Exception:
-        hist = None
+    hist = price_hist
 
     def price_near(ts):
         if hist is None or len(hist) == 0:
@@ -778,10 +786,7 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
         return float(sub.iloc[-1])
 
     # current price + sector from info (dividend yield is now a formula)
-    try:
-        info = tk.info
-    except Exception:
-        info = {}
+    info = info or {}
     cur_price = info.get("currentPrice") or info.get("regularMarketPrice")
     currency = info.get("financialCurrency") or info.get("currency") or "USD"
     sector = info.get("sector") or ""
@@ -855,17 +860,15 @@ def fetch_yfinance(ticker: str, years: int = 3, unit_millions: bool = True,
     cur_sym = {"USD": "US$", "EUR": "€", "GBP": "£", "GBp": "£", "CHF": "CHF",
                "JPY": "¥", "SEK": "SEK", "DKK": "DKK"}.get(currency, currency)
     unit_label = f"{cur_sym} millions" if unit_millions else cur_sym
-    src = (f"Source: Yahoo Finance via yfinance; Trefis price estimate via "
+    src = (f"Source: {data_source}; Trefis price estimate via "
            f"trefis.com public feed. Non-marketable securities are best-effort. "
            f"Generated for {ticker}.")
     # bank-like = a financial-sector name that structurally lacks EBITDA
     # (true banks/insurers) — excludes Visa/Mastercard which do report EBITDA.
     is_financial = fin_sector and all(v is None for v in inputs["EBITDA"])
-    result = SheetData(ticker=ticker.upper(), inputs=inputs, periods=period_meta,
-                       unit_label=unit_label, notes=notes, source_note=src,
-                       sector=sector, industry=industry, is_financial=is_financial)
-    _cache_store(cache_key, to_jsonable(asdict(result)))
-    return result
+    return SheetData(ticker=ticker.upper(), inputs=inputs, periods=period_meta,
+                     unit_label=unit_label, notes=notes, source_note=src,
+                     sector=sector, industry=industry, is_financial=is_financial)
 
 
 def _build_runrate(qinc, qbal, qcf, last_annual_end,
@@ -1233,7 +1236,7 @@ def to_jsonable(obj):
 def analyze_to_dict(ticker: str, years: int = 3, partial_method: str = "runrate",
                     peer_median: dict | None = None, with_trefis: bool = False) -> dict:
     """Full single-ticker analysis as a JSON-serializable dict for the dashboard."""
-    data = fetch_yfinance(ticker, years=years, partial_method=partial_method,
+    data = fetch_fundamentals(ticker, years=years, partial_method=partial_method,
                           with_trefis=with_trefis)
     inputs = data.inputs
     n = len(data.periods)
@@ -1312,7 +1315,7 @@ def analyze_to_dict(ticker: str, years: int = 3, partial_method: str = "runrate"
 def summarize_ticker(ticker: str, years: int, partial_method: str,
                      peer_median: dict | None = None, with_trefis: bool = False) -> dict:
     """Compact last-period summary for batch view: per-ratio value + rec, no raw data."""
-    data = fetch_yfinance(ticker, years=years, partial_method=partial_method,
+    data = fetch_fundamentals(ticker, years=years, partial_method=partial_method,
                           with_trefis=with_trefis)
     inputs = data.inputs
     n = len(data.periods)
@@ -1338,6 +1341,166 @@ def summarize_ticker(ticker: str, years: int, partial_method: str,
         "tally": tally,
         "score": tally["BUY"] - tally["SELL"],
     })
+
+
+# --------------------------------------------------------------------------- #
+# Financial Modeling Prep (FMP) fetcher — filing-sourced, avoids yfinance's
+# derived-quarterly glitches (e.g. MSFT's overstated Q1 D&A). Optional: used when
+# FMP_API_KEY is set; falls back to yfinance otherwise.
+# --------------------------------------------------------------------------- #
+FMP_BASE = "https://financialmodelingprep.com/api/v3"
+
+# FMP field -> yfinance row label, so the shared parser's _pick() finds them.
+_FMP_INC = {"Total Revenue": "revenue", "EBIT": "operatingIncome",
+            "Net Income": "netIncome", "EBITDA": "ebitda"}
+_FMP_BAL = {"Total Assets": "totalAssets", "Current Liabilities": "totalCurrentLiabilities",
+            "Stockholders Equity": "totalStockholdersEquity",
+            "Total Liabilities Net Minority Interest": "totalLiabilities",
+            "Cash Cash Equivalents And Short Term Investments": "cashAndShortTermInvestments",
+            "Cash And Cash Equivalents": "cashAndCashEquivalents",
+            "Long Term Investments": "longTermInvestments",
+            "Total Debt": "totalDebt", "Net Debt": "netDebt",
+            "Goodwill And Other Intangible Assets": "goodwillAndIntangibleAssets"}
+_FMP_CF = {"Operating Cash Flow": "operatingCashFlow",
+           "Capital Expenditure": "capitalExpenditure", "Free Cash Flow": "freeCashFlow",
+           "Depreciation And Amortization": "depreciationAndAmortization",
+           "Cash Dividends Paid": "dividendsPaid",
+           "Repurchase Of Capital Stock": "commonStockRepurchased"}
+
+
+def _fmp_key():
+    import os
+    return os.environ.get("FMP_API_KEY")
+
+
+def _fmp_get(path, params=None):
+    import requests
+    params = dict(params or {})
+    params["apikey"] = _fmp_key() or "demo"
+    last = None
+    for attempt in range(3):
+        r = requests.get(f"{FMP_BASE}/{path}", params=params, timeout=25)
+        if r.status_code in (401, 403):
+            raise RuntimeError(f"FMP auth error {r.status_code} — check FMP_API_KEY.")
+        if r.status_code == 200:
+            try:
+                return r.json()
+            except Exception as exc:  # noqa: BLE001
+                last = exc
+        time.sleep(1.0 * (attempt + 1))
+    raise RuntimeError(f"FMP request failed for {path}: {last}")
+
+
+def _fmp_df(records, mapping):
+    import pandas as pd
+    cols: dict = {}
+    for rec in records or []:
+        d = rec.get("date")
+        if not d:
+            continue
+        ts = pd.Timestamp(d)
+        for label, fld in mapping.items():
+            cols.setdefault(label, {})[ts] = rec.get(fld)
+    if not cols:
+        return pd.DataFrame()
+    df = pd.DataFrame(cols).T
+    return df[sorted(df.columns, reverse=True)]
+
+
+def _fmp_inject_shares(bal_df, inc_records):
+    import pandas as pd
+    if bal_df is None or bal_df.empty:
+        return
+    sh = {}
+    for rec in inc_records or []:
+        d = rec.get("date")
+        v = rec.get("weightedAverageShsOutDil") or rec.get("weightedAverageShsOut")
+        if d and v:
+            sh[pd.Timestamp(d)] = v
+    bal_df.loc["Ordinary Shares Number"] = [sh.get(c) for c in bal_df.columns]
+
+
+def _fmp_price_hist(ticker):
+    import pandas as pd
+    try:
+        data = _fmp_get(f"historical-price-full/{ticker}",
+                        {"serietype": "line", "timeseries": 1600})
+        hist = data.get("historical", []) if isinstance(data, dict) else []
+        ser = pd.Series({pd.Timestamp(h["date"]): h.get("close")
+                         for h in hist if h.get("close") is not None})
+        return ser.sort_index() if len(ser) else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def fetch_fmp(ticker: str, years: int = 3, unit_millions: bool = True,
+              partial_method: str = "runrate", with_trefis: bool = True) -> SheetData:
+    """Build a :class:`SheetData` for ``ticker`` from Financial Modeling Prep,
+    normalized to the same shape as the yfinance fetcher."""
+    ya, yq = years + 1, years * 4 + 2
+    inc_a = _fmp_get(f"income-statement/{ticker}", {"period": "annual", "limit": ya})
+    if not inc_a:
+        raise RuntimeError(f"FMP returned no income statement for {ticker}.")
+    bal_a = _fmp_get(f"balance-sheet-statement/{ticker}", {"period": "annual", "limit": ya})
+    cf_a = _fmp_get(f"cash-flow-statement/{ticker}", {"period": "annual", "limit": ya})
+    inc_q = _fmp_get(f"income-statement/{ticker}", {"period": "quarter", "limit": yq})
+    bal_q = _fmp_get(f"balance-sheet-statement/{ticker}", {"period": "quarter", "limit": yq})
+    cf_q = _fmp_get(f"cash-flow-statement/{ticker}", {"period": "quarter", "limit": yq})
+
+    inc, qinc = _fmp_df(inc_a, _FMP_INC), _fmp_df(inc_q, _FMP_INC)
+    bal, qbal = _fmp_df(bal_a, _FMP_BAL), _fmp_df(bal_q, _FMP_BAL)
+    cf, qcf = _fmp_df(cf_a, _FMP_CF), _fmp_df(cf_q, _FMP_CF)
+    _fmp_inject_shares(bal, inc_a)
+    _fmp_inject_shares(qbal, inc_q)
+
+    prof = _fmp_get(f"profile/{ticker}")
+    p0 = prof[0] if isinstance(prof, list) and prof else {}
+    info = {"currentPrice": p0.get("price"), "financialCurrency": p0.get("currency"),
+            "sector": p0.get("sector") or "", "industry": p0.get("industry") or ""}
+
+    return _build_sheetdata(ticker, inc, bal, cf, qinc, qbal, qcf, info,
+                            _fmp_price_hist(ticker), years=years,
+                            unit_millions=unit_millions, partial_method=partial_method,
+                            with_trefis=with_trefis,
+                            data_source="Financial Modeling Prep (FMP)")
+
+
+# --------------------------------------------------------------------------- #
+# Source dispatcher (+ on-disk cache keyed by source)
+# --------------------------------------------------------------------------- #
+_DEFAULT_SOURCE = "auto"      # auto -> FMP if FMP_API_KEY set, else yfinance
+
+
+def configure_source(source: str):
+    """Set the default fundamentals source: 'auto' | 'fmp' | 'yfinance'."""
+    global _DEFAULT_SOURCE
+    _DEFAULT_SOURCE = source
+
+
+def _resolve_source(source: str | None) -> str:
+    src = source or _DEFAULT_SOURCE
+    if src in ("fmp", "yfinance"):
+        return src
+    return "fmp" if _fmp_key() else "yfinance"      # auto
+
+
+def fetch_fundamentals(ticker: str, years: int = 3, unit_millions: bool = True,
+                       partial_method: str = "runrate", with_trefis: bool = True,
+                       source: str | None = None) -> SheetData:
+    """Fetch fundamentals from the resolved source (FMP or yfinance), cached on disk."""
+    src = _resolve_source(source)
+    key = f"sd:{src}:{ticker.upper()}:{years}:{unit_millions}:{partial_method}:{with_trefis}"
+    cached = _cache_load(key)
+    if cached is not None:
+        try:
+            return SheetData(**cached)
+        except Exception:  # noqa: BLE001
+            pass
+    data = (fetch_fmp if src == "fmp" else fetch_yfinance)(
+        ticker, years=years, unit_millions=unit_millions,
+        partial_method=partial_method, with_trefis=with_trefis)
+    _cache_store(key, to_jsonable(asdict(data)))
+    return data
 
 
 def build_batch(tickers, years: int = 3, partial_method: str = "runrate",
@@ -1445,7 +1608,7 @@ def compute_peer_medians(peer_tickers: list[str], years: int,
     """Fetch each peer (throttled batches), compute its latest-period ratios,
     return the per-ratio median across peers."""
     def work(pt):
-        pdata = fetch_yfinance(pt, years=years, partial_method=partial_method,
+        pdata = fetch_fundamentals(pt, years=years, partial_method=partial_method,
                                with_trefis=False)
         last = len(pdata.periods) - 1
         return compute_ratios_for_period(pdata.inputs, last)
@@ -1504,7 +1667,7 @@ def build_workbook(tickers: list[str], years: int, output: str,
             peer_median, peer_note = {}, ""
 
         print(f"Fetching {t} ...", file=sys.stderr)
-        data = fetch_yfinance(t, years=years, partial_method=partial_method,
+        data = fetch_fundamentals(t, years=years, partial_method=partial_method,
                               with_trefis=with_trefis)
         data.peer_median = dict(peer_median)
         data.peer_note = peer_note
@@ -1529,8 +1692,13 @@ def main(argv=None):
                    help="Auto-pick S&P-500 sector peers per ticker (ignored if --peers given).")
     p.add_argument("--no-trefis", action="store_true",
                    help="Skip the Trefis price-estimate lookup (avoids the external call).")
+    p.add_argument("--source", choices=["auto", "fmp", "yfinance"], default="auto",
+                   help="Data source: auto (FMP if FMP_API_KEY set, else yfinance), fmp, yfinance.")
     p.add_argument("--output", "-o", default=None, help="Output .xlsx path")
     args = p.parse_args(argv)
+
+    configure_source(args.source)
+    print(f"Data source: {_resolve_source(args.source)}", file=sys.stderr)
 
     out = args.output
     if out is None:

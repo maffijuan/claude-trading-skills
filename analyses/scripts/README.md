@@ -11,7 +11,25 @@ quality ratios computed as live formulas.
 | `financial_analysis.py` | Shared writer + Yahoo Finance fetcher + CLI (`ticker -> Excel`). |
 | `reorganize_existing.py` | Rebuilds the original 3-ticker workbook grouped by statement. |
 
-Requires `openpyxl`, `pandas`, `yfinance` (all already installed). No API key.
+Requires `openpyxl`, `pandas`, `yfinance` (all already installed). No API key needed
+for the default (yfinance) source.
+
+## Data source: yfinance (default) or FMP
+
+yfinance is free but derives quarterly figures by differencing 10-Q filings, which
+occasionally glitches a single quarter (e.g. MSFT's Q1 D&A came out ~5B too high,
+distorting the run-rate CapEx/D&A). **Financial Modeling Prep (FMP)** serves
+filing-sourced statements and avoids this.
+
+```bash
+export FMP_API_KEY=your_key_here          # get a free key at financialmodelingprep.com
+python analyses/scripts/financial_analysis.py MSFT --source auto   # uses FMP when key is set
+```
+
+`--source` accepts `auto` (FMP if `FMP_API_KEY` is set, else yfinance — the default),
+`fmp` (force FMP), or `yfinance` (force yfinance). Both sources produce the identical
+report format; FMP just fills more fields and fixes the quarterly glitches. The same
+flag exists on `build_static.py`. Results are cached per source in `dashboard/.cache/`.
 
 ## Generate the analysis for any ticker
 

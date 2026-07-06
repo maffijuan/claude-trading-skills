@@ -201,10 +201,14 @@ def main(argv=None):
     p.add_argument("--refresh", action="store_true",
                    help="Force a fresh fetch (cache TTL = 0 for this run, then repopulate)")
     p.add_argument("--cache-ttl", type=float, default=6.0, help="Cache freshness in hours (default 6)")
+    p.add_argument("--source", choices=["auto", "fmp", "yfinance"], default="auto",
+                   help="Data source: auto (FMP if FMP_API_KEY set, else yfinance), fmp, yfinance.")
     args = p.parse_args(argv)
 
     fa.configure_cache(enabled=not args.no_cache,
                        ttl=0 if args.refresh else int(args.cache_ttl * 3600))
+    fa.configure_source(args.source)
+    print(f"Data source: {fa._resolve_source(args.source)}", file=sys.stderr)
 
     tickers = list(args.tickers)
     if args.universe:
